@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>@@TITLE@@</title>
+<meta name="description" content="@@DESC@@">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="@@URL@@">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FAF8F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#151411" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Eats Ranked">
+<meta property="og:title" content="@@TITLE@@">
+<meta property="og:description" content="@@DESC@@">
+<meta property="og:url" content="@@URL@@">
+<meta property="og:image" content="@@URL@@og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="@@OG_ALT@@">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="@@TITLE@@">
+<meta name="twitter:description" content="@@DESC@@">
+<meta name="twitter:image" content="@@URL@@og.png">
+<meta name="twitter:image:alt" content="@@OG_ALT@@">
+<script type="application/ld+json">
+@@JSONLD@@
+</script>
+<script>document.documentElement.classList.add("js")</script>
+<style>
+:root{
+  --paper:#FAF8F3; --paper-2:#F2EEE6; --surface:#FFFFFF;
+  --ink:#1A1814; --ink-2:#57534A; --ink-3:#6B665C;
+  --rule:#E3DED3; --rule-2:#CFC8BA;
+  --accent:#B8430F; --focus:#B8430F;
+  --land:#E6E1D7; --land-hover:#D6CFC1; --land-line:#FAF8F3;
+  --s-rest:#B8430F; --s-groc:#57534A; --s-all:#8F897C;
+  --tip-bg:#1A1814; --tip-fg:#FAF8F3; --tip-mute:#C9C3B7;
+  --serif:ui-serif,"New York","Iowan Old Style",Charter,"Palatino Linotype",Palatino,Georgia,serif;
+  --sans:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --wrap:1180px; --gut:clamp(20px,5vw,56px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#151411; --paper-2:#1D1B17; --surface:#1D1B17;
+    --ink:#F3F0E8; --ink-2:#BDB7AA; --ink-3:#A39D90;
+    --rule:#2C2924; --rule-2:#3D3932;
+    --accent:#F07A45; --focus:#F07A45;
+    --land:#2B2823; --land-hover:#3A362F; --land-line:#151411;
+    --s-rest:#F07A45; --s-groc:#CFC9BC; --s-all:#827C70;
+    --tip-bg:#F3F0E8; --tip-fg:#151411; --tip-mute:#57534A;
+    color-scheme:dark;
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth} }
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+p,li{text-wrap:pretty}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+.nw{white-space:nowrap}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:8px;z-index:20;text-decoration:none;font-weight:600}
+.skip:focus{top:12px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+
+/* ---------- header ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:18px}
+.wordmark{display:inline-flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;font:600 20px/1 var(--serif);letter-spacing:-.01em;color:var(--ink)}
+.wordmark .mk{display:inline-flex;align-items:flex-end;gap:3px;height:18px}
+.wordmark .mk i{display:block;width:5px;border-radius:1.5px;background:var(--ink)}
+.wordmark .mk i:nth-child(1){height:18px}
+.wordmark .mk i:nth-child(2){height:12px}
+.wordmark .mk i:nth-child(3){height:7px;background:var(--accent)}
+.nav{display:flex;gap:26px;font-size:15px}
+.nav a{color:var(--ink-2);text-decoration:none;padding:6px 0}
+.nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+
+/* ---------- hero ---------- */
+.hero{padding-top:clamp(56px,10vw,120px);padding-bottom:clamp(40px,6vw,72px)}
+.hero h1{font:500 clamp(44px,7.6vw,104px)/1 var(--serif);letter-spacing:-.028em;margin:0}
+.hero h1 .l{display:block}
+.hero p{font-size:clamp(18px,1.9vw,22px);line-height:1.45;color:var(--ink-2);max-width:36ch;text-wrap:balance;margin:clamp(22px,3vw,34px) 0 0}
+
+/* ---------- section scaffolding ---------- */
+.sec{padding-top:clamp(72px,10vw,128px)}
+.eyebrow{display:flex;align-items:center;gap:14px;font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 clamp(26px,3.4vw,40px)}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+.h2{font:500 clamp(34px,4.6vw,56px)/1.04 var(--serif);letter-spacing:-.02em;margin:0;text-wrap:balance}
+.lede{color:var(--ink-2);margin:0;font-size:17px;max-width:44ch}
+.lede a{color:var(--accent);font-weight:600;text-underline-offset:3px;text-decoration-thickness:1px}
+
+/* ---------- app cards ---------- */
+.apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(16px,2vw,28px)}
+.app{background:var(--bg);color:var(--fg);border-radius:28px;padding:clamp(26px,3.4vw,44px);display:flex;flex-direction:column;min-width:0;scroll-margin-top:24px}
+.app .head{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,3.4vw,44px)}
+.app .icon{width:88px;height:88px;border-radius:20px;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.app .where,.pop .w{margin:0;font:600 12px/1.25 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ac)}
+.app .plat{margin:6px 0 0;font-size:14px;opacity:.8}
+.app h3{font:500 clamp(28px,3vw,38px)/1.08 var(--serif);letter-spacing:-.015em;margin:0 0 14px}
+.app .tag{margin:0 0 clamp(28px,3.4vw,40px);font-size:17px;line-height:1.5;opacity:.9;max-width:42ch}
+.actions{margin-top:auto;display:flex;flex-wrap:wrap;align-items:center;gap:12px 14px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;background:var(--ac);color:var(--bg);font:600 16px/1 var(--sans);text-decoration:none;white-space:nowrap}
+.btn .ic{width:14px;height:14px}
+.app :focus-visible,.pop :focus-visible{outline-color:var(--ac)}
+.badge{display:inline-flex;flex-direction:column;justify-content:center;min-height:48px;padding:0 18px;border-radius:12px;border:1px solid rgba(255,255,255,.4);border:1px solid color-mix(in srgb,var(--fg) 38%,transparent);color:var(--fg);text-decoration:none;line-height:1.1}
+.badge.soon{opacity:.9;cursor:default;user-select:none;-webkit-user-select:none}
+.badge small{font-size:11px;letter-spacing:.02em;opacity:.82}
+.badge b{font:600 16px/1.15 var(--sans);letter-spacing:-.01em}
+.links{display:flex;flex-wrap:wrap;gap:0 26px;margin-top:12px}
+.more{display:inline-flex;align-items:center;gap:6px;padding:10px 0;font-weight:600;font-size:16px;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,.5);text-decoration-color:color-mix(in srgb,var(--fg) 45%,transparent)}
+.more:hover{text-decoration-color:currentColor}
+@media (hover:hover){ .btn:hover{filter:brightness(1.07)} a.badge:hover{border-color:var(--fg)} }
+
+/* ---------- map ---------- */
+.sechead{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px 56px;align-items:end}
+.atlas{position:relative;margin-top:clamp(28px,4vw,52px)}
+.map{position:relative;max-width:1060px;margin:0 auto}
+.stage{position:relative}
+.map svg{display:block;width:100%;height:auto;overflow:visible}
+.st{fill:var(--land);stroke:var(--land-line);stroke-width:1;stroke-linejoin:round;outline:none}
+path.st{transition:fill .15s}
+path.st:hover{fill:var(--land-hover)}
+.st.live{fill:var(--fill);cursor:pointer}
+.st.live path{transition:filter .15s}
+.st.live:hover path,.st.live.on path{filter:brightness(1.16) saturate(1.05)}
+.ring{fill:none;stroke:var(--focus);stroke-width:3;stroke-linejoin:round;pointer-events:none;vector-effect:non-scaling-stroke}
+.ring:not([d]),.ring[d=""]{display:none}
+.pin{position:absolute;width:clamp(28px,4.4vw,50px);height:clamp(28px,4.4vw,50px);transform:translate(-50%,-50%);border-radius:24%;box-shadow:0 0 0 3px #fff,0 6px 14px -4px rgba(26,24,20,.45);transition:transform .18s ease}
+.pin img{width:100%;height:100%;border-radius:24%}
+.pin:hover,.pin.on{transform:translate(-50%,-50%) scale(1.08)}
+.tip{position:absolute;z-index:4;left:0;top:0;pointer-events:none;background:var(--tip-bg);color:var(--tip-fg);font-size:13px;line-height:1.3;padding:7px 10px;border-radius:8px;white-space:nowrap;transform:translate(-50%,calc(-100% - 12px));opacity:0}
+.tip.show{opacity:1}
+.tip b{font-weight:600}
+.tip span{color:var(--tip-mute)}
+.legend{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 22px;margin:16px 0 0;padding:0;list-style:none;font-size:14px;color:var(--ink-2)}
+.legend li{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.key-live{background:var(--sw)}
+.key-soon{background:var(--land);box-shadow:inset 0 0 0 1px var(--rule-2)}
+.hint{position:absolute;left:0;right:0;top:100%;margin:12px 0 0;font-size:13px;color:var(--ink-3);text-align:center;pointer-events:none}
+.hint span{display:none}
+.hint .h-pt{display:inline}
+.map.kbd .hint .h-pt,.map.kbd .hint .h-ph{display:none}
+.map.kbd .hint .h-kb{display:inline}
+html:not(.js) .hint{display:none}
+.pops{margin-top:18px}
+.pop{position:relative;background:var(--bg);color:var(--fg);border-radius:22px;padding:24px 24px 20px;box-shadow:0 24px 48px -22px rgba(20,18,14,.55),0 2px 6px rgba(20,18,14,.08)}
+.pop[hidden]{display:none}
+.pop:focus{outline:none}
+.pop:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.pop .row{display:flex;gap:14px;align-items:center;padding-right:34px;margin-bottom:14px}
+.pop img{width:56px;height:56px;border-radius:13px;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.pop .n{margin:4px 0 0;font:500 23px/1.15 var(--serif);letter-spacing:-.01em}
+.pop .tg{margin:0 0 6px;font-size:15.5px;line-height:1.5;opacity:.9}
+.pop .pl{margin:0 0 16px;font-size:13.5px;opacity:.75}
+.pop .actions{gap:10px}
+.pop .btn{min-height:44px;padding:0 18px;font-size:15px}
+.pop .badge{min-height:44px;padding:0 14px}
+.pop .badge b{font-size:14px}
+.pop .links{margin-top:6px}
+.pop .more{font-size:15px}
+.x{position:absolute;right:10px;top:10px;width:44px;height:44px;display:grid;place-items:center;border:0;border-radius:10px;background:transparent;color:var(--fg);opacity:.8;cursor:pointer}
+.x:hover{opacity:1;background:rgba(255,255,255,.12)}
+.x svg{width:16px;height:16px}
+html:not(.js) .pops{display:none}
+@media (min-width:900px){
+  .legend{position:absolute;right:0;bottom:4%;margin:0;flex-direction:column;align-items:flex-start;gap:8px}
+  .js .pops{position:absolute;inset:0;margin:0;pointer-events:none}
+  .js .pop{position:absolute;width:384px;pointer-events:auto;z-index:5}
+}
+.plist{display:none}
+.plist h3{margin:0;font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.plist ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+.pick{display:flex;align-items:center;gap:14px;min-height:66px;padding:10px 14px 10px 10px;border:1px solid var(--rule);border-radius:16px;background:var(--surface);text-decoration:none}
+.pick[aria-expanded="true"]{border-color:var(--ink-2)}
+.pick img{width:44px;height:44px;border-radius:11px;flex:none}
+.pk{display:flex;flex-direction:column;min-width:0;flex:1}
+.ps{font-weight:600;font-size:16px;line-height:1.3}
+.pa{font-size:14px;color:var(--ink-3);line-height:1.35}
+.go{width:16px;height:16px;flex:none;color:var(--ink-3)}
+.plist .else{margin:16px 0 0;font-size:15px;color:var(--ink-2)}
+.plist .else a{color:var(--accent);font-weight:600;text-underline-offset:3px;text-decoration-thickness:1px}
+@media (prefers-reduced-motion: reduce){ path.st,.st.live path,.pin{transition:none} }
+
+/* ---------- how it works ---------- */
+.steps{list-style:none;margin:0;padding:0}
+.steps li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2vw,28px);align-items:baseline;padding:clamp(22px,2.8vw,34px) 0;border-top:1px solid var(--rule)}
+.steps li:last-child{border-bottom:1px solid var(--rule)}
+.steps .lh{display:grid;grid-template-columns:clamp(48px,6vw,84px) minmax(0,1fr);align-items:baseline}
+.steps .num{font:400 clamp(40px,5vw,64px)/.9 var(--serif);color:var(--accent);font-variant-numeric:lining-nums}
+.steps h3{font:500 clamp(24px,2.6vw,32px)/1.15 var(--serif);letter-spacing:-.01em;margin:0}
+.steps p{margin:0;color:var(--ink-2);font-size:17px}
+.note{margin:24px 0 0;max-width:74ch;font-size:14.5px;line-height:1.6;color:var(--ink-3)}
+
+/* ---------- numbers ---------- */
+.bill{font-size:clamp(18px,1.9vw,22px);line-height:1.45;color:var(--ink-2);max-width:40ch;margin:clamp(18px,2.4vw,26px) 0 0}
+.bill b{color:var(--ink);font-weight:600}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,56px);margin:clamp(36px,4.6vw,56px) 0 0;padding:0}
+.fact{margin:0;border-top:2px solid var(--ink);padding-top:18px}
+.fact dt{font:400 clamp(60px,7.4vw,104px)/.95 var(--serif);letter-spacing:-.035em;font-variant-numeric:lining-nums;margin:0 0 16px;white-space:nowrap}
+.fact dt .u{font-size:.5em;letter-spacing:0;margin-left:.04em;vertical-align:.62em}
+.fact dd{margin:0;color:var(--ink-2);font-size:16px;line-height:1.5}
+.fact dd b{color:var(--ink);font-weight:600}
+
+.chart{margin:clamp(64px,8vw,96px) 0 0}
+.chart figcaption{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 28px;margin-bottom:22px}
+.chart .ct{font:500 clamp(22px,2.2vw,28px)/1.2 var(--serif);margin:0;letter-spacing:-.01em}
+.chart .cs{color:var(--ink-3);font-size:14px;margin:6px 0 0}
+.keys{display:flex;flex-wrap:wrap;gap:6px 20px;list-style:none;margin:0;padding:0;font-size:14px;color:var(--ink-2)}
+.keys li{display:inline-flex;align-items:center;gap:8px}
+.keys i{display:inline-block;width:18px;height:0;border-top:2.5px solid;border-radius:2px}
+.cg{display:grid;grid-template-columns:44px minmax(0,1fr) 150px;grid-template-rows:auto 30px}
+.yax,.plot,.ends{position:relative;height:360px}
+.yax span{position:absolute;right:10px;transform:translateY(-50%);font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.plot{border-bottom:1px solid var(--rule-2);cursor:crosshair;touch-action:pan-y}
+.plot:focus-visible{outline-offset:8px}
+.plot svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.plot .grid{stroke:var(--rule);stroke-width:1;vector-effect:non-scaling-stroke}
+.plot .grid.base{stroke:var(--rule-2)}
+.plot .ln{fill:none;stroke-width:2;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
+.plot .ln.rest{stroke:var(--s-rest);stroke-width:2.75}
+.plot .ln.groc{stroke:var(--s-groc)}
+.plot .ln.all{stroke:var(--s-all)}
+.plot .gap{fill:var(--paper-2)}
+.gapnote{position:absolute;transform:translate(-100%,calc(-100% - 6px));padding-right:8px;font-size:11.5px;line-height:1.3;color:var(--ink-3);text-align:right;white-space:nowrap}
+.dot{position:absolute;width:10px;height:10px;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 2px var(--paper);pointer-events:none}
+.dot.rest,.hov.rest{background:var(--s-rest)}.dot.groc,.hov.groc{background:var(--s-groc)}.dot.all,.hov.all{background:var(--s-all)}
+.ends>span{position:absolute;left:14px;transform:translateY(-50%);font-size:13px;line-height:1.2;white-space:nowrap;color:var(--ink-3)}
+.ends>span b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.xax{position:relative;grid-column:2}
+.xax span{position:absolute;top:9px;transform:translateX(-50%);font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.xax span:first-child{transform:none}
+.cross{position:absolute;top:0;bottom:0;width:1px;background:var(--ink-2);opacity:.5;pointer-events:none;display:none}
+.hov{position:absolute;width:9px;height:9px;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 2px var(--paper);pointer-events:none;display:none}
+.ctip{position:absolute;top:6px;z-index:2;min-width:200px;padding:10px 12px;border-radius:10px;background:var(--surface);border:1px solid var(--rule-2);box-shadow:0 8px 24px -10px rgba(0,0,0,.25);font-size:13px;pointer-events:none;display:none}
+.ctip .m{font-weight:600;margin-bottom:6px;color:var(--ink)}
+.ctip .r{display:flex;align-items:center;gap:8px;color:var(--ink-2);line-height:1.65}
+.ctip .r i{width:14px;border-top:2.5px solid;display:inline-block}
+.ctip .r b{margin-left:auto;padding-left:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+.plot.on .cross,.plot.on .ctip{display:block}
+.chint{display:none}
+.plot.on .hov.v{display:block}
+details.tbl{margin-top:18px;font-size:14px;color:var(--ink-2)}
+details.tbl summary{cursor:pointer;padding:6px 0;font-weight:600;color:var(--ink-2);width:max-content;max-width:100%}
+details.tbl summary:hover{color:var(--ink)}
+.tw{overflow-x:auto;margin-top:10px}
+details.tbl table{border-collapse:collapse;font-variant-numeric:tabular-nums;width:100%;max-width:640px}
+details.tbl caption{text-align:left;padding:0 0 8px;color:var(--ink-3);font-size:13px}
+details.tbl th,details.tbl td{text-align:right;padding:6px 0 6px 12px;border-bottom:1px solid var(--rule);font-weight:400;white-space:nowrap}
+details.tbl td.na{white-space:normal}
+details.tbl th:first-child{text-align:left;padding-left:0}
+details.tbl thead th{font-weight:600;color:var(--ink)}
+details.tbl td.na{color:var(--ink-3);font-style:italic}
+.src{margin:22px 0 0;font-size:13px;line-height:1.55;color:var(--ink-3);max-width:84ch}
+.src a{color:var(--ink-2);text-underline-offset:3px}
+
+/* ---------- footer ---------- */
+.foot{margin-top:clamp(96px,11vw,150px);border-top:1px solid var(--rule);padding:44px 0 56px;font-size:14px;color:var(--ink-2)}
+.foot .fg{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:28px 48px;align-items:start}
+.foot p{margin:0 0 6px}
+.foot a{text-underline-offset:3px}
+.foot h2{margin:0 0 10px;font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.foot .brandline{margin:14px 0 18px;color:var(--ink-3)}
+.credit{margin-top:14px!important;font-size:12.5px;color:var(--ink-3)}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px){
+  .sechead{grid-template-columns:1fr}
+  .facts{grid-template-columns:1fr;gap:36px}
+  .steps li{grid-template-columns:1fr;row-gap:8px}
+  .steps .lh{grid-template-columns:clamp(44px,10vw,72px) minmax(0,1fr)}
+  .steps p{padding-left:clamp(44px,10vw,72px)}
+  .foot .fg{grid-template-columns:1fr 1fr}
+  .foot .fb{grid-column:1/-1}
+}
+@media (min-width: 641px) and (max-width: 900px){
+  .fact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:end}
+  .fact dt{margin:0}
+}
+@media (max-width: 899px){ .hint{position:static;margin:8px 0 0} }
+@media (max-width: 699px){
+  .plist{display:block;margin-top:26px}
+  .legend{margin-top:12px}
+  .hint .h-pt{display:none}
+  .hint .h-ph{display:inline}
+}
+@media (max-width: 640px){
+  body{font-size:16px}
+  .nav{gap:18px;font-size:14px}
+  .hero h1{font-size:max(34px,10.5vw)}
+  .app{border-radius:22px}
+  .app .icon{width:60px;height:60px;border-radius:14px}
+  .app .head{gap:14px}
+  .map{margin:0 calc(var(--gut) * -.5)}
+  .pin{width:20px;height:20px;border-radius:26%;box-shadow:0 0 0 1.5px #fff,0 2px 5px -1px rgba(26,24,20,.45)}
+  .pin img{border-radius:26%}
+  .pin::after{content:"";position:absolute;inset:-12px}
+  .pop{padding:22px 20px 18px}
+  .cg{grid-template-columns:40px minmax(0,1fr) 62px}
+  .yax,.plot,.ends{height:280px}
+  .ends>span{left:8px;font-size:12px}
+  .ends .nm{display:none}
+  .xax .odd{display:none}
+  .gapnote{font-size:10.5px}
+  /* the readout sits in a band above the plot, so it never covers the lines or the crosshair */
+  .js .cg{padding-top:64px}
+  .ctip,.chint{top:auto;bottom:calc(100% + 10px);left:-40px;right:-62px;min-width:0;margin:0}
+  .ctip{padding:8px 12px;box-shadow:none;grid-template-columns:repeat(4,auto);justify-content:space-between;column-gap:8px;align-items:start}
+  .plot.on .ctip{display:grid}
+  .ctip .m{width:min-content;margin:0;line-height:1.3}
+  .ctip .r{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:6px;line-height:1.3;min-width:0}
+  .ctip .r span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}
+  .ctip .r i{width:10px;align-self:center}
+  .ctip .r b{grid-column:1/-1;margin:0;padding:0}
+  .ctip .r.none{grid-column:2/-1;display:block}
+  .js .chint{display:block;position:absolute;padding:0 0 4px;font-size:13px;line-height:1.4;color:var(--ink-3);pointer-events:none}
+  .plot.on .chint{display:none}
+  .fact dt{margin-bottom:10px}
+  .foot .fg{grid-template-columns:1fr}
+}
+@media (max-width: 400px){ .nav a.opt{display:none} }
+@media (max-width: 640px), (pointer: coarse){
+  .nav a{padding:12px 0;min-width:44px;text-align:center}
+  details.tbl summary{padding:12px 0}
+  .foot ul{gap:0}
+  .foot ul a,.foot p a{display:inline-block;padding:12px 0}
+  .foot h2{margin-bottom:0}
+}
+@media (prefers-color-scheme: dark){
+  .st.live{fill:var(--fill-dark,var(--fill))}
+  .key-live{background:var(--sw-dark,var(--sw))}
+  .pin{box-shadow:0 0 0 3px var(--paper),0 6px 14px -4px rgba(0,0,0,.6)}
+}
+@media (forced-colors: active){
+  .st.live{fill:Highlight}
+  .ring{stroke:Highlight}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top wrap">
+  <a class="wordmark" href="/" aria-label="Eats Ranked, home"><span class="mk" aria-hidden="true"><i></i><i></i><i></i></span>Eats Ranked</a>
+  <nav class="nav" aria-label="Sections">
+    <a class="opt" href="#states">Map</a>
+    <a href="#how">How it works</a>
+    <a href="#prices">Prices</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero wrap" aria-labelledby="h1">
+    <h1 id="h1"><span class="l">Restaurants, ranked</span> <span class="l">state by state.</span></h1>
+    <p>Free restaurant apps from public records and open data, one state at a time.</p>
+  </section>
+
+  <section class="wrap" id="apps" aria-labelledby="apps-h">
+    <h2 class="eyebrow" id="apps-h">@@LIVE_LABEL@@</h2>
+    <div class="apps">
+@@CARDS@@
+    </div>
+  </section>
+
+  <section class="sec wrap" id="states" aria-labelledby="states-h">
+    <p class="eyebrow" aria-hidden="true">The map</p>
+    <div class="sechead">
+      <h2 class="h2" id="states-h">@@COMING_SOON@@</h2>
+      <p class="lede">@@LEDE_LIVE@@ We add one state at a time. Want yours next? <a href="@@MAILTO_NEXT@@">Tell us which state</a>.</p>
+    </div>
+    <div class="atlas" id="atlas">
+      <div class="map" data-live="@@LIVE_LABEL@@">
+        <!-- State shapes: us-atlas (ISC License, Mike Bostock), from U.S. Census Bureau cartographic boundary files. -->
+        <div class="stage">
+        <svg viewBox="@@VIEWBOX@@" role="group" aria-labelledby="map-t" aria-describedby="map-d">
+          <title id="map-t">@@MAP_TITLE@@</title>
+          <g class="land">
+@@MAP@@
+          </g>
+          <path class="ring" aria-hidden="true"/>
+        </svg>
+@@PINS@@
+        </div>
+        <div class="tip" aria-hidden="true"></div>
+        <ul class="legend" aria-hidden="true" style="@@LEGEND_STYLE@@">
+          <li><i class="key-live"></i>@@LIVE_LABEL@@</li>
+          <li><i class="key-soon"></i>Coming soon</li>
+        </ul>
+        <p class="hint" aria-hidden="true"><span class="h-pt">Point to or tap a state to see what&rsquo;s there.</span><span class="h-ph">Tap a highlighted state, or pick one below.</span><span class="h-kb">Arrow keys move between states. Enter opens a live one.</span></p>
+        <p class="sr-only" id="map-d">Use the arrow keys to move between states. Press Enter on a live state to see its app.</p>
+        <p class="sr-only" aria-live="polite" id="map-say"></p>
+      </div>
+      <div class="pops">
+@@POPS@@
+      </div>
+    </div>
+    <div class="plist">
+      <h3 id="plist-h">@@LIVE_LABEL@@</h3>
+      <ul aria-labelledby="plist-h">
+@@PICKS@@
+      </ul>
+      <p class="else">Every other state: coming soon. <a href="@@MAILTO_NEXT@@">Tell us which state</a>.</p>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="how" aria-labelledby="how-h">
+    <h2 class="eyebrow" id="how-h">How it works</h2>
+    <ol class="steps">
+      <li><div class="lh"><span class="num" aria-hidden="true">1</span><h3>We read the public record.</h3></div><p>Health inspections, business licenses, published honors and open map data.</p></li>
+      <li><div class="lh"><span class="num" aria-hidden="true">2</span><h3>We grade and check.</h3></div><p>Where a city publishes inspections, those records become our own grades and rankings, not official ones. Our guides to local favorites are checked by hand.</p></li>
+      <li><div class="lh"><span class="num" aria-hidden="true">3</span><h3>You find your place.</h3></div><p>Search, map and save restaurants. Free, with no ads and no account.</p></li>
+    </ol>
+    <p class="note">@@HOW_NOTE@@</p>
+  </section>
+
+  <section class="sec wrap" id="prices" aria-labelledby="num-h">
+    <p class="eyebrow" aria-hidden="true">Prices</p>
+    <h2 class="h2" id="num-h">Eating out, by the numbers</h2>
+    <p class="bill">@@BILL@@</p>
+    <dl class="facts">
+@@FACTS@@
+    </dl>
+
+    <figure class="chart">
+      <figcaption>
+        <div>
+          <p class="ct" id="ct">@@CHART_TITLE@@</p>
+          <p class="cs">@@CHART_SUB@@</p>
+        </div>
+        <ul class="keys" aria-hidden="true">
+          <li><i style="color:var(--s-rest)"></i>Restaurants and takeout</li>
+          <li><i style="color:var(--s-groc)"></i>Groceries</li>
+          <li><i style="color:var(--s-all)"></i>All prices</li>
+        </ul>
+      </figcaption>
+      <div class="cg">
+        <div class="yax" aria-hidden="true">@@YTICKS@@</div>
+        <div class="plot" id="plot" tabindex="0" role="img" aria-label="@@CHART_ALT@@">
+          <svg viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+@@CHART_SVG@@
+          </svg>
+@@CHART_HTML@@
+          <div class="cross" aria-hidden="true"></div>
+          <span class="hov rest" aria-hidden="true"></span><span class="hov groc" aria-hidden="true"></span><span class="hov all" aria-hidden="true"></span>
+          <div class="ctip" aria-hidden="true"></div>
+          <p class="chint" aria-hidden="true">Touch the chart to read each month.</p>
+        </div>
+        <div class="ends" aria-hidden="true">@@ENDS@@</div>
+        <div class="xax" aria-hidden="true">@@XTICKS@@</div>
+      </div>
+      <p class="sr-only" aria-live="polite" id="chart-say"></p>
+      <details class="tbl">
+        <summary>Show the numbers</summary>
+        <div class="tw">@@TABLE@@</div>
+      </details>
+      <p class="src">Source: @@SOURCE@@ <a href="@@SOURCE_URL@@" rel="noopener">bls.gov/cpi</a></p>
+    </figure>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap fg">
+    <div class="fb">
+      <a class="wordmark" href="/" aria-label="Eats Ranked, home"><span class="mk" aria-hidden="true"><i></i><i></i><i></i></span>Eats Ranked</a>
+      <p class="brandline">Restaurants, ranked state by state.</p>
+      <p>Not affiliated with any government agency. Grades in our apps are our own, from public records.</p>
+      <p>This site uses no cookies and no analytics.</p>
+    </div>
+    <nav aria-labelledby="foot-apps">
+      <h2 id="foot-apps">Apps</h2>
+      <ul>@@FOOTER_APPS@@</ul>
+    </nav>
+    <div>
+      <h2>Contact</h2>
+      <p><a href="mailto:@@EMAIL@@">@@EMAIL@@</a></p>
+      <p class="credit">Map: U.S. Census Bureau boundaries via <span class="nw">us-atlas</span> (ISC License, Mike Bostock).</p>
+    </div>
+  </div>
+</footer>
+
+<script id="chart-data" type="application/json">@@CHART_JSON@@</script>
+<script>
+@@APP_JS@@
+</script>
+</body>
+</html>
