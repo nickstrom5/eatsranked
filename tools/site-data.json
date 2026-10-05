@@ -49,6 +49,28 @@
    "tagline_short": "Fish fry & supper club guide, plus every Wisconsin restaurant.",
    "web_app": "https://wisconsin.eatsranked.com/explore/",
    "web_app_label": "Search on the web"
+  },
+  {
+   "abbr": "CO",
+   "status": "live",
+   "app": "Colorado Eats: Restaurants",
+   "home_name": "CO Eats",
+   "tagline": "Green chile, brewpubs, ski-town dining and the oldest places we checked by hand, plus every restaurant in the state.",
+   "site": "https://nickstrom5.github.io/colorado-eats/",
+   "how": "https://nickstrom5.github.io/colorado-eats/",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#002868",
+    "accent": "#FFD700",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/colorado.png",
+   "tagline_short": "Green chile & brewpub guide, plus every Colorado restaurant.",
+   "web_app": "https://nickstrom5.github.io/colorado-eats/explore/",
+   "web_app_label": "Search on the web"
   }
  ],
  "coming_soon_message": "More states coming soon.",

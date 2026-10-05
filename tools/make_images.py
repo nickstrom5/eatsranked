@@ -62,6 +62,9 @@ def og_html():
     places = [names[s["abbr"]] for s in live]
     where = places[0] if len(places) == 1 else ", ".join(places[:-1]) + " and " + places[-1]
     icons = "".join(f'<img src="{(DOCS / s["icon"]).as_uri()}" alt="">' for s in live)
+    # the icon column fits the 630 px height: 196 px icons for one or two live states, smaller as more go live
+    gap = 34 if len(live) <= 2 else 22
+    sz = min(196, (630 - 2 * 44 - gap * (len(live) - 1)) // max(1, len(live)))
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>
 html,body{{margin:0;width:1200px;height:630px;overflow:hidden}}
 body{{background:{PAPER};color:{INK};font-family:system-ui,-apple-system,sans-serif;position:relative}}
@@ -74,8 +77,8 @@ h1{{position:absolute;left:72px;top:206px;margin:0;font-weight:500;font-size:88p
 h1 span{{display:block}}
 .sub{{position:absolute;left:76px;bottom:70px;margin:0;font-size:27px;color:#57534A}}
 .sub b{{color:{INK};font-weight:600}}
-.icons{{position:absolute;right:92px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:34px}}
-.icons img{{width:196px;height:196px;border-radius:44px;box-shadow:0 22px 44px -18px rgba(26,24,20,.45),0 0 0 1px rgba(26,24,20,.06)}}
+.icons{{position:absolute;right:92px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:{gap}px}}
+.icons img{{width:{sz}px;height:{sz}px;border-radius:{round(sz * 0.224)}px;box-shadow:0 22px 44px -18px rgba(26,24,20,.45),0 0 0 1px rgba(26,24,20,.06)}}
 .rule{{position:absolute;left:76px;right:388px;bottom:128px;height:2px;background:#E3DED3}}
 </style></head><body>
 <div class="wm serif"><span class="mk"><i></i><i></i><i></i></span>Eats Ranked</div>

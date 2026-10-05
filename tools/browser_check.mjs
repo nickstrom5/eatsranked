@@ -191,8 +191,9 @@ try {
   if (SHOTS) await shot("desktop-1440-texas-hover", await rectOf("#atlas", 24));
   await mouse(5, 5);
 
-  st = await js("(function(){var s=document.querySelectorAll('#atlas svg .st');return [s[0].id,s[1].id,s[2].classList.contains('live')]})()");
-  check("screen readers meet the live states before the coming-soon ones", st[0] === "st-IL" && st[1] === "st-WI" && st[2] === false, JSON.stringify(st));
+  // every live state comes before the first coming-soon one (how many are live depends on site-data.json)
+  st = await js("(function(){var s=[].slice.call(document.querySelectorAll('#atlas svg .st')),n=document.querySelectorAll('#atlas svg .st.live').length;return [n,s.slice(0,n).every(function(e){return e.classList.contains('live')}),s[n]?s[n].classList.contains('live'):false]})()");
+  check("screen readers meet the live states before the coming-soon ones", st[0] >= 2 && st[1] === true && st[2] === false, JSON.stringify(st));
   st = await js("(function(){var h=document.querySelector('.hint'),v=[].filter.call(h.children,function(c){return getComputedStyle(c).display!=='none'});return {n:v.length,text:v.map(function(c){return c.textContent}).join('|'),op:getComputedStyle(h).opacity}})()");
   check("the map says how to use it without keyboard focus", st.n === 1 && /^Point to or tap a state/.test(st.text) && st.op === "1", JSON.stringify(st));
 
@@ -228,18 +229,20 @@ try {
   await key("Tab");
   st = await js("document.activeElement.id");
   check("the map is one tab stop that remembers the last state", st === s1, st);
+  const firstLive = await js("document.querySelector('#atlas svg .st.live').id");   // st-CO once Colorado is live: the map reads west to east
+  const firstPop = "pop-" + firstLive.slice(3).toLowerCase();
   await key("Home");
   st = await js("document.activeElement.id");
-  check("Home jumps back to the first live state", st === "st-IL", st);
+  check("Home jumps back to the first live state", st === firstLive, st);
   await key("Enter");
-  st = await js("({open:!document.getElementById('pop-il').hidden, focus:document.activeElement.id})");
-  check("Enter on Illinois opens its card and moves focus into it", st.open && st.focus === "pop-il", JSON.stringify(st));
+  st = await js(`({open:!document.getElementById('${firstPop}').hidden, focus:document.activeElement.id})`);
+  check("Enter on the first live state opens its card and moves focus into it", st.open && st.focus === firstPop, JSON.stringify(st));
   await key("Tab");
   st = await js("document.activeElement.className + '|' + document.activeElement.getAttribute('href')");
   check("Tab from the card reaches its close button", /(^|\s)x(\s|\|)/.test(st), st);
   await key("Escape");
-  st = await js("({open:!document.getElementById('pop-il').hidden, focus:document.activeElement.id})");
-  check("Escape closes the card and returns focus to Illinois", !st.open && st.focus === "st-IL", JSON.stringify(st));
+  st = await js(`({open:!document.getElementById('${firstPop}').hidden, focus:document.activeElement.id})`);
+  check("Escape closes the card and returns focus to its state", !st.open && st.focus === firstLive, JSON.stringify(st));
 
   // chart: keyboard readout for every month equals the embedded data
   const bad = await js(`(function(){
