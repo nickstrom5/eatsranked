@@ -12,10 +12,9 @@
    "app": "Chicago Restaurants: Ranked",
    "home_name": "Chi Ranked",
    "region": "Chicago + Illinois",
-   "tagline": "Nearly every Chicago restaurant with our A\u2013F grade from City inspection records, plus 17,000+ more across Illinois.",
-   "site": "https://nickstrom5.github.io/chicago-restaurants-ranked/",
-   "future_site": "https://chicago.eatsranked.com/",
-   "how": "https://nickstrom5.github.io/chicago-restaurants-ranked/how-chicago-restaurant-inspections-work.html",
+   "tagline": "Nearly every Chicago restaurant with our A–F grade from City inspection records, plus 17,000+ more across Illinois.",
+   "site": "https://chicago.eatsranked.com/",
+   "how": "https://chicago.eatsranked.com/how-chicago-restaurant-inspections-work.html",
    "app_store": null,
    "app_store_id": "6816931379",
    "app_store_note": "Coming soon to the App Store (in review)",
@@ -26,7 +25,8 @@
     "text": "#FFFFFF"
    },
    "icon": "icons/chicago.png",
-   "web_app": null
+   "web_app": "https://chicago.eatsranked.com/explore/",
+   "web_app_label": "Search on the web"
   },
   {
    "abbr": "WI",
