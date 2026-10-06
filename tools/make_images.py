@@ -75,15 +75,14 @@ body{{background:{PAPER};color:{INK};font-family:system-ui,-apple-system,sans-se
 .mk i:nth-child(1){{height:34px}}.mk i:nth-child(2){{height:23px}}.mk i:nth-child(3){{height:13px;background:{ACCENT}}}
 h1{{position:absolute;left:72px;top:206px;margin:0;font-weight:500;font-size:88px;line-height:1.02;letter-spacing:-.03em;white-space:nowrap}}
 h1 span{{display:block}}
-.sub{{position:absolute;left:76px;bottom:70px;margin:0;font-size:27px;color:#57534A}}
+/* the rule sits on the line's block, so a line that wraps to two (four or more states) pushes it up instead of running under the icons */
+.sub{{position:absolute;left:76px;right:388px;bottom:70px;margin:0;padding-top:26px;border-top:2px solid #E3DED3;font-size:27px;line-height:1.2;color:#57534A}}
 .sub b{{color:{INK};font-weight:600}}
 .icons{{position:absolute;right:92px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:{gap}px}}
 .icons img{{width:{sz}px;height:{sz}px;border-radius:{round(sz * 0.224)}px;box-shadow:0 22px 44px -18px rgba(26,24,20,.45),0 0 0 1px rgba(26,24,20,.06)}}
-.rule{{position:absolute;left:76px;right:388px;bottom:128px;height:2px;background:#E3DED3}}
 </style></head><body>
 <div class="wm serif"><span class="mk"><i></i><i></i><i></i></span>Eats Ranked</div>
 <h1 class="serif"><span>Restaurants, ranked</span><span>state by state.</span></h1>
-<div class="rule"></div>
 <p class="sub">Free apps for <b>{html.escape(where)}</b>. More states coming soon.</p>
 <div class="icons">{icons}</div>
 </body></html>"""
