@@ -93,6 +93,28 @@
    "tagline_short": "Teriyaki & phở guide, plus every Washington State restaurant.",
    "web_app": "https://nickstrom5.github.io/washington-eats/explore/",
    "web_app_label": "Search on the web"
+  },
+  {
+   "abbr": "CT",
+   "status": "live",
+   "app": "Connecticut Eats: Restaurants",
+   "home_name": "CT Eats",
+   "tagline": "New Haven apizza, lobster rolls and clam shacks, burger and hot dog icons, diners and dairy bars we checked by hand, plus every restaurant in Connecticut.",
+   "site": "https://nickstrom5.github.io/connecticut-eats/",
+   "how": "https://nickstrom5.github.io/connecticut-eats/",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#000E2F",
+    "accent": "#B3261E",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/connecticut.png",
+   "tagline_short": "Apizza & lobster roll guide, plus every Connecticut restaurant.",
+   "web_app": "https://nickstrom5.github.io/connecticut-eats/explore/",
+   "web_app_label": "Search on the web"
   }
  ],
  "coming_soon_message": "More states coming soon.",
