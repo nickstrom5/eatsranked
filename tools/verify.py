@@ -337,8 +337,8 @@ check("the price table's scroll box can be reached and scrolled by keyboard",
 ld_org = next((g for g in json.loads(section(r'<script type="application/ld\+json">(.*?)</script>'))["@graph"] if g["@type"] == "Organization"), {})
 subs = ld_org.get("subOrganization", [])
 check(f"JSON-LD Organization lists the {len(live)} live state sites as subOrganization, linked by <site>#org",
-      [(o.get("@type"), o.get("name"), o.get("url"), o.get("@id")) for o in subs]
-      == [("Organization", s["app"], s["site"], s["site"].rstrip("/") + "/#org") for s in live], json.dumps(subs)[:300])
+      [(o.get("@type"), o.get("url"), o.get("@id")) for o in subs]
+      == [("Organization", s["site"], s["site"].rstrip("/") + "/#org") for s in live], json.dumps(subs)[:300])
 check("JSON-LD Organization sameAs is a list of https URLs",
       isinstance(ld_org.get("sameAs"), list) and ld_org["sameAs"] and all(u.startswith("https://") for u in ld_org["sameAs"]))
 
@@ -463,6 +463,8 @@ check("security.txt: contact, language and canonical URL",
       and sec_f.get("Canonical") == "https://eatsranked.com/.well-known/security.txt", str(sec_f))
 check(f"security.txt: Expires is in the future and under a year away ({sec_f.get('Expires')}; renew it in build.py)",
       expires is not None and now < expires <= now + datetime.timedelta(days=366))
+if expires is not None and now < expires < now + datetime.timedelta(days=60):
+    print(f"WARN: security.txt expires {sec_f['Expires']}: move SECURITY_TXT_EXPIRES in build.py a year ahead and rebuild")
 check(".nojekyll is there, so Pages serves .well-known/ (and no page uses Jekyll)", (DOCS / ".nojekyll").exists()
       and not (DOCS / "_config.yml").exists()
       and not any(re.search(r"\{%|\{\{|\A---\n", f.read_text()) for f in DOCS.glob("*.html")))

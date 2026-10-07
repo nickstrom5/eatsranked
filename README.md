@@ -138,4 +138,4 @@ official badge artwork instead, download it from Apple's marketing tools and com
 - Prices: U.S. Bureau of Labor Statistics, Consumer Price Index (CPI-U), public domain.
 
 Not affiliated with any government agency. Grades in our apps are our own, from public records.
-Contact: work-with-nick@gmail.com
+Contact: nick@eatsranked.com

@@ -230,7 +230,12 @@
       if (!el || isLive(el)) { restoreTip(); return; }
       if (!muted) tipAtPointer(el, e);
     });
-    map.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") restoreTip(); });
+    // leaving the map ends a mouse dismissal (a keyboard user's dismissed label stays hidden)
+    map.addEventListener("pointerleave", function (e) {
+      if (e.pointerType !== "mouse") return;
+      if (muted !== focused) muted = null;
+      restoreTip();
+    });
     // Pointing at a live state (or its icon) on a wide screen shows its card while the pointer is on the
     // state, its icon or the card, and for a moment after, so the pointer can cross the gap to the card.
     function hoverOpen(e) {

@@ -349,14 +349,16 @@ def contrast(a, b):
 
 
 # 4.5:1 for the region label on the card and the card colour on the Website button (WCAG 1.4.3); the focus
-# ring, drawn on the card in the same colour, needs 3:1 (WCAG 1.4.11), so it passes too
+# ring, drawn on the card in the same colour, needs 3:1 (WCAG 1.4.11), so it passes too. A shade that has to be
+# made aims a little higher (TEXT_AIM) so a later tweak like a slight opacity can't tip it under the floor
 TEXT_MIN = 4.5
+TEXT_AIM = 4.8
 
 
 def readable_accent(accent, bg):
     """The accent as cards and pop-ups use it for text, the button fill and focus rings. A state's own accent
     is used as is when it reads at 4.5:1 on its card; otherwise the nearest lighter or darker shade with the
-    same hue and saturation that does. The map keeps the brand accent (its dark-mode fill is decoration)."""
+    same hue and saturation that reads at TEXT_AIM. The map keeps the brand accent (its dark-mode fill is decoration)."""
     if contrast(accent, bg) >= TEXT_MIN:
         return accent
     h, l, sat = colorsys.rgb_to_hls(*(int(accent[i:i + 2], 16) / 255 for i in (1, 3, 5)))
@@ -364,9 +366,9 @@ def readable_accent(accent, bg):
         for ll in (l + step / 200, l - step / 200):
             if 0 <= ll <= 1:
                 c = "#" + "".join(f"{round(v * 255):02X}" for v in colorsys.hls_to_rgb(h, ll, sat))
-                if contrast(c, bg) >= TEXT_MIN:
+                if contrast(c, bg) >= TEXT_AIM:
                     return c
-    sys.exit(f"build: no shade of {accent} reads at {TEXT_MIN}:1 on {bg}; pick another card colour")
+    sys.exit(f"build: no shade of {accent} reads at {TEXT_AIM}:1 on {bg}; pick another card colour")
 
 
 ACCENT = {s["abbr"]: readable_accent(s["colors"]["accent"], s["colors"]["bg"]) for s in LIVE}
@@ -607,9 +609,9 @@ JSONLD = jsonscript({
          "logo": URL + "icon-512.png", "email": EMAIL,
          "contactPoint": {"@type": "ContactPoint", "email": EMAIL, "contactType": "customer support"},
          "sameAs": [REPO],
-         # each state site names its own Organization <site>#org, so the two point at the same node
-         "subOrganization": [{"@type": "Organization", "@id": s["site"].rstrip("/") + "/#org", "name": s["app"],
-                              "url": s["site"]} for s in LIVE]},
+         # each state site names its own Organization <site>#org (and owns its name), so the two point at the same node
+         "subOrganization": [{"@type": "Organization", "@id": s["site"].rstrip("/") + "/#org", "url": s["site"]}
+                             for s in LIVE]},
     ],
 }, indent=1)
 
