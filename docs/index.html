@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-qOhFsq0QMV2REqNwk5hGH5bZE9SkX6gt6yeyKdYPv+U=' 'sha256-ltO2Gqy7DWnDrEAVp2/44XD6m+OeLAFt9cUVJxiZcF8='; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Eats Ranked: Restaurant Grades &amp; Rankings, State by State</title>
 <meta name="description" content="Restaurant apps from public records and open data: our own inspection grades where cities publish them, hand-checked local picks. Now in 5 states.">
@@ -55,7 +56,42 @@
     "@type": "ContactPoint",
     "email": "work-with-nick@gmail.com",
     "contactType": "customer support"
-   }
+   },
+   "sameAs": [
+    "https://github.com/nickstrom5/eatsranked"
+   ],
+   "subOrganization": [
+    {
+     "@type": "Organization",
+     "@id": "https://chicago.eatsranked.com/#org",
+     "name": "Chicago Restaurants: Ranked",
+     "url": "https://chicago.eatsranked.com/"
+    },
+    {
+     "@type": "Organization",
+     "@id": "https://wisconsin.eatsranked.com/#org",
+     "name": "Wisconsin Eats: Restaurants",
+     "url": "https://wisconsin.eatsranked.com/"
+    },
+    {
+     "@type": "Organization",
+     "@id": "https://nickstrom5.github.io/colorado-eats/#org",
+     "name": "Colorado Eats: Restaurants",
+     "url": "https://nickstrom5.github.io/colorado-eats/"
+    },
+    {
+     "@type": "Organization",
+     "@id": "https://nickstrom5.github.io/washington-eats/#org",
+     "name": "Washington Eats: Restaurants",
+     "url": "https://nickstrom5.github.io/washington-eats/"
+    },
+    {
+     "@type": "Organization",
+     "@id": "https://nickstrom5.github.io/connecticut-eats/#org",
+     "name": "Connecticut Eats: Restaurants",
+     "url": "https://nickstrom5.github.io/connecticut-eats/"
+    }
+   ]
   }
  ]
 }
@@ -128,6 +164,7 @@ p,li{text-wrap:pretty}
 .lede a{color:var(--accent);font-weight:600;text-underline-offset:3px;text-decoration-thickness:1px}
 
 /* ---------- app cards ---------- */
+.apps-h{margin:0 0 clamp(28px,3.6vw,44px)}
 .apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(16px,2vw,28px)}
 .app{background:var(--bg);color:var(--fg);border-radius:28px;padding:clamp(26px,3.4vw,44px);display:flex;flex-direction:column;min-width:0;scroll-margin-top:24px}
 .app .head{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,3.4vw,44px)}
@@ -394,7 +431,8 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
   </section>
 
   <section class="wrap" id="apps" aria-labelledby="apps-h">
-    <h2 class="eyebrow" id="apps-h">On the web now</h2>
+    <p class="eyebrow">On the web now</p>
+    <h2 class="h2 apps-h" id="apps-h">Restaurant guides by state</h2>
     <div class="apps">
       <article class="app" id="app-il" style="--bg:#0E3386;--ac:#B3DDF2;--fg:#FFFFFF" aria-labelledby="app-il-h">
         <div class="head">
@@ -448,7 +486,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
         </div>
         <div class="links"><a class="more" href="https://nickstrom5.github.io/washington-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with Washington Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
       </article>
-      <article class="app" id="app-ct" style="--bg:#000E2F;--ac:#B3261E;--fg:#FFFFFF" aria-labelledby="app-ct-h">
+      <article class="app" id="app-ct" style="--bg:#000E2F;--ac:#DE433A;--fg:#FFFFFF" aria-labelledby="app-ct-h">
         <div class="head">
           <img class="icon" src="icons/connecticut.png" width="88" height="88" alt="Connecticut Eats: Restaurants app icon" decoding="async">
           <div><p class="where">Connecticut</p><p class="plat">iPhone &amp; iPad · Free</p></div>
@@ -550,7 +588,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
           <article class="pop" id="pop-il" data-abbr="IL" style="--bg:#0E3386;--ac:#B3DDF2;--fg:#FFFFFF" tabindex="-1" aria-labelledby="pop-il-h" hidden>
             <button class="x" type="button" aria-label="Close Chicago Restaurants: Ranked"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
             <div class="row"><img src="icons/chicago.png" width="56" height="56" alt="" loading="lazy" decoding="async">
-              <div><p class="w">Chicago + Illinois</p><h3 class="n" id="pop-il-h">Chicago Restaurants: Ranked</h3></div></div>
+              <div><p class="w">Chicago + Illinois</p><p class="n" id="pop-il-h">Chicago Restaurants: Ranked</p></div></div>
             <p class="tg">Nearly every Chicago restaurant with our <span class="nw">A–F</span> grade from City inspection records, plus 17,000+ more across Illinois.</p>
             <p class="pl">iPhone &amp; iPad · Free</p>
             <div class="actions">
@@ -562,7 +600,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
           <article class="pop" id="pop-wi" data-abbr="WI" style="--bg:#203731;--ac:#FFB612;--fg:#FFFFFF" tabindex="-1" aria-labelledby="pop-wi-h" hidden>
             <button class="x" type="button" aria-label="Close Wisconsin Eats: Restaurants"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
             <div class="row"><img src="icons/wisconsin.png" width="56" height="56" alt="" loading="lazy" decoding="async">
-              <div><p class="w">Wisconsin</p><h3 class="n" id="pop-wi-h">Wisconsin Eats: Restaurants</h3></div></div>
+              <div><p class="w">Wisconsin</p><p class="n" id="pop-wi-h">Wisconsin Eats: Restaurants</p></div></div>
             <p class="tg">Fish fry &amp; supper club guide, plus every Wisconsin restaurant.</p>
             <p class="pl">iPhone &amp; iPad · Free</p>
             <div class="actions">
@@ -574,7 +612,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
           <article class="pop" id="pop-co" data-abbr="CO" style="--bg:#002868;--ac:#FFD700;--fg:#FFFFFF" tabindex="-1" aria-labelledby="pop-co-h" hidden>
             <button class="x" type="button" aria-label="Close Colorado Eats: Restaurants"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
             <div class="row"><img src="icons/colorado.png" width="56" height="56" alt="" loading="lazy" decoding="async">
-              <div><p class="w">Colorado</p><h3 class="n" id="pop-co-h">Colorado Eats: Restaurants</h3></div></div>
+              <div><p class="w">Colorado</p><p class="n" id="pop-co-h">Colorado Eats: Restaurants</p></div></div>
             <p class="tg">Green chile &amp; brewpub guide, plus every Colorado restaurant.</p>
             <p class="pl">iPhone &amp; iPad · Free</p>
             <div class="actions">
@@ -586,7 +624,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
           <article class="pop" id="pop-wa" data-abbr="WA" style="--bg:#1F4D3A;--ac:#F7C948;--fg:#FFFFFF" tabindex="-1" aria-labelledby="pop-wa-h" hidden>
             <button class="x" type="button" aria-label="Close Washington Eats: Restaurants"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
             <div class="row"><img src="icons/washington.png" width="56" height="56" alt="" loading="lazy" decoding="async">
-              <div><p class="w">Washington</p><h3 class="n" id="pop-wa-h">Washington Eats: Restaurants</h3></div></div>
+              <div><p class="w">Washington</p><p class="n" id="pop-wa-h">Washington Eats: Restaurants</p></div></div>
             <p class="tg">Teriyaki &amp; phở guide, plus every Washington State restaurant.</p>
             <p class="pl">iPhone &amp; iPad · Free</p>
             <div class="actions">
@@ -595,10 +633,10 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
             </div>
             <div class="links"><a class="more" href="https://nickstrom5.github.io/washington-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with Washington Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
           </article>
-          <article class="pop" id="pop-ct" data-abbr="CT" style="--bg:#000E2F;--ac:#B3261E;--fg:#FFFFFF" tabindex="-1" aria-labelledby="pop-ct-h" hidden>
+          <article class="pop" id="pop-ct" data-abbr="CT" style="--bg:#000E2F;--ac:#DE433A;--fg:#FFFFFF" tabindex="-1" aria-labelledby="pop-ct-h" hidden>
             <button class="x" type="button" aria-label="Close Connecticut Eats: Restaurants"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
             <div class="row"><img src="icons/connecticut.png" width="56" height="56" alt="" loading="lazy" decoding="async">
-              <div><p class="w">Connecticut</p><h3 class="n" id="pop-ct-h">Connecticut Eats: Restaurants</h3></div></div>
+              <div><p class="w">Connecticut</p><p class="n" id="pop-ct-h">Connecticut Eats: Restaurants</p></div></div>
             <p class="tg">Apizza &amp; lobster roll guide, plus every Connecticut restaurant.</p>
             <p class="pl">iPhone &amp; iPad · Free</p>
             <div class="actions">
@@ -692,7 +730,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
       <p class="sr-only" aria-live="polite" id="chart-say"></p>
       <details class="tbl">
         <summary>Show the numbers</summary>
-        <div class="tw"><table><caption>Change in prices since January 2020, U.S. city average</caption><thead><tr><th scope="col">Month</th><th scope="col">Restaurants</th><th scope="col">Groceries</th><th scope="col">All prices</th></tr></thead><tbody><tr><th scope="row">Jan 2020</th><td>0.0%</td><td>0.0%</td><td>0.0%</td></tr><tr><th scope="row">Jan 2021</th><td>+3.9%</td><td>+3.7%</td><td>+1.4%</td></tr><tr><th scope="row">Jan 2022</th><td>+10.5%</td><td>+11.4%</td><td>+9.0%</td></tr><tr><th scope="row">Jan 2023</th><td>+19.6%</td><td>+24.0%</td><td>+16.0%</td></tr><tr><th scope="row">Jan 2024</th><td>+25.6%</td><td>+25.5%</td><td>+19.6%</td></tr><tr><th scope="row">Jan 2025</th><td>+29.9%</td><td>+27.9%</td><td>+23.1%</td></tr><tr><th scope="row">Sep 2025</th><td>+33.3%</td><td>+30.0%</td><td>+25.9%</td></tr><tr><th scope="row">Oct 2025</th><td class="na">not published</td><td class="na">not published</td><td class="na">not published</td></tr><tr><th scope="row">Nov 2025</th><td>+33.9%</td><td>+29.1%</td><td>+25.6%</td></tr><tr><th scope="row">Jan 2026</th><td>+35.0%</td><td>+30.6%</td><td>+26.1%</td></tr><tr><th scope="row">Aug 2026</th><td>+37.6%</td><td>+32.2%</td><td>+29.9%</td></tr></tbody></table></div>
+        <div class="tw" tabindex="0" role="region" aria-label="Price changes table"><table><caption>Change in prices since January 2020, U.S. city average</caption><thead><tr><th scope="col">Month</th><th scope="col">Restaurants</th><th scope="col">Groceries</th><th scope="col">All prices</th></tr></thead><tbody><tr><th scope="row">Jan 2020</th><td>0.0%</td><td>0.0%</td><td>0.0%</td></tr><tr><th scope="row">Jan 2021</th><td>+3.9%</td><td>+3.7%</td><td>+1.4%</td></tr><tr><th scope="row">Jan 2022</th><td>+10.5%</td><td>+11.4%</td><td>+9.0%</td></tr><tr><th scope="row">Jan 2023</th><td>+19.6%</td><td>+24.0%</td><td>+16.0%</td></tr><tr><th scope="row">Jan 2024</th><td>+25.6%</td><td>+25.5%</td><td>+19.6%</td></tr><tr><th scope="row">Jan 2025</th><td>+29.9%</td><td>+27.9%</td><td>+23.1%</td></tr><tr><th scope="row">Sep 2025</th><td>+33.3%</td><td>+30.0%</td><td>+25.9%</td></tr><tr><th scope="row">Oct 2025</th><td class="na">not published</td><td class="na">not published</td><td class="na">not published</td></tr><tr><th scope="row">Nov 2025</th><td>+33.9%</td><td>+29.1%</td><td>+25.6%</td></tr><tr><th scope="row">Jan 2026</th><td>+35.0%</td><td>+30.6%</td><td>+26.1%</td></tr><tr><th scope="row">Aug 2026</th><td>+37.6%</td><td>+32.2%</td><td>+29.9%</td></tr></tbody></table></div>
       </details>
       <p class="src">Source: U.S. Bureau of Labor Statistics, Consumer Price Index for All Urban Consumers (CPI-U), not seasonally adjusted, through August 2026. BLS did not publish October 2025 data. <a href="https://www.bls.gov/cpi/" rel="noopener">bls.gov/cpi</a></p>
     </figure>
@@ -722,368 +760,348 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
 <script id="chart-data" type="application/json">{"m":["Jan 2020","Feb 2020","Mar 2020","Apr 2020","May 2020","Jun 2020","Jul 2020","Aug 2020","Sep 2020","Oct 2020","Nov 2020","Dec 2020","Jan 2021","Feb 2021","Mar 2021","Apr 2021","May 2021","Jun 2021","Jul 2021","Aug 2021","Sep 2021","Oct 2021","Nov 2021","Dec 2021","Jan 2022","Feb 2022","Mar 2022","Apr 2022","May 2022","Jun 2022","Jul 2022","Aug 2022","Sep 2022","Oct 2022","Nov 2022","Dec 2022","Jan 2023","Feb 2023","Mar 2023","Apr 2023","May 2023","Jun 2023","Jul 2023","Aug 2023","Sep 2023","Oct 2023","Nov 2023","Dec 2023","Jan 2024","Feb 2024","Mar 2024","Apr 2024","May 2024","Jun 2024","Jul 2024","Aug 2024","Sep 2024","Oct 2024","Nov 2024","Dec 2024","Jan 2025","Feb 2025","Mar 2025","Apr 2025","May 2025","Jun 2025","Jul 2025","Aug 2025","Sep 2025","Oct 2025","Nov 2025","Dec 2025","Jan 2026","Feb 2026","Mar 2026","Apr 2026","May 2026","Jun 2026","Jul 2026","Aug 2026"],"s":[{"k":"rest","n":"Restaurants and takeout","sn":"Restaurants","v":["0.0%","+0.2%","+0.4%","+0.5%","+0.9%","+1.4%","+1.9%","+2.2%","+2.7%","+3.0%","+3.2%","+3.5%","+3.9%","+3.9%","+4.1%","+4.4%","+5.0%","+5.7%","+6.5%","+7.0%","+7.6%","+8.5%","+9.1%","+9.8%","+10.5%","+11.0%","+11.3%","+11.9%","+12.7%","+13.8%","+14.6%","+15.6%","+16.7%","+17.8%","+18.4%","+18.8%","+19.6%","+20.3%","+21.0%","+21.5%","+22.1%","+22.5%","+22.7%","+23.2%","+23.6%","+24.1%","+24.6%","+25.0%","+25.6%","+25.8%","+26.1%","+26.5%","+27.0%","+27.5%","+27.8%","+28.1%","+28.5%","+28.8%","+29.2%","+29.6%","+29.9%","+30.4%","+30.9%","+31.4%","+31.9%","+32.4%","+32.7%","+33.1%","+33.3%",null,"+33.9%","+34.8%","+35.0%","+35.5%","+35.8%","+36.1%","+36.5%","+36.8%","+37.3%","+37.6%"]},{"k":"groc","n":"Groceries","sn":"Groceries","v":["0.0%","+0.4%","+0.8%","+3.5%","+4.4%","+4.9%","+3.9%","+3.8%","+3.4%","+3.6%","+3.0%","+3.3%","+3.7%","+4.0%","+4.2%","+4.8%","+5.1%","+5.9%","+6.5%","+6.9%","+8.1%","+9.2%","+9.6%","+10.1%","+11.4%","+12.9%","+14.6%","+16.1%","+17.6%","+18.8%","+20.5%","+21.3%","+22.1%","+22.7%","+22.7%","+23.0%","+24.0%","+24.4%","+24.2%","+24.4%","+24.4%","+24.4%","+24.8%","+24.9%","+25.0%","+25.4%","+24.7%","+24.6%","+25.5%","+25.7%","+25.6%","+25.7%","+25.7%","+25.8%","+26.1%","+26.0%","+26.6%","+26.8%","+26.7%","+26.8%","+27.9%","+28.0%","+28.7%","+28.3%","+28.5%","+28.8%","+28.9%","+29.4%","+30.0%",null,"+29.1%","+29.8%","+30.6%","+31.2%","+31.1%","+32.0%","+32.1%","+32.3%","+32.3%","+32.2%"]},{"k":"all","n":"All prices","sn":"All prices","v":["0.0%","+0.3%","+0.1%","−0.6%","−0.6%","−0.1%","+0.4%","+0.8%","+0.9%","+0.9%","+0.9%","+1.0%","+1.4%","+2.0%","+2.7%","+3.5%","+4.4%","+5.3%","+5.8%","+6.0%","+6.3%","+7.2%","+7.7%","+8.1%","+9.0%","+10.0%","+11.4%","+12.1%","+13.3%","+14.9%","+14.8%","+14.8%","+15.1%","+15.5%","+15.4%","+15.1%","+16.0%","+16.6%","+17.0%","+17.6%","+17.9%","+18.3%","+18.5%","+19.0%","+19.3%","+19.3%","+19.0%","+18.9%","+19.6%","+20.3%","+21.1%","+21.5%","+21.7%","+21.8%","+21.9%","+22.0%","+22.2%","+22.4%","+22.3%","+22.3%","+23.1%","+23.7%","+24.0%","+24.4%","+24.6%","+25.0%","+25.2%","+25.6%","+25.9%",null,"+25.6%","+25.6%","+26.1%","+26.7%","+28.0%","+29.1%","+29.9%","+29.5%","+29.4%","+29.9%"]}],"since":"Jan 2020"}</script>
 <script>
 (function () {
-  "use strict";
-  var doc = document;
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var wide = window.matchMedia("(min-width: 900px)");
-  var fine = window.matchMedia("(hover: hover) and (pointer: fine)");
-  function each(list, fn) { Array.prototype.forEach.call(list, fn); }
-  function kbdFocus(el) { try { return el.matches(":focus-visible"); } catch (e) { return true; } }
-
-  /* ================================================================ map */
-  var atlas = doc.getElementById("atlas");
-  if (atlas) (function () {
-    var map = atlas.querySelector(".map");
-    var svg = map.querySelector("svg");
-    var ring = svg.querySelector(".ring");
-    var tip = map.querySelector(".tip");
-    var say = doc.getElementById("map-say");
-    var vb = svg.viewBox.baseVal;
-    var liveWord = map.getAttribute("data-live") || "Live now";
-    var states = Array.prototype.slice.call(svg.querySelectorAll(".st"));
-    var pops = {}, pins = {}, byAbbr = {};
-    each(atlas.querySelectorAll(".pop"), function (p) { pops[p.getAttribute("data-abbr")] = p; });
-    each(map.querySelectorAll(".pin"), function (p) { pins[p.getAttribute("data-abbr")] = p; });
-    var picks = doc.querySelectorAll(".pick[data-abbr]");
-    // open: the state whose card is showing. sticky: opened by click, tap or keyboard (stays until closed);
-    // otherwise it was opened by pointing at the state and closes when the pointer leaves.
-    // opener: where focus goes back to when the card closes (never set by pointing).
-    var open = null, sticky = false, opener = null, tipTimer = 0, leaveTimer = 0, focused = null;
-
-    states.forEach(function (el) {
-      byAbbr[el.getAttribute("data-abbr")] = el;
-      el._x = parseFloat(el.getAttribute("data-x"));
-      el._y = parseFloat(el.getAttribute("data-y"));
-      el._adj = (el.getAttribute("data-adj") || "").split(" ").filter(Boolean);
-      el.setAttribute("tabindex", "-1");
-    });
-    var current = svg.querySelector(".st.live") || states[0];
-    current.setAttribute("tabindex", "0");
-
-    function isLive(el) { return el.classList.contains("live"); }
-    function abbrOf(el) { return el.getAttribute("data-abbr"); }
-
-    function setCurrent(el) {
-      if (current === el) return;
-      current.setAttribute("tabindex", "-1");
-      el.setAttribute("tabindex", "0");
-      current = el;
-    }
-
-    // Arrow keys follow the map: first the bordering state that lies most squarely in that direction,
-    // otherwise the nearest state inside a 90-degree cone that way (Alaska, Hawaii, across a lake).
-    function neighbour(from, dx, dy) {
-      function pick(pool, cone, byAngle) {
-        var best = null, score = Infinity;
-        pool.forEach(function (el) {
-          if (!el || el === from) return;
-          var vx = el._x - from._x, vy = el._y - from._y;
-          var along = vx * dx + vy * dy;
-          if (along <= 1) return;
-          var across = Math.abs(vx * dy - vy * dx);
-          if (across > cone * along) return;
-          var s = byAngle ? across / along : along + 2.2 * across;
-          if (s < score) { score = s; best = el; }
-        });
-        return best;
-      }
-      return pick(from._adj.map(function (a) { return byAbbr[a]; }), 1.2, true) || pick(states, 1, false);
-    }
-
-    /* ---- the small label: "Texas · Coming soon" ---- */
-    function label(el) {
-      tip.textContent = "";
-      var b = doc.createElement("b"); b.textContent = el.getAttribute("data-name");
-      var s = doc.createElement("span"); s.textContent = " · " + (isLive(el) ? liveWord : "Coming soon");
-      tip.appendChild(b); tip.appendChild(s);
-    }
-    function showTip(el, x, y) {
-      label(el);
-      var w = map.clientWidth, half = tip.offsetWidth / 2 + 4;
-      tip.style.left = Math.max(half, Math.min(w - half, x)) + "px";
-      tip.style.top = Math.max(tip.offsetHeight + 14, y) + "px";
-      tip.classList.add("show");
-    }
-    function tipAtState(el) {
-      var w = map.clientWidth, h = map.querySelector("svg").clientHeight;
-      var x = (el._x - vb.x) / vb.width * w, y = (el._y - vb.y) / vb.height * h;
-      if (isLive(el) && pins[abbrOf(el)]) y -= pins[abbrOf(el)].offsetHeight / 2;
-      showTip(el, x, y);
-    }
-    function tipAtPointer(el, e) {
-      var r = map.getBoundingClientRect();
-      showTip(el, e.clientX - r.left, e.clientY - r.top);
-    }
-    function hideTip() { tip.classList.remove("show"); }
-    // After the pointer moves off a state: back to the keyboard-focused state's label, or none.
-    function restoreTip() { if (focused && kbdFocus(focused)) tipAtState(focused); else hideTip(); }
-
-    function ringOn(el) {
-      var p = el.tagName.toLowerCase() === "path" ? el : el.querySelector("path");
-      ring.setAttribute("d", p.getAttribute("d"));
-    }
-    function ringOff() { ring.setAttribute("d", ""); }
-
-    /* ---- the state card ---- */
-    function place(abbr) {
-      var pop = pops[abbr];
-      if (!wide.matches) { pop.style.left = pop.style.top = ""; return; }
-      var a = atlas.getBoundingClientRect();
-      var b = byAbbr[abbr].getBoundingClientRect();
-      var pin = pins[abbr];
-      var cw = pop.offsetWidth, ch = pop.offsetHeight, gap = 22;
-      // Sit over the open Plains to the state's west; use the east side only if the west is too tight.
-      var x = b.left - a.left - gap - cw;
-      if (x < 0) x = Math.min(a.width - cw, b.right - a.left + gap);
-      var legend = map.querySelector(".legend");
-      var floor = getComputedStyle(legend).position === "absolute"
-        ? legend.getBoundingClientRect().top - a.top - 12 : map.offsetHeight;
-      var py = pin ? pin.getBoundingClientRect().top + pin.offsetHeight / 2 - a.top : b.top - a.top;
-      var y = Math.max(0, Math.min(floor - ch, py - ch * 0.35));
-      pop.style.left = Math.round(x) + "px";
-      pop.style.top = Math.round(y) + "px";
-    }
-
-    function setOpen(abbr, opts) {
-      opts = opts || {};
-      clearTimeout(leaveTimer);
-      sticky = !!(abbr && opts.sticky);
-      opener = null;   // callers that open by click, tap or key set it after this
-      Object.keys(pops).forEach(function (k) { pops[k].hidden = k !== abbr; });
-      states.forEach(function (el) {
-        if (!isLive(el)) return;
-        var on = abbrOf(el) === abbr;
-        el.classList.toggle("on", on);
-        el.setAttribute("aria-expanded", on ? "true" : "false");
-      });
-      Object.keys(pins).forEach(function (k) { pins[k].classList.toggle("on", k === abbr); });
-      each(picks, function (p) { p.setAttribute("aria-expanded", p.getAttribute("data-abbr") === abbr ? "true" : "false"); });
-      open = abbr;
-      if (!abbr) return;
-      place(abbr);
-      if (opts.focus) pops[abbr].focus({ preventScroll: !opts.reveal || wide.matches });
-      if (opts.reveal && !wide.matches) {
-        pops[abbr].scrollIntoView({ block: "nearest", behavior: reduce.matches ? "auto" : "smooth" });
-      }
-    }
-    function close(returnFocus) {
-      if (!open) return;
-      var was = open, inside = pops[was].contains(doc.activeElement);
-      // Focus goes back only to what opened the card by click, tap or key; a card opened by pointing
-      // leaves focus alone unless focus was inside it (then it goes to the state).
-      var back = opener || (inside ? byAbbr[was] : null);
-      setOpen(null);
-      if ((returnFocus || inside) && back) back.focus({ preventScroll: true });
-    }
-
-    /* ---- keyboard ----
-       Listeners sit on the wrapper, not the <svg>: Chrome makes an <svg> with focus listeners
-       focusable itself, which would put an extra tab stop in front of the states. */
-    map.addEventListener("focusin", function (e) {
-      var el = e.target.closest && e.target.closest(".st");
-      if (!el) return;
-      focused = el;
-      setCurrent(el);
-      if (kbdFocus(el)) {
-        map.classList.add("kbd");
-        ringOn(el);
-        tipAtState(el);
-      }
-    });
-    map.addEventListener("focusout", function () {
-      focused = null;
-      map.classList.remove("kbd");
-      ringOff();
-      hideTip();
-    });
-    map.addEventListener("keydown", function (e) {
-      var el = e.target.closest && e.target.closest(".st");
-      if (!el) return;
-      var dir = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
-      if (dir) {
-        e.preventDefault();
-        var n = neighbour(el, dir[0], dir[1]);
-        if (n) n.focus();
-        return;
-      }
-      if (e.key === "Home" || e.key === "End") {
-        e.preventDefault();
-        var live = svg.querySelectorAll(".st.live");
-        (e.key === "Home" ? live[0] : live[live.length - 1]).focus();
-        return;
-      }
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        if (isLive(el)) { setOpen(abbrOf(el), { sticky: true, focus: true, reveal: true }); opener = el; }
-        else { say.textContent = ""; say.textContent = el.getAttribute("data-name") + " is coming soon."; tipAtState(el); }
-      }
-    });
-
-    /* ---- pointer ---- */
-    map.addEventListener("click", function (e) {
-      var el = e.target.closest && e.target.closest(".st");
-      if (!el) return;
-      if (isLive(el)) {
-        e.preventDefault();
-        setOpen(abbrOf(el), { sticky: true, reveal: true });
-        opener = el;
-        hideTip();
-      } else {
-        tipAtPointer(el, e);
-        clearTimeout(tipTimer);
-        tipTimer = setTimeout(restoreTip, 1800);
-      }
-    });
-    Object.keys(pins).forEach(function (k) {
-      pins[k].addEventListener("click", function (e) {
-        e.preventDefault();
-        setOpen(k, { sticky: true, reveal: true });
-        opener = byAbbr[k];
-      });
-    });
-    map.addEventListener("pointermove", function (e) {
-      if (e.pointerType !== "mouse") return;
-      var el = e.target.closest && e.target.closest(".st");
-      if (!el || isLive(el)) { restoreTip(); return; }
-      tipAtPointer(el, e);
-    });
-    map.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") restoreTip(); });
-    // Pointing at a live state (or its icon) on a wide screen shows its card while the pointer is on the
-    // state, its icon or the card, and for a moment after, so the pointer can cross the gap to the card.
-    function hoverOpen(e) {
-      if (e.pointerType !== "mouse" || !wide.matches || !fine.matches) return;
-      clearTimeout(leaveTimer);
-      var k = e.currentTarget.getAttribute("data-abbr");
-      if (open !== k) setOpen(k);
-    }
-    function hoverStay(e) { if (e.pointerType === "mouse") clearTimeout(leaveTimer); }
-    function hoverLeave(e) {
-      if (e.pointerType !== "mouse" || !open || sticky) return;
-      clearTimeout(leaveTimer);
-      leaveTimer = setTimeout(function () {
-        if (open && !sticky && !pops[open].contains(doc.activeElement)) setOpen(null);
-      }, 300);
-    }
-    states.forEach(function (el) {
-      if (!isLive(el)) return;
-      el.addEventListener("pointerenter", hoverOpen);
-      el.addEventListener("pointerleave", hoverLeave);
-    });
-    Object.keys(pins).forEach(function (k) {
-      pins[k].addEventListener("pointerenter", hoverOpen);
-      pins[k].addEventListener("pointerleave", hoverLeave);
-    });
-    Object.keys(pops).forEach(function (k) {
-      pops[k].addEventListener("pointerenter", hoverStay);
-      pops[k].addEventListener("pointerleave", hoverLeave);
-      // clicking inside a card that was opened by pointing keeps it open
-      pops[k].addEventListener("click", function () { if (open === k) sticky = true; });
-    });
-
-    each(picks, function (p) {
-      p.addEventListener("click", function (e) {
-        e.preventDefault();
-        setOpen(p.getAttribute("data-abbr"), { sticky: true, focus: e.detail === 0, reveal: true });
-        opener = p;
-      });
-    });
-    Object.keys(pops).forEach(function (k) {
-      pops[k].querySelector(".x").addEventListener("click", function () { close(true); });
-    });
-    doc.addEventListener("keydown", function (e) { if (e.key === "Escape" && open) close(true); });
-    doc.addEventListener("click", function (e) {
-      if (!open || !wide.matches) return;
-      if (e.target.closest(".pop, .pin, .st.live, .pick")) return;
-      close(false);
-    });
-    window.addEventListener("resize", function () { if (open) place(open); if (focused && kbdFocus(focused)) tipAtState(focused); else hideTip(); });
-  })();
-
-  /* ================================================================ chart */
-  var plot = doc.getElementById("plot");
-  var dataEl = doc.getElementById("chart-data");
-  if (plot && dataEl) (function () {
-    var D = JSON.parse(dataEl.textContent);
-    var cross = plot.querySelector(".cross");
-    var ctip = plot.querySelector(".ctip");
-    var say = doc.getElementById("chart-say");
-    // On phones the readout is a strip above the plot (CSS) with short series names.
-    var narrow = window.matchMedia("(max-width: 640px)");
-    var dots = {};
-    each(plot.querySelectorAll(".hov"), function (d) { dots[d.classList[1]] = d; });
-    var paths = {};
-    each(plot.querySelectorAll("path.ln"), function (p) { paths[p.classList[1]] = p; });
-    var n = D.m.length, cur = n - 1;
-
-    // y position (0..1) of series k at month i, read back from the drawn line
-    var ys = {};
-    Object.keys(paths).forEach(function (k) {
-      var arr = new Array(n).fill(null);
-      var re = /[ML]([\d.]+),([\d.]+)/g, m;
-      var d = paths[k].getAttribute("d");
-      while ((m = re.exec(d))) arr[Math.round(parseFloat(m[1]) / 1000 * (n - 1))] = parseFloat(m[2]) / 1000;
-      ys[k] = arr;
-    });
-
-    function show(i, announce) {
-      cur = Math.max(0, Math.min(n - 1, i));
-      var f = cur / (n - 1);
-      cross.style.left = (f * 100) + "%";
-      ctip.textContent = "";
-      var head = doc.createElement("div"); head.className = "m"; head.textContent = D.m[cur];
-      ctip.appendChild(head);
-      var spoken = [D.m[cur] + ", change since " + D.since + ":"];
-      if (D.s[0].v[cur] == null) {
-        var none = doc.createElement("div"); none.className = "r none"; none.textContent = "Not published by BLS";
-        ctip.appendChild(none);
-        spoken = [D.m[cur] + ": not published by BLS."];
-      } else {
-        D.s.forEach(function (s) {
-          var r = doc.createElement("div"); r.className = "r";
-          var k = doc.createElement("i"); k.style.borderColor = "var(--s-" + s.k + ")";
-          var nm = doc.createElement("span"); nm.textContent = narrow.matches ? s.sn : s.n;
-          var b = doc.createElement("b"); b.textContent = s.v[cur];
-          r.appendChild(k); r.appendChild(nm); r.appendChild(b);
-          ctip.appendChild(r);
-          spoken.push(s.n + " " + s.v[cur] + ".");
-        });
-      }
-      Object.keys(dots).forEach(function (k) {
-        var y = ys[k] && ys[k][cur];
-        dots[k].classList.toggle("v", y != null);
-        if (y != null) { dots[k].style.left = (f * 100) + "%"; dots[k].style.top = (y * 100) + "%"; }
-      });
-      plot.classList.add("on");
-      if (narrow.matches) {
-        ctip.style.left = "";
-      } else {
-        var w = plot.clientWidth, tw = ctip.offsetWidth, x = f * w;
-        var left = x + 16;
-        if (left + tw > w) left = x - 16 - tw;
-        if (left < 0) left = Math.max(0, Math.min(w - tw, x - tw / 2));
-        ctip.style.left = left + "px";
-      }
-      if (announce) say.textContent = spoken.join(" ");
-    }
-    function hide() { plot.classList.remove("on"); }
-    function at(e) {
-      var r = plot.getBoundingClientRect();
-      return Math.round(((e.clientX - r.left) / r.width) * (n - 1));
-    }
-    plot.addEventListener("pointermove", function (e) { show(at(e)); });
-    plot.addEventListener("pointerdown", function (e) { show(at(e)); });
-    plot.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse" && doc.activeElement !== plot) hide(); });
-    plot.addEventListener("focus", function () { show(cur, true); });
-    plot.addEventListener("blur", hide);
-    plot.addEventListener("keydown", function (e) {
-      var step = { ArrowLeft: -1, ArrowRight: 1, PageUp: -12, PageDown: 12 }[e.key];
-      if (e.key === "Home") step = -n;
-      else if (e.key === "End") step = n;
-      else if (e.key === "Escape") { hide(); return; }
-      if (step) { e.preventDefault(); show(cur + step, true); }
-    });
-    doc.addEventListener("pointerdown", function (e) { if (!plot.contains(e.target)) hide(); });
-  })();
+"use strict";
+var doc = document;
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+var wide = window.matchMedia("(min-width: 900px)");
+var fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+function each(list, fn) { Array.prototype.forEach.call(list, fn); }
+function kbdFocus(el) { try { return el.matches(":focus-visible"); } catch (e) { return true; } }
+/* ================================================================ map */
+var atlas = doc.getElementById("atlas");
+if (atlas) (function () {
+var map = atlas.querySelector(".map");
+var svg = map.querySelector("svg");
+var ring = svg.querySelector(".ring");
+var tip = map.querySelector(".tip");
+var say = doc.getElementById("map-say");
+var vb = svg.viewBox.baseVal;
+var liveWord = map.getAttribute("data-live") || "Live now";
+var states = Array.prototype.slice.call(svg.querySelectorAll(".st"));
+var pops = {}, pins = {}, byAbbr = {};
+each(atlas.querySelectorAll(".pop"), function (p) { pops[p.getAttribute("data-abbr")] = p; });
+each(map.querySelectorAll(".pin"), function (p) { pins[p.getAttribute("data-abbr")] = p; });
+var picks = doc.querySelectorAll(".pick[data-abbr]");
+var open = null, sticky = false, opener = null, tipTimer = 0, leaveTimer = 0, focused = null;
+var tipFor = null, muted = null;
+states.forEach(function (el) {
+byAbbr[el.getAttribute("data-abbr")] = el;
+el._x = parseFloat(el.getAttribute("data-x"));
+el._y = parseFloat(el.getAttribute("data-y"));
+el._adj = (el.getAttribute("data-adj") || "").split(" ").filter(Boolean);
+el.setAttribute("tabindex", "-1");
+});
+var current = svg.querySelector(".st.live") || states[0];
+current.setAttribute("tabindex", "0");
+function isLive(el) { return el.classList.contains("live"); }
+function abbrOf(el) { return el.getAttribute("data-abbr"); }
+function setCurrent(el) {
+if (current === el) return;
+current.setAttribute("tabindex", "-1");
+el.setAttribute("tabindex", "0");
+current = el;
+}
+function neighbour(from, dx, dy) {
+function pick(pool, cone, byAngle) {
+var best = null, score = Infinity;
+pool.forEach(function (el) {
+if (!el || el === from) return;
+var vx = el._x - from._x, vy = el._y - from._y;
+var along = vx * dx + vy * dy;
+if (along <= 1) return;
+var across = Math.abs(vx * dy - vy * dx);
+if (across > cone * along) return;
+var s = byAngle ? across / along : along + 2.2 * across;
+if (s < score) { score = s; best = el; }
+});
+return best;
+}
+return pick(from._adj.map(function (a) { return byAbbr[a]; }), 1.2, true) || pick(states, 1, false);
+}
+/* ---- the small label: "Texas · Coming soon" ---- */
+function label(el) {
+tipFor = el;
+tip.textContent = "";
+var b = doc.createElement("b"); b.textContent = el.getAttribute("data-name");
+var s = doc.createElement("span"); s.textContent = " · " + (isLive(el) ? liveWord : "Coming soon");
+tip.appendChild(b); tip.appendChild(s);
+}
+function showTip(el, x, y) {
+label(el);
+var w = map.clientWidth, half = tip.offsetWidth / 2 + 4;
+tip.style.left = Math.max(half, Math.min(w - half, x)) + "px";
+tip.style.top = Math.max(tip.offsetHeight + 14, y) + "px";
+tip.classList.add("show");
+}
+function tipAtState(el) {
+var w = map.clientWidth, h = map.querySelector("svg").clientHeight;
+var x = (el._x - vb.x) / vb.width * w, y = (el._y - vb.y) / vb.height * h;
+if (isLive(el) && pins[abbrOf(el)]) y -= pins[abbrOf(el)].offsetHeight / 2;
+showTip(el, x, y);
+}
+function tipAtPointer(el, e) {
+var r = map.getBoundingClientRect();
+showTip(el, e.clientX - r.left, e.clientY - r.top);
+}
+function hideTip() { tip.classList.remove("show"); }
+function restoreTip() { if (focused && focused !== muted && kbdFocus(focused)) tipAtState(focused); else hideTip(); }
+function ringOn(el) {
+var p = el.tagName.toLowerCase() === "path" ? el : el.querySelector("path");
+ring.setAttribute("d", p.getAttribute("d"));
+}
+function ringOff() { ring.setAttribute("d", ""); }
+/* ---- the state card ---- */
+function place(abbr) {
+var pop = pops[abbr];
+if (!wide.matches) { pop.style.left = pop.style.top = ""; return; }
+var a = atlas.getBoundingClientRect();
+var b = byAbbr[abbr].getBoundingClientRect();
+var pin = pins[abbr];
+var cw = pop.offsetWidth, ch = pop.offsetHeight, gap = 22;
+var x = b.left - a.left - gap - cw;
+if (x < 0) x = Math.min(a.width - cw, b.right - a.left + gap);
+var legend = map.querySelector(".legend");
+var floor = getComputedStyle(legend).position === "absolute"
+? legend.getBoundingClientRect().top - a.top - 12 : map.offsetHeight;
+var py = pin ? pin.getBoundingClientRect().top + pin.offsetHeight / 2 - a.top : b.top - a.top;
+var y = Math.max(0, Math.min(floor - ch, py - ch * 0.35));
+pop.style.left = Math.round(x) + "px";
+pop.style.top = Math.round(y) + "px";
+}
+function setOpen(abbr, opts) {
+opts = opts || {};
+clearTimeout(leaveTimer);
+sticky = !!(abbr && opts.sticky);
+opener = null;   // callers that open by click, tap or key set it after this
+Object.keys(pops).forEach(function (k) { pops[k].hidden = k !== abbr; });
+states.forEach(function (el) {
+if (!isLive(el)) return;
+var on = abbrOf(el) === abbr;
+el.classList.toggle("on", on);
+el.setAttribute("aria-expanded", on ? "true" : "false");
+});
+Object.keys(pins).forEach(function (k) { pins[k].classList.toggle("on", k === abbr); });
+each(picks, function (p) { p.setAttribute("aria-expanded", p.getAttribute("data-abbr") === abbr ? "true" : "false"); });
+open = abbr;
+if (!abbr) return;
+place(abbr);
+if (opts.focus) pops[abbr].focus({ preventScroll: !opts.reveal || wide.matches });
+if (opts.reveal && !wide.matches) {
+pops[abbr].scrollIntoView({ block: "nearest", behavior: reduce.matches ? "auto" : "smooth" });
+}
+}
+function close(returnFocus) {
+if (!open) return;
+var was = open, inside = pops[was].contains(doc.activeElement);
+var back = opener || (inside ? byAbbr[was] : null);
+setOpen(null);
+if ((returnFocus || inside) && back) back.focus({ preventScroll: true });
+}
+/* ---- keyboard ----
+Listeners sit on the wrapper, not the <svg>: Chrome makes an <svg> with focus listeners
+focusable itself, which would put an extra tab stop in front of the states. */
+map.addEventListener("focusin", function (e) {
+var el = e.target.closest && e.target.closest(".st");
+if (!el) return;
+focused = el;
+muted = null;
+setCurrent(el);
+if (kbdFocus(el)) {
+map.classList.add("kbd");
+ringOn(el);
+tipAtState(el);
+}
+});
+map.addEventListener("focusout", function () {
+focused = null;
+map.classList.remove("kbd");
+ringOff();
+hideTip();
+});
+map.addEventListener("keydown", function (e) {
+var el = e.target.closest && e.target.closest(".st");
+if (!el) return;
+var dir = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
+if (dir) {
+e.preventDefault();
+var n = neighbour(el, dir[0], dir[1]);
+if (n) n.focus();
+return;
+}
+if (e.key === "Home" || e.key === "End") {
+e.preventDefault();
+var live = svg.querySelectorAll(".st.live");
+(e.key === "Home" ? live[0] : live[live.length - 1]).focus();
+return;
+}
+if (e.key === "Enter" || e.key === " ") {
+e.preventDefault();
+if (isLive(el)) { setOpen(abbrOf(el), { sticky: true, focus: true, reveal: true }); opener = el; }
+else { say.textContent = ""; say.textContent = el.getAttribute("data-name") + " is coming soon."; tipAtState(el); }
+}
+});
+/* ---- pointer ---- */
+map.addEventListener("click", function (e) {
+var el = e.target.closest && e.target.closest(".st");
+if (!el) return;
+if (isLive(el)) {
+e.preventDefault();
+setOpen(abbrOf(el), { sticky: true, reveal: true });
+opener = el;
+hideTip();
+} else {
+tipAtPointer(el, e);
+clearTimeout(tipTimer);
+tipTimer = setTimeout(restoreTip, 1800);
+}
+});
+Object.keys(pins).forEach(function (k) {
+pins[k].addEventListener("click", function (e) {
+e.preventDefault();
+setOpen(k, { sticky: true, reveal: true });
+opener = byAbbr[k];
+});
+});
+map.addEventListener("pointermove", function (e) {
+if (e.pointerType !== "mouse") return;
+var el = e.target.closest && e.target.closest(".st");
+if (el !== muted) muted = null;
+if (!el || isLive(el)) { restoreTip(); return; }
+if (!muted) tipAtPointer(el, e);
+});
+map.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") restoreTip(); });
+function hoverOpen(e) {
+if (e.pointerType !== "mouse" || !wide.matches || !fine.matches) return;
+clearTimeout(leaveTimer);
+var k = e.currentTarget.getAttribute("data-abbr");
+if (open !== k) setOpen(k);
+}
+function hoverStay(e) { if (e.pointerType === "mouse") clearTimeout(leaveTimer); }
+function hoverLeave(e) {
+if (e.pointerType !== "mouse" || !open || sticky) return;
+clearTimeout(leaveTimer);
+leaveTimer = setTimeout(function () {
+if (open && !sticky && !pops[open].contains(doc.activeElement)) setOpen(null);
+}, 300);
+}
+states.forEach(function (el) {
+if (!isLive(el)) return;
+el.addEventListener("pointerenter", hoverOpen);
+el.addEventListener("pointerleave", hoverLeave);
+});
+Object.keys(pins).forEach(function (k) {
+pins[k].addEventListener("pointerenter", hoverOpen);
+pins[k].addEventListener("pointerleave", hoverLeave);
+});
+Object.keys(pops).forEach(function (k) {
+pops[k].addEventListener("pointerenter", hoverStay);
+pops[k].addEventListener("pointerleave", hoverLeave);
+pops[k].addEventListener("click", function () { if (open === k) sticky = true; });
+});
+each(picks, function (p) {
+p.addEventListener("click", function (e) {
+e.preventDefault();
+setOpen(p.getAttribute("data-abbr"), { sticky: true, focus: e.detail === 0, reveal: true });
+opener = p;
+});
+});
+Object.keys(pops).forEach(function (k) {
+pops[k].querySelector(".x").addEventListener("click", function () { close(true); });
+});
+doc.addEventListener("keydown", function (e) {
+if (e.key !== "Escape") return;
+if (tip.classList.contains("show")) muted = tipFor;
+hideTip();
+if (open) close(true);
+});
+doc.addEventListener("click", function (e) {
+if (!open || !wide.matches) return;
+if (e.target.closest(".pop, .pin, .st.live, .pick")) return;
+close(false);
+});
+window.addEventListener("resize", function () { if (open) place(open); restoreTip(); });
+})();
+/* ================================================================ chart */
+var plot = doc.getElementById("plot");
+var dataEl = doc.getElementById("chart-data");
+if (plot && dataEl) (function () {
+var D = JSON.parse(dataEl.textContent);
+var cross = plot.querySelector(".cross");
+var ctip = plot.querySelector(".ctip");
+var say = doc.getElementById("chart-say");
+var narrow = window.matchMedia("(max-width: 640px)");
+var dots = {};
+each(plot.querySelectorAll(".hov"), function (d) { dots[d.classList[1]] = d; });
+var paths = {};
+each(plot.querySelectorAll("path.ln"), function (p) { paths[p.classList[1]] = p; });
+var n = D.m.length, cur = n - 1;
+var ys = {};
+Object.keys(paths).forEach(function (k) {
+var arr = new Array(n).fill(null);
+var re = /[ML]([\d.]+),([\d.]+)/g, m;
+var d = paths[k].getAttribute("d");
+while ((m = re.exec(d))) arr[Math.round(parseFloat(m[1]) / 1000 * (n - 1))] = parseFloat(m[2]) / 1000;
+ys[k] = arr;
+});
+function show(i, announce) {
+cur = Math.max(0, Math.min(n - 1, i));
+var f = cur / (n - 1);
+cross.style.left = (f * 100) + "%";
+ctip.textContent = "";
+var head = doc.createElement("div"); head.className = "m"; head.textContent = D.m[cur];
+ctip.appendChild(head);
+var spoken = [D.m[cur] + ", change since " + D.since + ":"];
+if (D.s[0].v[cur] == null) {
+var none = doc.createElement("div"); none.className = "r none"; none.textContent = "Not published by BLS";
+ctip.appendChild(none);
+spoken = [D.m[cur] + ": not published by BLS."];
+} else {
+D.s.forEach(function (s) {
+var r = doc.createElement("div"); r.className = "r";
+var k = doc.createElement("i"); k.style.borderColor = "var(--s-" + s.k + ")";
+var nm = doc.createElement("span"); nm.textContent = narrow.matches ? s.sn : s.n;
+var b = doc.createElement("b"); b.textContent = s.v[cur];
+r.appendChild(k); r.appendChild(nm); r.appendChild(b);
+ctip.appendChild(r);
+spoken.push(s.n + " " + s.v[cur] + ".");
+});
+}
+Object.keys(dots).forEach(function (k) {
+var y = ys[k] && ys[k][cur];
+dots[k].classList.toggle("v", y != null);
+if (y != null) { dots[k].style.left = (f * 100) + "%"; dots[k].style.top = (y * 100) + "%"; }
+});
+plot.classList.add("on");
+if (narrow.matches) {
+ctip.style.left = "";
+} else {
+var w = plot.clientWidth, tw = ctip.offsetWidth, x = f * w;
+var left = x + 16;
+if (left + tw > w) left = x - 16 - tw;
+if (left < 0) left = Math.max(0, Math.min(w - tw, x - tw / 2));
+ctip.style.left = left + "px";
+}
+if (announce) say.textContent = spoken.join(" ");
+}
+function hide() { plot.classList.remove("on"); }
+function at(e) {
+var r = plot.getBoundingClientRect();
+return Math.round(((e.clientX - r.left) / r.width) * (n - 1));
+}
+plot.addEventListener("pointermove", function (e) { show(at(e)); });
+plot.addEventListener("pointerdown", function (e) { show(at(e)); });
+plot.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse" && doc.activeElement !== plot) hide(); });
+plot.addEventListener("focus", function () { show(cur, true); });
+plot.addEventListener("blur", hide);
+plot.addEventListener("keydown", function (e) {
+var step = { ArrowLeft: -1, ArrowRight: 1, PageUp: -12, PageDown: 12 }[e.key];
+if (e.key === "Home") step = -n;
+else if (e.key === "End") step = n;
+else if (e.key === "Escape") { hide(); return; }
+if (step) { e.preventDefault(); show(cur + step, true); }
+});
+doc.addEventListener("pointerdown", function (e) { if (!plot.contains(e.target)) hide(); });
+})();
 })();
 </script>
 </body>

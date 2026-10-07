@@ -26,6 +26,9 @@
     // otherwise it was opened by pointing at the state and closes when the pointer leaves.
     // opener: where focus goes back to when the card closes (never set by pointing).
     var open = null, sticky = false, opener = null, tipTimer = 0, leaveTimer = 0, focused = null;
+    // tipFor: the state the label is about. muted: the state whose label Escape hid; it stays hidden until
+    // the pointer or focus moves to another state.
+    var tipFor = null, muted = null;
 
     states.forEach(function (el) {
       byAbbr[el.getAttribute("data-abbr")] = el;
@@ -69,6 +72,7 @@
 
     /* ---- the small label: "Texas · Coming soon" ---- */
     function label(el) {
+      tipFor = el;
       tip.textContent = "";
       var b = doc.createElement("b"); b.textContent = el.getAttribute("data-name");
       var s = doc.createElement("span"); s.textContent = " · " + (isLive(el) ? liveWord : "Coming soon");
@@ -93,7 +97,7 @@
     }
     function hideTip() { tip.classList.remove("show"); }
     // After the pointer moves off a state: back to the keyboard-focused state's label, or none.
-    function restoreTip() { if (focused && kbdFocus(focused)) tipAtState(focused); else hideTip(); }
+    function restoreTip() { if (focused && focused !== muted && kbdFocus(focused)) tipAtState(focused); else hideTip(); }
 
     function ringOn(el) {
       var p = el.tagName.toLowerCase() === "path" ? el : el.querySelector("path");
@@ -160,6 +164,7 @@
       var el = e.target.closest && e.target.closest(".st");
       if (!el) return;
       focused = el;
+      muted = null;
       setCurrent(el);
       if (kbdFocus(el)) {
         map.classList.add("kbd");
@@ -221,8 +226,9 @@
     map.addEventListener("pointermove", function (e) {
       if (e.pointerType !== "mouse") return;
       var el = e.target.closest && e.target.closest(".st");
+      if (el !== muted) muted = null;
       if (!el || isLive(el)) { restoreTip(); return; }
-      tipAtPointer(el, e);
+      if (!muted) tipAtPointer(el, e);
     });
     map.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") restoreTip(); });
     // Pointing at a live state (or its icon) on a wide screen shows its card while the pointer is on the
@@ -267,13 +273,19 @@
     Object.keys(pops).forEach(function (k) {
       pops[k].querySelector(".x").addEventListener("click", function () { close(true); });
     });
-    doc.addEventListener("keydown", function (e) { if (e.key === "Escape" && open) close(true); });
+    // Escape hides the label (it can cover neighbouring states) and closes an open card.
+    doc.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      if (tip.classList.contains("show")) muted = tipFor;
+      hideTip();
+      if (open) close(true);
+    });
     doc.addEventListener("click", function (e) {
       if (!open || !wide.matches) return;
       if (e.target.closest(".pop, .pin, .st.live, .pick")) return;
       close(false);
     });
-    window.addEventListener("resize", function () { if (open) place(open); if (focused && kbdFocus(focused)) tipAtState(focused); else hideTip(); });
+    window.addEventListener("resize", function () { if (open) place(open); restoreTip(); });
   })();
 
   /* ================================================================ chart */

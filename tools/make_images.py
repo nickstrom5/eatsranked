@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Draw the Eats Ranked mark and the share image into ../docs.
 
-  favicon.svg, favicon-32.png, apple-touch-icon.png (180), icon-192.png, icon-512.png
+  favicon.svg, favicon.ico (16, 32, 48), favicon-32.png, apple-touch-icon.png (180), icon-192.png, icon-512.png
   og.png (1200x630): wordmark, headline and each live app's icon, rendered by headless Chrome
 
 Needs Pillow (e.g. chi-eats/.venv/bin/python) and Google Chrome. Rerun it when a state goes
@@ -54,6 +54,13 @@ def mark_png(size, rounded=True, pad=0.0):
     for x, y, w, h, c in BARS:
         d.rounded_rectangle([off + x * k, off + y * k, off + (x + w) * k, off + (y + h) * k], radius=1.3 * k, fill=c)
     return im.resize((size, size), Image.LANCZOS)
+
+
+def favicon_ico(out):
+    """/favicon.ico, for clients that ask for it without reading the page's icon links (Bing, feed readers):
+    the mark drawn at each size rather than scaled down from one."""
+    frames = [mark_png(n) for n in (48, 32, 16)]
+    frames[0].save(out, format="ICO", sizes=[(n, n) for n in (48, 32, 16)], append_images=frames[1:])
 
 
 def og_html():
@@ -119,6 +126,7 @@ def render_og(out):
 if __name__ == "__main__":
     DOCS.mkdir(exist_ok=True)
     (DOCS / "favicon.svg").write_text(favicon_svg())
+    favicon_ico(DOCS / "favicon.ico")
     mark_png(32).save(DOCS / "favicon-32.png", optimize=True)
     mark_png(180, rounded=False, pad=0.06).convert("RGB").save(DOCS / "apple-touch-icon.png", optimize=True)
     mark_png(192, pad=0.04).save(DOCS / "icon-192.png", optimize=True)
@@ -127,7 +135,7 @@ if __name__ == "__main__":
         render_og(DOCS / "og.png")
     else:
         sys.exit("make_images: Chrome not found, og.png not rendered")
-    for f in ("favicon.svg", "favicon-32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "og.png"):
+    for f in ("favicon.svg", "favicon.ico", "favicon-32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "og.png"):
         p = DOCS / f
         size = Image.open(p).size if p.suffix == ".png" else "svg"
         print(f"docs/{f}: {size}, {p.stat().st_size / 1024:.1f} KB")

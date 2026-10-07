@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="@@CSP@@">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>@@TITLE@@</title>
 <meta name="description" content="@@DESC@@">
@@ -100,6 +101,7 @@ p,li{text-wrap:pretty}
 .lede a{color:var(--accent);font-weight:600;text-underline-offset:3px;text-decoration-thickness:1px}
 
 /* ---------- app cards ---------- */
+.apps-h{margin:0 0 clamp(28px,3.6vw,44px)}
 .apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(16px,2vw,28px)}
 .app{background:var(--bg);color:var(--fg);border-radius:28px;padding:clamp(26px,3.4vw,44px);display:flex;flex-direction:column;min-width:0;scroll-margin-top:24px}
 .app .head{display:flex;align-items:center;gap:18px;margin-bottom:clamp(28px,3.4vw,44px)}
@@ -366,7 +368,8 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
   </section>
 
   <section class="wrap" id="apps" aria-labelledby="apps-h">
-    <h2 class="eyebrow" id="apps-h">@@LIVE_LABEL@@</h2>
+    <p class="eyebrow">@@LIVE_LABEL@@</p>
+    <h2 class="h2 apps-h" id="apps-h">Restaurant guides by state</h2>
     <div class="apps">
 @@CARDS@@
     </div>
@@ -461,7 +464,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
       <p class="sr-only" aria-live="polite" id="chart-say"></p>
       <details class="tbl">
         <summary>Show the numbers</summary>
-        <div class="tw">@@TABLE@@</div>
+        <div class="tw" tabindex="0" role="region" aria-label="Price changes table">@@TABLE@@</div>
       </details>
       <p class="src">Source: @@SOURCE@@ <a href="@@SOURCE_URL@@" rel="noopener">bls.gov/cpi</a></p>
     </figure>

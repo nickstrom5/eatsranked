@@ -10,11 +10,16 @@ is typed into the template. Run it after editing site-data.json:
     python3 tools/build.py --data other.json --dry-run   # check that a data file builds; writes nothing
 
 Writes docs/index.html, docs/404.html, docs/sitemap.xml (lastmod moves only
-when index.html actually changes), docs/robots.txt, docs/CNAME and
-docs/site.webmanifest. The page makes no requests to other hosts: styles,
-script, map and chart are all inline; icons are local files.
+when index.html actually changes), docs/robots.txt, docs/CNAME,
+docs/site.webmanifest and docs/.well-known/security.txt. The page makes no
+requests to other hosts: styles, script, map and chart are all inline; icons
+are local files. Each page carries a Content-Security-Policy that allows only
+its own inline scripts, by hash, recomputed on every build.
 """
+import base64
+import colorsys
 import datetime
+import hashlib
 import html
 import json
 import math
@@ -40,6 +45,8 @@ BRAND = SITE["brand"]
 DOMAIN = BRAND["domain"]
 URL = f"https://{DOMAIN}/"
 EMAIL = BRAND["email"]
+REPO = "https://github.com/nickstrom5/eatsranked"   # the site's public source, the Organization's sameAs
+SECURITY_TXT_EXPIRES = "2027-10-01T00:00:00Z"       # RFC 9116: under a year ahead; verify.py fails once it passes
 
 
 def esc(s):
@@ -327,9 +334,47 @@ def platforms(s):
     return f"{esc(a.strip())} · {esc(b.strip().capitalize())}" if b.strip() else esc(a)
 
 
+def luminance(hexc):
+    """WCAG relative luminance of #RRGGBB."""
+    def lin(v):
+        v /= 255
+        return v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4
+    r, g, b = (int(hexc[i:i + 2], 16) for i in (1, 3, 5))
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+
+
+def contrast(a, b):
+    hi, lo = sorted((luminance(a), luminance(b)), reverse=True)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+# 4.5:1 for the region label on the card and the card colour on the Website button (WCAG 1.4.3); the focus
+# ring, drawn on the card in the same colour, needs 3:1 (WCAG 1.4.11), so it passes too
+TEXT_MIN = 4.5
+
+
+def readable_accent(accent, bg):
+    """The accent as cards and pop-ups use it for text, the button fill and focus rings. A state's own accent
+    is used as is when it reads at 4.5:1 on its card; otherwise the nearest lighter or darker shade with the
+    same hue and saturation that does. The map keeps the brand accent (its dark-mode fill is decoration)."""
+    if contrast(accent, bg) >= TEXT_MIN:
+        return accent
+    h, l, sat = colorsys.rgb_to_hls(*(int(accent[i:i + 2], 16) / 255 for i in (1, 3, 5)))
+    for step in range(1, 201):
+        for ll in (l + step / 200, l - step / 200):
+            if 0 <= ll <= 1:
+                c = "#" + "".join(f"{round(v * 255):02X}" for v in colorsys.hls_to_rgb(h, ll, sat))
+                if contrast(c, bg) >= TEXT_MIN:
+                    return c
+    sys.exit(f"build: no shade of {accent} reads at {TEXT_MIN}:1 on {bg}; pick another card colour")
+
+
+ACCENT = {s["abbr"]: readable_accent(s["colors"]["accent"], s["colors"]["bg"]) for s in LIVE}
+
+
 def colors(s):
     c = s["colors"]
-    return f'--bg:{c["bg"]};--ac:{c["accent"]};--fg:{c["text"]}'
+    return f'--bg:{c["bg"]};--ac:{ACCENT[s["abbr"]]};--fg:{c["text"]}'
 
 
 def ext(href):
@@ -518,7 +563,7 @@ for s in LIVE:
     pops.append(f"""          <article class="pop" id="pop-{a}" data-abbr="{s['abbr']}" style="{colors(s)}" tabindex="-1" aria-labelledby="pop-{a}-h" hidden>
             <button class="x" type="button" aria-label="Close {esc(s['app'])}">{CLOSE}</button>
             <div class="row"><img src="{esc(s['icon'])}" width="56" height="56" alt="" loading="lazy" decoding="async">
-              <div><p class="w">{esc(where(s))}</p><h3 class="n" id="pop-{a}-h">{esc(s['app'])}</h3></div></div>
+              <div><p class="w">{esc(where(s))}</p><p class="n" id="pop-{a}-h">{esc(s['app'])}</p></div></div>
             <p class="tg">{esc(s.get('tagline_short') or s['tagline'])}</p>
             <p class="pl">{platforms(s)}</p>
             <div class="actions">
@@ -560,9 +605,19 @@ JSONLD = jsonscript({
          "description": DESC, "inLanguage": "en-US", "publisher": {"@id": URL + "#organization"}},
         {"@type": "Organization", "@id": URL + "#organization", "name": BRAND["name"], "url": URL,
          "logo": URL + "icon-512.png", "email": EMAIL,
-         "contactPoint": {"@type": "ContactPoint", "email": EMAIL, "contactType": "customer support"}},
+         "contactPoint": {"@type": "ContactPoint", "email": EMAIL, "contactType": "customer support"},
+         "sameAs": [REPO],
+         # each state site names its own Organization <site>#org, so the two point at the same node
+         "subOrganization": [{"@type": "Organization", "@id": s["site"].rstrip("/") + "/#org", "name": s["app"],
+                              "url": s["site"]} for s in LIVE]},
     ],
 }, indent=1)
+
+def slim_js(js):
+    """The script as inlined: tools/app.js (the readable copy) without whole-line comments, blank lines and
+    indentation. Same code, about 3.5 KB less page; it has no template literals, so no string spans lines."""
+    return re.sub(r"(?m)^[ \t]*(?://.*)?\n|^[ \t]+", "", js)
+
 
 SUBS = {
     "TITLE": esc(TITLE), "DESC": esc(DESC), "URL": esc(URL), "OG_ALT": esc(OG_ALT), "JSONLD": JSONLD,
@@ -575,7 +630,7 @@ SUBS = {
     "YTICKS": YTICKS, "XTICKS": XTICKS, "CHART_SVG": CHART_SVG, "CHART_HTML": CHART_HTML, "ENDS": ENDS,
     "TABLE": TABLE, "SOURCE": esc(P["source"]), "SOURCE_URL": esc(P["source_url"]),
     "CHART_JSON": jsonscript(CHART_DATA, separators=(",", ":")),
-    "EMAIL": esc(EMAIL), "FOOTER_APPS": footer_apps, "APP_JS": APP_JS.strip(),
+    "EMAIL": esc(EMAIL), "FOOTER_APPS": footer_apps, "APP_JS": slim_js(APP_JS).strip(),
 }
 
 
@@ -583,14 +638,37 @@ def fill(tpl, subs):
     out = tpl
     for k, v in subs.items():
         out = out.replace(f"@@{k}@@", v)
-    left = re.findall(r"@@\w+@@", out)
+    left = [s for s in re.findall(r"@@\w+@@", out) if s != "@@CSP@@"]   # the CSP goes in last, see with_csp
     if left:
         sys.exit(f"build: unfilled template slots {left}")
     return out
 
 
+def with_csp(doc):
+    """Fill @@CSP@@ with a policy for this finished page: nothing from other hosts, and only the page's own
+    inline scripts, by SHA-256 of their exact text (JSON blocks never run, so they need none). Runs after
+    every other change to the page, so editing app.js or a template can't leave a stale hash behind."""
+    hashes, external = [], False
+    for attrs, body in re.findall(r"<script\b([^>]*)>(.*?)</script>", doc, re.S):
+        if re.search(r'\btype="application/(?:ld\+)?json"', attrs):
+            continue
+        if re.search(r"\bsrc=", attrs):
+            external = True
+            continue
+        hashes.append(f"'sha256-{base64.b64encode(hashlib.sha256(body.encode()).digest()).decode()}'")
+    script = " ".join(["'self'"] + hashes) if hashes or external else "'none'"
+    img = "'self' data:" if re.search(r"""(?:\ssrc=["']?|url\(\s*["']?)data:""", doc) else "'self'"
+    policy = (f"default-src 'none'; script-src {script}; style-src 'self' 'unsafe-inline'; img-src {img}; "
+              "connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; "
+              "upgrade-insecure-requests")
+    if doc.count("@@CSP@@") != 1:
+        sys.exit("build: a page needs exactly one @@CSP@@ slot")
+    return doc.replace("@@CSP@@", html.escape(policy, quote=False))   # no double quotes in it; keeps 'self' readable
+
+
 page = fill(TEMPLATE, SUBS)
 page = page.replace("A–F", '<span class="nw">A–F</span>')
+page = with_csp(page)
 
 # nothing on the page may load from another host
 assert not re.search(r"""\s(?:src|srcset|poster|data)=["']?(?:https?:)?//""", page), "remote src"
@@ -598,7 +676,7 @@ assert not re.search(r"""<link\b[^>]*\bhref=["']?(?:https?:)?//""", page.replace
 assert not re.search(r"""url\(\s*["']?(?:https?:)?//""", page) and "@import" not in page, "remote css"
 assert page.count("<h1") == 1
 
-page404 = fill(TEMPLATE_404, {"URL": esc(URL), "EMAIL": esc(EMAIL)})
+page404 = with_csp(fill(TEMPLATE_404, {"URL": esc(URL), "EMAIL": esc(EMAIL)}))
 
 # ====================================================================== write
 if DRY_RUN:
@@ -612,7 +690,11 @@ if changed:
 (DOCS / "404.html").write_text(page404)
 (DOCS / "CNAME").write_text(DOMAIN)
 (DOCS / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {URL}sitemap.xml\n")
-(DOCS / ".nojekyll").write_text("")
+(DOCS / ".nojekyll").write_text("")   # nothing here uses Jekyll, and without this Pages skips .well-known/
+(DOCS / ".well-known").mkdir(exist_ok=True)
+(DOCS / ".well-known" / "security.txt").write_text(
+    f"Contact: mailto:{EMAIL}\nExpires: {SECURITY_TXT_EXPIRES}\nPreferred-Languages: en\n"
+    f"Canonical: {URL}.well-known/security.txt\n")
 (DOCS / "site.webmanifest").write_text(json.dumps({
     "name": BRAND["name"], "short_name": BRAND["name"],
     "description": "Restaurants, ranked state by state.",
@@ -638,6 +720,11 @@ print(f"docs/index.html {'written' if changed else 'unchanged'} ({len(page.encod
 print(f"  live: {LIVE_NAMES} ({LIVE_LABEL}); latest BLS month {LAST}; missing months {MISSING}")
 if TWELVE_TO != LAST:
     print(f"  note: no year-ago value for {LAST}; the 12-month stat runs to {TWELVE_TO}")
+for s in LIVE:
+    c = s["colors"]
+    if ACCENT[s["abbr"]] != c["accent"]:
+        print(f"  note: {s['abbr']} accent {c['accent']} is {contrast(c['accent'], c['bg']):.2f}:1 on {c['bg']}; its card and "
+              f"pop-up use {ACCENT[s['abbr']]} ({contrast(ACCENT[s['abbr']], c['bg']):.2f}:1), the map keeps {c['accent']}")
 for k, v in F.items():
     print(f"  {k:6s} {v:9.4f} -> {fmt_pct(v)}")
 print(f"  $20 bill -> ${BILL:.4f}")

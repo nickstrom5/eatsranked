@@ -55,9 +55,13 @@ const js = async (expr) => {
 
 await send("Page.enable"); await send("Runtime.enable"); await send("Network.enable"); await send("Log.enable");
 await send("Network.setCacheDisabled", { cacheDisabled: true });
+// every Content-Security-Policy violation on every page load, for the "no CSP violations" checks
+await send("Page.addScriptToEvaluateOnNewDocument", { source: "window.__csp=[];document.addEventListener('securitypolicyviolation'," +
+  "function(e){window.__csp.push(e.violatedDirective+' '+e.blockedURI+' '+(e.sample||''))});" });
+const cspViolations = () => js("window.__csp || []");
 
 let mobile = false;
-async function open(width, height, { dark = false, still = false, nojs = false } = {}) {
+async function open(width, height, { dark = false, still = false, nojs = false, url = URL_ } = {}) {
   mobile = width < 600;
   await send("Emulation.setScriptExecutionDisabled", { value: nojs });
   await send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: mobile ? 2 : 1, mobile });
@@ -67,7 +71,7 @@ async function open(width, height, { dark = false, still = false, nojs = false }
     { name: "prefers-reduced-motion", value: still ? "reduce" : "no-preference" }] });
   requests = []; consoleErrors = [];
   const loaded = once("Page.loadEventFired");
-  await send("Page.navigate", { url: URL_ });
+  await send("Page.navigate", { url });
   await loaded; await sleep(350);
 }
 async function fullHeight(width) {
@@ -130,6 +134,10 @@ try {
     check(`no requests to other hosts at ${w}px`, ext.length === 0, ext.join(" "));
     check(`no cookies at ${w}px`, m.cookie === "");
     check(`no script errors at ${w}px`, consoleErrors.length === 0, consoleErrors.join(" | "));
+    const csp = await cspViolations();
+    check(`no CSP violations at ${w}px`, csp.length === 0, csp.join(" | "));
+    const ran = await js("({js:document.documentElement.classList.contains('js'), map:!!document.querySelector('#atlas svg .st[tabindex=\"0\"]'), imgs:[].filter.call(document.querySelectorAll('img:not([loading=lazy])'),function(i){return !(i.complete&&i.naturalWidth>0)}).map(function(i){return i.getAttribute('src')})})");
+    check(`inline scripts run and images load under the CSP at ${w}px`, ran.js && ran.map && ran.imgs.length === 0, JSON.stringify(ran));
     if (SHOTS && [360, 768, 1024, 1600].includes(w)) { await fullHeight(w); await shot(`layout-${w}-full`); }
   }
   const reqs = [...new Set(requests.map(u => u.replace(ORIGIN, "")))];
@@ -174,6 +182,13 @@ try {
   await mouse(tx, ty);
   st = await js("({tip:document.querySelector('.map .tip').textContent, show:document.querySelector('.map .tip').classList.contains('show')})");
   check("hovering Texas shows 'Coming soon'", st.show && st.tip === "Texas · Coming soon", JSON.stringify(st));
+  await key("Escape"); await mouse(tx + 4, ty + 2);
+  st = await js("document.querySelector('.map .tip').classList.contains('show')");
+  check("Escape hides the hover label, and it stays hidden while the pointer stays on Texas", st === false);
+  const [okx, oky] = await statePoint("OK");
+  await mouse(okx, oky);
+  st = await js("document.querySelector('.map .tip').textContent");
+  check("...until the pointer moves to another state", st === "Oklahoma · Coming soon", st);
   // a clicked card stays open after the pointer leaves; a click outside closes it
   await mouse(ix, iy + 30);
   await send("Input.dispatchMouseEvent", { type: "mousePressed", x: ix, y: iy + 30, button: "left", clickCount: 1 });
@@ -225,6 +240,9 @@ try {
   st = await js("({tip:document.querySelector('.map .tip').textContent, show:document.querySelector('.map .tip').classList.contains('show')})");
   check("a focused coming-soon state says so", st.show && / · Coming soon$/.test(st.tip), st.tip);
   if (SHOTS) await shot("desktop-1440-keyboard-arrow", await rectOf("#atlas", 56));
+  await key("Escape");
+  st = await js("({show:document.querySelector('.map .tip').classList.contains('show'), id:document.activeElement.id})");
+  check("Escape hides a focused state's label without moving focus", !st.show && st.id === s1, JSON.stringify(st));
   await key("Tab", true);
   await key("Tab");
   st = await js("document.activeElement.id");
@@ -271,6 +289,28 @@ try {
   await fullHeight(1440);
   if (SHOTS) await shot("desktop-1440-dark-full");
   check("no script errors in dark mode", consoleErrors.length === 0, consoleErrors.join(" | "));
+  check("no CSP violations in dark mode", (await cspViolations()).length === 0);
+
+  // every card and map pop-up as rendered, light and dark: label and Website button 4.5:1, focus ring 3:1
+  for (const dark of [false, true]) {
+    await open(1440, 900, { dark });
+    await key("Tab");   // keyboard modality, so focusing each button below draws its :focus-visible ring
+    const low = await js(`(function(){
+      function rgb(s){var m=s.match(/[\\d.]+/g).map(Number);return m.slice(0,3);}
+      function L(c){c=c.map(function(v){v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);});return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2];}
+      function cr(a,b){var x=L(rgb(a)),y=L(rgb(b));return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);}
+      var out=[];
+      document.querySelectorAll('.app, .pop').forEach(function(card){
+        var hid=card.hidden; card.hidden=false;
+        var bg=getComputedStyle(card).backgroundColor, lab=card.querySelector('.where, .w'), btn=card.querySelector('.btn');
+        btn.focus();
+        var r={id:card.id, label:cr(getComputedStyle(lab).color,bg), button:cr(getComputedStyle(btn).color,getComputedStyle(btn).backgroundColor), ring:cr(getComputedStyle(btn).outlineColor,bg), fv:btn.matches(':focus-visible')};
+        btn.blur(); card.hidden=hid;
+        if(r.label<4.5||r.button<4.5||r.ring<3||!r.fv) out.push(JSON.stringify(r));
+      });
+      return out;})()`);
+    check(`every card and pop-up: label, Website button and focus ring contrast (${dark ? "dark" : "light"})`, low.length === 0, low.join(" "));
+  }
 
   // ---------------------------------------------------------------- tablet: the card opens below the map
   await open(768, 1024);
@@ -336,7 +376,9 @@ try {
   await tap(10, 10);
   st = await js(gapClear);
   check("gap note sits clear of the 0% line (390)", st.length > 0 && st.every(d => d >= 2), JSON.stringify(st));
-  await js("document.querySelector('details.tbl').open = true");
+  await js("document.querySelector('details.tbl summary').click()");
+  st = await js("({open:document.querySelector('details.tbl').open, rows:document.querySelector('.tw').getBoundingClientRect().height, tab:document.querySelector('.tw').tabIndex})");
+  check("phone: 'Show the numbers' opens the table, and its scroll box is a tab stop", st.open && st.rows > 100 && st.tab === 0, JSON.stringify(st));
   if (SHOTS) await shot("phone-390-table", await rectOf("details.tbl", 8));
   const tw = await js("({sw:document.documentElement.scrollWidth, iw:window.innerWidth})");
   check("phone: the open table scrolls inside its box, not the page", tw.sw <= tw.iw, JSON.stringify(tw));
@@ -345,6 +387,18 @@ try {
   await tap(100, pk);
   st = await js("({open:!document.getElementById('pop-wi').hidden})");
   check("tapping Wisconsin in the list opens its card", st.open);
+
+  // ---------------------------------------------------------------- the 404 page, light and dark, desktop and phone
+  // (GitHub Pages serves 404.html for every missing path; a local static server serves it only by name)
+  for (const [w, dark] of [[1440, false], [1440, true], [390, false], [390, true]]) {
+    await open(w, 900, { dark, url: ORIGIN + "/404.html" });
+    st = await js("({h1:document.querySelector('h1').textContent, home:!!document.querySelector('a.home[href=\"/\"]'), sw:document.documentElement.scrollWidth, iw:innerWidth})");
+    const csp = await cspViolations();
+    check(`404 page at ${w}px ${dark ? "dark" : "light"}: heading, home link, no sideways scroll, no CSP violations or errors`,
+      /isn.t on the map/.test(st.h1) && st.home && st.sw <= st.iw && csp.length === 0 && consoleErrors.length === 0,
+      JSON.stringify({ ...st, csp, consoleErrors }));
+    if (SHOTS && w === 390) await shot(`404-390-${dark ? "dark" : "light"}`);
+  }
 
   // ---------------------------------------------------------------- without JavaScript
   await open(1440, 900, { nojs: true });

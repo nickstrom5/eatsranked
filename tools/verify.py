@@ -8,7 +8,12 @@ Every number on the page is recomputed here from the raw BLS series (this file d
 not import build.py), and every number found in the page's text must be one of them,
 a year, or a number that appears in site-data.json itself. Exits 1 on any failure.
 """
+import base64
+import colorsys
+import datetime
+import hashlib
 import html
+import html.parser
 import http.server
 import json
 import math
@@ -225,7 +230,7 @@ for s in live:
     card = section(rf'(<article class="app" id="app-{a}".*?</article>)')
     check(f"{s['abbr']} card: app name, tagline, region, colours, icon",
           all(x in text_of(card) for x in (s["app"], s["tagline"], s.get("region") or names[s["abbr"]]))
-          and all(x in card for x in (s["colors"]["bg"], s["colors"]["accent"], s["colors"]["text"], s["icon"])))
+          and all(x in card for x in (s["colors"]["bg"], s["colors"]["text"], s["icon"])))
     check(f"{s['abbr']} card: website link {s['site']}", f'href="{s["site"]}"' in card)
     if s.get("web_app"):
         check(f"{s['abbr']} card: {s.get('web_app_label')} -> {s['web_app']}",
@@ -272,6 +277,122 @@ for m in must:
     check(f"page has: {m[:60]}", m in PAGE)
 check("'Tell us which state' is a mailto link",
       re.search(rf'<a href="mailto:{re.escape(D["brand"]["email"])}\?subject=[^"]+">Tell us which state</a>', PAGE) is not None)
+
+# ============================================================ card colours: contrast on every live state
+def lum(hexc):
+    def lin(c):
+        c = int(c, 16) / 255
+        return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    return 0.2126 * lin(hexc[1:3]) + 0.7152 * lin(hexc[3:5]) + 0.0722 * lin(hexc[5:7])
+
+
+def ratio(a, b):
+    la, lb = lum(a), lum(b)
+    return (max(la, lb) + 0.05) / (min(la, lb) + 0.05)
+
+
+def blend(fg, bg, alpha):
+    return "#" + "".join(f"{round(alpha * int(fg[i:i + 2], 16) + (1 - alpha) * int(bg[i:i + 2], 16)):02X}" for i in (1, 3, 5))
+
+
+def hls(hexc):
+    return colorsys.rgb_to_hls(*(int(hexc[i:i + 2], 16) / 255 for i in (1, 3, 5)))
+
+
+# The faintest text on a card is "Coming soon to the" on the App Store badge: .badge.soon (.9) x .badge small (.82).
+FAINT = 0.9 * 0.82
+check("card CSS still has the opacities the contrast gate assumes",
+      ".badge.soon{opacity:.9;" in PAGE and re.search(r"\.badge small\{[^}]*opacity:\.82", PAGE) is not None
+      and not re.search(r"\.(?:app|pop) [^{]*\{[^}]*opacity:\.(?:[0-6]|7[0-3])", PAGE))
+for s in live:
+    a, c = s["abbr"].lower(), s["colors"]
+    styles = re.findall(rf'<article class="(?:app|pop)" id="(?:app|pop)-{a}"[^>]*style="--bg:(#[0-9A-Fa-f]{{6}});--ac:(#[0-9A-Fa-f]{{6}});--fg:(#[0-9A-Fa-f]{{6}})"', PAGE)
+    if len(styles) != 2 or styles[0] != styles[1]:
+        check(f"{s['abbr']} card and pop-up colours", False, str(styles))
+        continue
+    bg, ac, fg = styles[0]
+    check(f"{s['abbr']} card colours come from site-data (bg {c['bg']}, text {c['text']})", bg == c["bg"] and fg == c["text"], f"{bg} {fg}")
+    lab, ring, txt, faint = ratio(ac, bg), ratio(ac, bg), ratio(fg, bg), ratio(blend(fg, bg, FAINT), bg)
+    check(f"{s['abbr']} contrast on its card and pop-up: label {lab:.2f}, Website button {ratio(bg, ac):.2f}, focus ring {ring:.2f}, "
+          f"text {txt:.2f}, faintest text {faint:.2f} (need 4.5, 4.5, 3, 4.5, 4.5)",
+          lab >= 4.5 and ratio(bg, ac) >= 4.5 and ring >= 3 and txt >= 4.5 and faint >= 4.5)
+    if ratio(c["accent"], c["bg"]) >= 4.5:
+        check(f"{s['abbr']} accent {c['accent']} passes, so it is used unchanged", ac == c["accent"], ac)
+    else:
+        (h0, _, s0), (h1, _, s1) = hls(c["accent"]), hls(ac)
+        check(f"{s['abbr']} accent {c['accent']} is {ratio(c['accent'], c['bg']):.2f}:1, so text uses {ac}: same hue and saturation",
+              min(abs(h0 - h1), 1 - abs(h0 - h1)) < 0.02 and abs(s0 - s1) < 0.06, f"hls {hls(c['accent'])} -> {hls(ac)}")
+    check(f"{s['abbr']} map keeps the brand accent {c['accent']} as its dark-mode fill",
+          re.search(rf'id="st-{s["abbr"]}"[^>]*--fill-dark:{c["accent"]}"', PAGE) is not None)
+
+# ============================================================ headings and structured data
+heads = [(int(lv), text_of(t)) for lv, t in re.findall(r"<h([1-6])\b[^>]*>(.*?)</h\1>", PAGE, re.S)]
+check("headings never skip a level", all(b[0] <= a[0] + 1 for a, b in zip(heads, heads[1:])), str(heads))
+dupes = sorted({t for _, t in heads if [x for _, x in heads].count(t) > 1})
+check("no heading text repeats (map pop-up titles are not headings)", not dupes, str(dupes))
+check("the apps section's heading names what it is; the live label is an eyebrow",
+      re.search(rf'<section class="wrap" id="apps"[^>]*>\s*<p class="eyebrow">{label}</p>\s*<h2 [^>]*id="apps-h">Restaurant guides by state</h2>', PAGE) is not None)
+check("the price table's scroll box can be reached and scrolled by keyboard",
+      re.search(r'<div class="tw" tabindex="0" role="region" aria-label="[^"]+">', PAGE) is not None)
+ld_org = next((g for g in json.loads(section(r'<script type="application/ld\+json">(.*?)</script>'))["@graph"] if g["@type"] == "Organization"), {})
+subs = ld_org.get("subOrganization", [])
+check(f"JSON-LD Organization lists the {len(live)} live state sites as subOrganization, linked by <site>#org",
+      [(o.get("@type"), o.get("name"), o.get("url"), o.get("@id")) for o in subs]
+      == [("Organization", s["app"], s["site"], s["site"].rstrip("/") + "/#org") for s in live], json.dumps(subs)[:300])
+check("JSON-LD Organization sameAs is a list of https URLs",
+      isinstance(ld_org.get("sameAs"), list) and ld_org["sameAs"] and all(u.startswith("https://") for u in ld_org["sameAs"]))
+
+
+# ============================================================ Content-Security-Policy
+class Scripts(html.parser.HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=False)
+        self.out, self.cur = [], None
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "script":
+            self.cur = [dict(attrs), ""]
+
+    def handle_data(self, data):
+        if self.cur is not None:
+            self.cur[1] += data
+
+    def handle_endtag(self, tag):
+        if tag == "script" and self.cur is not None:
+            self.out.append(tuple(self.cur))
+            self.cur = None
+
+
+def csp_checks(name, doc):
+    m = re.search(r'<meta http-equiv="Content-Security-Policy" content="([^"]+)">', doc)
+    check(f"{name}: has a Content-Security-Policy", m is not None)
+    if not m:
+        return
+    pol = html.unescape(m.group(1))
+    d = {p.split()[0]: p.split()[1:] for p in pol.split(";") if p.strip()}
+    check(f"{name}: the CSP comes right after <meta charset>, before any script, style or link",
+          re.match(r'<!doctype html>\s*<html lang="en">\s*<head>\s*<meta charset="utf-8">\s*$', doc[:m.start()]) is not None)
+    p = Scripts()
+    p.feed(doc)
+    run = [body for attrs, body in p.out if attrs.get("type") not in ("application/json", "application/ld+json") and "src" not in attrs]
+    want = ["'sha256-" + base64.b64encode(hashlib.sha256(b.encode("utf-8")).digest()).decode() + "'" for b in run]
+    want_src = (["'self'"] + want) if run or any("src" in a for a, _ in p.out) else ["'none'"]
+    check(f"{name}: script-src allows exactly its {len(run)} inline script(s), by hash ('none' when it has none)",
+          d.get("script-src") == want_src and "\r" not in doc,
+          f"{d.get('script-src')} != {want_src}")
+    uses_data = re.search(r"""(?:\ssrc=["']?|url\(\s*["']?)data:""", doc) is not None
+    fixed = {"default-src": ["'none'"], "style-src": ["'self'", "'unsafe-inline'"], "img-src": ["'self'"] + (["data:"] if uses_data else []),
+             "connect-src": ["'self'"], "manifest-src": ["'self'"], "base-uri": ["'none'"], "form-action": ["'none'"],
+             "object-src": ["'none'"], "upgrade-insecure-requests": []}
+    check(f"{name}: CSP blocks other hosts, plugins, <base> and forms", all(d.get(k) == v for k, v in fixed.items())
+          and set(d) == set(fixed) | {"script-src"} and not re.search(r"https?:|\*", pol), pol)
+    markup = re.sub(r"<(script|style)\b.*?</\1>", "", doc, flags=re.S)
+    check(f"{name}: no inline event handlers or javascript: links (the CSP would block them)",
+          not re.search(r"<[^>]*\son[a-z]+\s*=", markup) and "javascript:" not in markup.lower())
+
+
+csp_checks("index.html", PAGE)
+csp_checks("404.html", (DOCS / "404.html").read_text())
 
 # ============================================================ SEO, privacy, accessibility basics
 title = html.unescape(section(r"<title>(.*?)</title>"))
@@ -327,6 +448,24 @@ for name, size in (("favicon-32.png", (32, 32)), ("apple-touch-icon.png", (180, 
     p = DOCS / name
     check(f"{name} is {size[0]}x{size[1]}", p.exists() and png_size(p) == size, str(png_size(p) if p.exists() else "missing"))
 check("favicon.svg exists", (DOCS / "favicon.svg").read_text().startswith("<svg"))
+ico = (DOCS / "favicon.ico").read_bytes() if (DOCS / "favicon.ico").exists() else b""
+ico_sizes = sorted(ico[6 + 16 * i] or 256 for i in range(int.from_bytes(ico[4:6], "little"))) if ico[:4] == b"\x00\x00\x01\x00" else []
+check(f"favicon.ico is an icon with 16, 32 and 48 px images ({ico_sizes})", {16, 32, 48} <= set(ico_sizes))
+sec = DOCS / ".well-known" / "security.txt"
+sec_f = dict(ln.split(": ", 1) for ln in sec.read_text().splitlines() if ": " in ln) if sec.exists() else {}
+try:
+    expires = datetime.datetime.strptime(sec_f.get("Expires", ""), "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.timezone.utc)
+except ValueError:
+    expires = None
+now = datetime.datetime.now(datetime.timezone.utc)
+check("security.txt: contact, language and canonical URL",
+      sec_f.get("Contact") == f"mailto:{D['brand']['email']}" and sec_f.get("Preferred-Languages") == "en"
+      and sec_f.get("Canonical") == "https://eatsranked.com/.well-known/security.txt", str(sec_f))
+check(f"security.txt: Expires is in the future and under a year away ({sec_f.get('Expires')}; renew it in build.py)",
+      expires is not None and now < expires <= now + datetime.timedelta(days=366))
+check(".nojekyll is there, so Pages serves .well-known/ (and no page uses Jekyll)", (DOCS / ".nojekyll").exists()
+      and not (DOCS / "_config.yml").exists()
+      and not any(re.search(r"\{%|\{\{|\A---\n", f.read_text()) for f in DOCS.glob("*.html")))
 check("index.html under 150 KB", len(PAGE.encode()) < 150 * 1024, f"{len(PAGE.encode()) / 1024:.0f} KB")
 
 # ============================================================ serve docs/ and fetch every local link
@@ -361,11 +500,13 @@ for doc in (PAGE, p404):
         local.add(ref)
 for i in man["icons"]:
     local.add(i["src"])
-local |= {"og.png", "robots.txt", "sitemap.xml", "CNAME", "404.html"}
+local |= {"og.png", "robots.txt", "sitemap.xml", "CNAME", "404.html", "favicon.ico", ".well-known/security.txt"}
 bad = [(p, status(p)) for p in sorted(local)]
 bad = [b for b in bad if b[1] != 200]
 check(f"served locally: {len(local)} local links and files all return 200", not bad, str(bad))
 check("a missing page returns 404", status("no-such-page/") == 404)
+with urllib.request.urlopen(base_url + ".well-known/security.txt", timeout=10) as r_:
+    check("security.txt is served as text/plain", r_.headers.get_content_type() == "text/plain")
 
 if "--browser" in sys.argv:
     r = subprocess.run(["node", str(TOOLS / "browser_check.mjs"), "--url", base_url], capture_output=True, text=True, timeout=300)
