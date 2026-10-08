@@ -115,6 +115,28 @@
    "tagline_short": "Apizza & lobster roll guide, plus every Connecticut restaurant.",
    "web_app": "https://nickstrom5.github.io/connecticut-eats/explore/",
    "web_app_label": "Search on the web"
+  },
+  {
+   "abbr": "FL",
+   "status": "live",
+   "app": "Florida Eats: Restaurants",
+   "home_name": "FL Eats",
+   "tagline": "Cuban sandwiches and cafecito windows, stone crabs, grouper shacks, oyster bars and fish camps we checked by hand, MICHELIN and James Beard honorees, and 52,000+ Florida restaurants with the state's own inspection results.",
+   "site": "https://nickstrom5.github.io/florida-eats/",
+   "how": "https://nickstrom5.github.io/florida-eats/",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#005F68",
+    "accent": "#F28C28",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/florida.png",
+   "tagline_short": "Cuban, stone crab & oyster bar guide to 52,000+ Florida restaurants.",
+   "web_app": "https://nickstrom5.github.io/florida-eats/explore/",
+   "web_app_label": "Search on the web"
   }
  ],
  "coming_soon_message": "More states coming soon.",
