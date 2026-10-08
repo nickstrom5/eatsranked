@@ -55,7 +55,7 @@
    "status": "live",
    "app": "Colorado Eats: Restaurants",
    "home_name": "CO Eats",
-   "tagline": "Green chile, brewpubs, ski-town dining and the oldest places we checked by hand, plus every restaurant in the state.",
+   "tagline": "Green chile, ski-town dining and the oldest places we checked by hand, licensed brewpubs, and 15,000+ restaurants statewide.",
    "site": "https://nickstrom5.github.io/colorado-eats/",
    "how": "https://nickstrom5.github.io/colorado-eats/",
    "app_store": null,
@@ -68,7 +68,7 @@
     "text": "#FFFFFF"
    },
    "icon": "icons/colorado.png",
-   "tagline_short": "Green chile & brewpub guide, plus every Colorado restaurant.",
+   "tagline_short": "Green chile & brewpub guide to 15,000+ Colorado restaurants.",
    "web_app": "https://nickstrom5.github.io/colorado-eats/explore/",
    "web_app_label": "Search on the web"
   },
