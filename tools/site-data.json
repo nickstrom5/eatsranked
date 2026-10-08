@@ -137,6 +137,28 @@
    "tagline_short": "Cuban, stone crab & oyster bar guide to 52,000+ Florida restaurants.",
    "web_app": "https://nickstrom5.github.io/florida-eats/explore/",
    "web_app_label": "Search on the web"
+  },
+  {
+   "abbr": "CA",
+   "status": "live",
+   "app": "California Eats: Restaurants",
+   "home_name": "CA Eats",
+   "tagline": "Taquerías, burritos, fish tacos and dim sum we checked by hand, MICHELIN and James Beard honors, and official LA County, San Francisco and Sacramento inspection results.",
+   "site": "https://nickstrom5.github.io/california-eats/",
+   "how": "https://nickstrom5.github.io/california-eats/",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#003262",
+    "accent": "#FDB515",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/california.png",
+   "tagline_short": "Taquería & dim sum guide, plus 100,000+ California restaurants.",
+   "web_app": "https://nickstrom5.github.io/california-eats/explore/",
+   "web_app_label": "Search on the web"
   }
  ],
  "coming_soon_message": "More states coming soon.",
