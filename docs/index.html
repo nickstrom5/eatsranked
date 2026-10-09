@@ -359,8 +359,8 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
   .fact dt{margin:0}
 }
 @media (max-width: 899px){ .hint{position:static;margin:8px 0 0} }
+/* phones: the state cards follow the map, so the compact list of live states (.plist) stays hidden there too */
 @media (max-width: 699px){
-  .plist{display:block;margin-top:26px}
   .legend{margin-top:12px}
   .hint .h-pt{display:none}
   .hint .h-ph{display:inline}
@@ -423,7 +423,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
 <header class="top wrap">
   <a class="wordmark" href="/" aria-label="Eats Ranked, home"><span class="mk" aria-hidden="true"><i></i><i></i><i></i></span>Eats Ranked</a>
   <nav class="nav" aria-label="Sections">
-    <a class="opt" href="#states">Map</a>
+    <a class="opt" href="#apps">Apps</a>
     <a href="#how">How it works</a>
     <a href="#prices">Prices</a>
   </nav>
@@ -435,105 +435,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
     <p>Free restaurant apps from public records and open data, one state at a time.</p>
   </section>
 
-  <section class="wrap" id="apps" aria-labelledby="apps-h">
-    <p class="eyebrow">On the web now</p>
-    <h2 class="h2 apps-h" id="apps-h">Restaurant guides by state</h2>
-    <div class="apps">
-      <article class="app" id="app-il" style="--bg:#0E3386;--ac:#B3DDF2;--fg:#FFFFFF" aria-labelledby="app-il-h">
-        <div class="head">
-          <img class="icon" src="icons/chicago.png" width="88" height="88" alt="Chicago Restaurants: Ranked app icon" decoding="async">
-          <div><p class="where">Chicago + Illinois</p><p class="plat">iPhone &amp; iPad · Free</p></div>
-        </div>
-        <h3 id="app-il-h">Chicago Restaurants: Ranked</h3>
-        <p class="tag">Nearly every Chicago restaurant with our <span class="nw">A–F</span> grade from City inspection records, plus 17,000+ more across Illinois.</p>
-        <div class="actions">
-          <a class="btn" href="https://chicago.eatsranked.com/" rel="noopener">Website<span class="sr-only"> for Chicago Restaurants: Ranked</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="badge soon" title="Coming soon to the App Store (in review)"><small>Coming soon to the</small><b>App Store</b></span>
-        </div>
-        <div class="links"><a class="more" href="https://chicago.eatsranked.com/how-chicago-restaurant-inspections-work.html" rel="noopener">How it works<span class="sr-only"> in Chicago Restaurants: Ranked</span> <span aria-hidden="true">&rarr;</span></a><a class="more" href="https://chicago.eatsranked.com/explore/" rel="noopener">Search on the web<span class="sr-only"> with Chicago Restaurants: Ranked</span> <span aria-hidden="true">&rarr;</span></a></div>
-      </article>
-      <article class="app" id="app-wi" style="--bg:#203731;--ac:#FFB612;--fg:#FFFFFF" aria-labelledby="app-wi-h">
-        <div class="head">
-          <img class="icon" src="icons/wisconsin.png" width="88" height="88" alt="Wisconsin Eats: Restaurants app icon" decoding="async">
-          <div><p class="where">Wisconsin</p><p class="plat">iPhone &amp; iPad · Free</p></div>
-        </div>
-        <h3 id="app-wi-h">Wisconsin Eats: Restaurants</h3>
-        <p class="tag">Friday fish fries, supper clubs and custard stands we checked by hand, plus every restaurant in the state.</p>
-        <div class="actions">
-          <a class="btn" href="https://wisconsin.eatsranked.com/" rel="noopener">Website<span class="sr-only"> for Wisconsin Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
-        </div>
-        <div class="links"><a class="more" href="https://wisconsin.eatsranked.com/explore/" rel="noopener">Search on the web<span class="sr-only"> with Wisconsin Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
-      </article>
-      <article class="app" id="app-co" style="--bg:#002868;--ac:#FFD700;--fg:#FFFFFF" aria-labelledby="app-co-h">
-        <div class="head">
-          <img class="icon" src="icons/colorado.png" width="88" height="88" alt="Colorado Eats: Restaurants app icon" decoding="async">
-          <div><p class="where">Colorado</p><p class="plat">iPhone &amp; iPad · Free</p></div>
-        </div>
-        <h3 id="app-co-h">Colorado Eats: Restaurants</h3>
-        <p class="tag">Green chile, ski-town dining and the oldest places we checked by hand, licensed brewpubs, and 15,000+ restaurants statewide.</p>
-        <div class="actions">
-          <a class="btn" href="https://nickstrom5.github.io/colorado-eats/" rel="noopener">Website<span class="sr-only"> for Colorado Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
-        </div>
-        <div class="links"><a class="more" href="https://nickstrom5.github.io/colorado-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with Colorado Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
-      </article>
-      <article class="app" id="app-wa" style="--bg:#1F4D3A;--ac:#F7C948;--fg:#FFFFFF" aria-labelledby="app-wa-h">
-        <div class="head">
-          <img class="icon" src="icons/washington.png" width="88" height="88" alt="Washington Eats: Restaurants app icon" decoding="async">
-          <div><p class="where">Washington</p><p class="plat">iPhone &amp; iPad · Free</p></div>
-        </div>
-        <h3 id="app-wa-h">Washington Eats: Restaurants</h3>
-        <p class="tag">Seattle-style teriyaki, phở, drive-ins and oyster bars we checked by hand, plus every restaurant in Washington State.</p>
-        <div class="actions">
-          <a class="btn" href="https://nickstrom5.github.io/washington-eats/" rel="noopener">Website<span class="sr-only"> for Washington Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
-        </div>
-        <div class="links"><a class="more" href="https://nickstrom5.github.io/washington-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with Washington Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
-      </article>
-      <article class="app" id="app-ct" style="--bg:#000E2F;--ac:#E04E45;--fg:#FFFFFF" aria-labelledby="app-ct-h">
-        <div class="head">
-          <img class="icon" src="icons/connecticut.png" width="88" height="88" alt="Connecticut Eats: Restaurants app icon" decoding="async">
-          <div><p class="where">Connecticut</p><p class="plat">iPhone &amp; iPad · Free</p></div>
-        </div>
-        <h3 id="app-ct-h">Connecticut Eats: Restaurants</h3>
-        <p class="tag">New Haven apizza, lobster rolls and clam shacks, burger and hot dog icons, diners and dairy bars we checked by hand, plus every restaurant in Connecticut.</p>
-        <div class="actions">
-          <a class="btn" href="https://nickstrom5.github.io/connecticut-eats/" rel="noopener">Website<span class="sr-only"> for Connecticut Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
-        </div>
-        <div class="links"><a class="more" href="https://nickstrom5.github.io/connecticut-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with Connecticut Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
-      </article>
-      <article class="app" id="app-fl" style="--bg:#005F68;--ac:#F9C797;--fg:#FFFFFF" aria-labelledby="app-fl-h">
-        <div class="head">
-          <img class="icon" src="icons/florida.png" width="88" height="88" alt="Florida Eats: Restaurants app icon" decoding="async">
-          <div><p class="where">Florida</p><p class="plat">iPhone &amp; iPad · Free</p></div>
-        </div>
-        <h3 id="app-fl-h">Florida Eats: Restaurants</h3>
-        <p class="tag">Cuban sandwiches and cafecito windows, stone crabs, grouper shacks, oyster bars and fish camps we checked by hand, MICHELIN and James Beard honorees, and 52,000+ Florida restaurants with the state&#x27;s own inspection results.</p>
-        <div class="actions">
-          <a class="btn" href="https://nickstrom5.github.io/florida-eats/" rel="noopener">Website<span class="sr-only"> for Florida Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
-        </div>
-        <div class="links"><a class="more" href="https://nickstrom5.github.io/florida-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with Florida Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
-      </article>
-      <article class="app" id="app-ca" style="--bg:#003262;--ac:#FDB515;--fg:#FFFFFF" aria-labelledby="app-ca-h">
-        <div class="head">
-          <img class="icon" src="icons/california.png" width="88" height="88" alt="California Eats: Restaurants app icon" decoding="async">
-          <div><p class="where">California</p><p class="plat">iPhone &amp; iPad · Free</p></div>
-        </div>
-        <h3 id="app-ca-h">California Eats: Restaurants</h3>
-        <p class="tag">Taquerías, burritos, fish tacos and dim sum we checked by hand, MICHELIN and James Beard honors, and official LA County, San Francisco and Sacramento inspection results.</p>
-        <div class="actions">
-          <a class="btn" href="https://nickstrom5.github.io/california-eats/" rel="noopener">Website<span class="sr-only"> for California Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
-        </div>
-        <div class="links"><a class="more" href="https://nickstrom5.github.io/california-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with California Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
-      </article>
-    </div>
-  </section>
-
-  <section class="sec wrap" id="states" aria-labelledby="states-h">
+  <section class="wrap" id="states" aria-labelledby="states-h">
     <p class="eyebrow" aria-hidden="true">The map</p>
     <div class="sechead">
       <h2 class="h2" id="states-h">More states coming soon.</h2>
@@ -613,7 +515,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
           <li><i class="key-live"></i>On the web now</li>
           <li><i class="key-soon"></i>Coming soon</li>
         </ul>
-        <p class="hint" aria-hidden="true"><span class="h-pt">Point to or tap a state to see what&rsquo;s there.</span><span class="h-ph">Tap a highlighted state, or pick one below.</span><span class="h-kb">Arrow keys move between states. Enter opens a live one.</span></p>
+        <p class="hint" aria-hidden="true"><span class="h-pt">Point to or tap a state to see what&rsquo;s there.</span><span class="h-ph">Tap a highlighted state, or see every guide below.</span><span class="h-kb">Arrow keys move between states. Enter opens a live one.</span></p>
         <p class="sr-only" id="map-d">Use the arrow keys to move between states. Press Enter on a live state to see its app.</p>
         <p class="sr-only" aria-live="polite" id="map-say"></p>
       </div>
@@ -716,6 +618,104 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
           <li><a class="pick" href="#app-ca" data-abbr="CA" aria-controls="pop-ca" aria-expanded="false"><img src="icons/california.png" width="44" height="44" alt="" loading="lazy" decoding="async"><span class="pk"><span class="ps">California</span><span class="pa">California Eats: Restaurants</span></span><svg class="go" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
       </ul>
       <p class="else">Every other state: coming soon. <a href="mailto:nick@eatsranked.com?subject=Next%20state%20for%20Eats%20Ranked">Tell us which state</a>.</p>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="apps" aria-labelledby="apps-h">
+    <p class="eyebrow">On the web now</p>
+    <h2 class="h2 apps-h" id="apps-h">Restaurant guides by state</h2>
+    <div class="apps">
+      <article class="app" id="app-il" style="--bg:#0E3386;--ac:#B3DDF2;--fg:#FFFFFF" aria-labelledby="app-il-h">
+        <div class="head">
+          <img class="icon" src="icons/chicago.png" width="88" height="88" alt="Chicago Restaurants: Ranked app icon" decoding="async">
+          <div><p class="where">Chicago + Illinois</p><p class="plat">iPhone &amp; iPad · Free</p></div>
+        </div>
+        <h3 id="app-il-h">Chicago Restaurants: Ranked</h3>
+        <p class="tag">Nearly every Chicago restaurant with our <span class="nw">A–F</span> grade from City inspection records, plus 17,000+ more across Illinois.</p>
+        <div class="actions">
+          <a class="btn" href="https://chicago.eatsranked.com/" rel="noopener">Website<span class="sr-only"> for Chicago Restaurants: Ranked</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span class="badge soon" title="Coming soon to the App Store (in review)"><small>Coming soon to the</small><b>App Store</b></span>
+        </div>
+        <div class="links"><a class="more" href="https://chicago.eatsranked.com/how-chicago-restaurant-inspections-work.html" rel="noopener">How it works<span class="sr-only"> in Chicago Restaurants: Ranked</span> <span aria-hidden="true">&rarr;</span></a><a class="more" href="https://chicago.eatsranked.com/explore/" rel="noopener">Search on the web<span class="sr-only"> with Chicago Restaurants: Ranked</span> <span aria-hidden="true">&rarr;</span></a></div>
+      </article>
+      <article class="app" id="app-wi" style="--bg:#203731;--ac:#FFB612;--fg:#FFFFFF" aria-labelledby="app-wi-h">
+        <div class="head">
+          <img class="icon" src="icons/wisconsin.png" width="88" height="88" alt="Wisconsin Eats: Restaurants app icon" decoding="async">
+          <div><p class="where">Wisconsin</p><p class="plat">iPhone &amp; iPad · Free</p></div>
+        </div>
+        <h3 id="app-wi-h">Wisconsin Eats: Restaurants</h3>
+        <p class="tag">Friday fish fries, supper clubs and custard stands we checked by hand, plus every restaurant in the state.</p>
+        <div class="actions">
+          <a class="btn" href="https://wisconsin.eatsranked.com/" rel="noopener">Website<span class="sr-only"> for Wisconsin Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
+        </div>
+        <div class="links"><a class="more" href="https://wisconsin.eatsranked.com/explore/" rel="noopener">Search on the web<span class="sr-only"> with Wisconsin Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
+      </article>
+      <article class="app" id="app-co" style="--bg:#002868;--ac:#FFD700;--fg:#FFFFFF" aria-labelledby="app-co-h">
+        <div class="head">
+          <img class="icon" src="icons/colorado.png" width="88" height="88" alt="Colorado Eats: Restaurants app icon" decoding="async">
+          <div><p class="where">Colorado</p><p class="plat">iPhone &amp; iPad · Free</p></div>
+        </div>
+        <h3 id="app-co-h">Colorado Eats: Restaurants</h3>
+        <p class="tag">Green chile, ski-town dining and the oldest places we checked by hand, licensed brewpubs, and 15,000+ restaurants statewide.</p>
+        <div class="actions">
+          <a class="btn" href="https://nickstrom5.github.io/colorado-eats/" rel="noopener">Website<span class="sr-only"> for Colorado Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
+        </div>
+        <div class="links"><a class="more" href="https://nickstrom5.github.io/colorado-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with Colorado Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
+      </article>
+      <article class="app" id="app-wa" style="--bg:#1F4D3A;--ac:#F7C948;--fg:#FFFFFF" aria-labelledby="app-wa-h">
+        <div class="head">
+          <img class="icon" src="icons/washington.png" width="88" height="88" alt="Washington Eats: Restaurants app icon" decoding="async">
+          <div><p class="where">Washington</p><p class="plat">iPhone &amp; iPad · Free</p></div>
+        </div>
+        <h3 id="app-wa-h">Washington Eats: Restaurants</h3>
+        <p class="tag">Seattle-style teriyaki, phở, drive-ins and oyster bars we checked by hand, plus every restaurant in Washington State.</p>
+        <div class="actions">
+          <a class="btn" href="https://nickstrom5.github.io/washington-eats/" rel="noopener">Website<span class="sr-only"> for Washington Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
+        </div>
+        <div class="links"><a class="more" href="https://nickstrom5.github.io/washington-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with Washington Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
+      </article>
+      <article class="app" id="app-ct" style="--bg:#000E2F;--ac:#E04E45;--fg:#FFFFFF" aria-labelledby="app-ct-h">
+        <div class="head">
+          <img class="icon" src="icons/connecticut.png" width="88" height="88" alt="Connecticut Eats: Restaurants app icon" decoding="async">
+          <div><p class="where">Connecticut</p><p class="plat">iPhone &amp; iPad · Free</p></div>
+        </div>
+        <h3 id="app-ct-h">Connecticut Eats: Restaurants</h3>
+        <p class="tag">New Haven apizza, lobster rolls and clam shacks, burger and hot dog icons, diners and dairy bars we checked by hand, plus every restaurant in Connecticut.</p>
+        <div class="actions">
+          <a class="btn" href="https://nickstrom5.github.io/connecticut-eats/" rel="noopener">Website<span class="sr-only"> for Connecticut Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
+        </div>
+        <div class="links"><a class="more" href="https://nickstrom5.github.io/connecticut-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with Connecticut Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
+      </article>
+      <article class="app" id="app-fl" style="--bg:#005F68;--ac:#F9C797;--fg:#FFFFFF" aria-labelledby="app-fl-h">
+        <div class="head">
+          <img class="icon" src="icons/florida.png" width="88" height="88" alt="Florida Eats: Restaurants app icon" decoding="async">
+          <div><p class="where">Florida</p><p class="plat">iPhone &amp; iPad · Free</p></div>
+        </div>
+        <h3 id="app-fl-h">Florida Eats: Restaurants</h3>
+        <p class="tag">Cuban sandwiches and cafecito windows, stone crabs, grouper shacks, oyster bars and fish camps we checked by hand, MICHELIN and James Beard honorees, and 52,000+ Florida restaurants with the state&#x27;s own inspection results.</p>
+        <div class="actions">
+          <a class="btn" href="https://nickstrom5.github.io/florida-eats/" rel="noopener">Website<span class="sr-only"> for Florida Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
+        </div>
+        <div class="links"><a class="more" href="https://nickstrom5.github.io/florida-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with Florida Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
+      </article>
+      <article class="app" id="app-ca" style="--bg:#003262;--ac:#FDB515;--fg:#FFFFFF" aria-labelledby="app-ca-h">
+        <div class="head">
+          <img class="icon" src="icons/california.png" width="88" height="88" alt="California Eats: Restaurants app icon" decoding="async">
+          <div><p class="where">California</p><p class="plat">iPhone &amp; iPad · Free</p></div>
+        </div>
+        <h3 id="app-ca-h">California Eats: Restaurants</h3>
+        <p class="tag">Taquerías, burritos, fish tacos and dim sum we checked by hand, MICHELIN and James Beard honors, and official LA County, San Francisco and Sacramento inspection results.</p>
+        <div class="actions">
+          <a class="btn" href="https://nickstrom5.github.io/california-eats/" rel="noopener">Website<span class="sr-only"> for California Eats: Restaurants</span> <svg class="ic" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 3h7v7M11 3 3 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <span class="badge soon" title="Coming soon to the App Store"><small>Coming soon to the</small><b>App Store</b></span>
+        </div>
+        <div class="links"><a class="more" href="https://nickstrom5.github.io/california-eats/explore/" rel="noopener">Search on the web<span class="sr-only"> with California Eats: Restaurants</span> <span aria-hidden="true">&rarr;</span></a></div>
+      </article>
     </div>
   </section>
 

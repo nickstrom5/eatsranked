@@ -331,7 +331,9 @@ check("headings never skip a level", all(b[0] <= a[0] + 1 for a, b in zip(heads,
 dupes = sorted({t for _, t in heads if [x for _, x in heads].count(t) > 1})
 check("no heading text repeats (map pop-up titles are not headings)", not dupes, str(dupes))
 check("the apps section's heading names what it is; the live label is an eyebrow",
-      re.search(rf'<section class="wrap" id="apps"[^>]*>\s*<p class="eyebrow">{label}</p>\s*<h2 [^>]*id="apps-h">Restaurant guides by state</h2>', PAGE) is not None)
+      re.search(rf'<section class="sec wrap" id="apps"[^>]*>\s*<p class="eyebrow">{label}</p>\s*<h2 [^>]*id="apps-h">Restaurant guides by state</h2>', PAGE) is not None)
+check("the map comes first, straight under the hero, and the state cards follow it (Nick, 2026-10-09)",
+      0 < PAGE.find('id="h1"') < PAGE.find('id="states"') < PAGE.find('id="apps"') < PAGE.find('id="how"'))
 check("the price table's scroll box can be reached and scrolled by keyboard",
       re.search(r'<div class="tw" tabindex="0" role="region" aria-label="[^"]+">', PAGE) is not None)
 ld_org = next((g for g in json.loads(section(r'<script type="application/ld\+json">(.*?)</script>'))["@graph"] if g["@type"] == "Organization"), {})

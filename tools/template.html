@@ -291,8 +291,8 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
   .fact dt{margin:0}
 }
 @media (max-width: 899px){ .hint{position:static;margin:8px 0 0} }
+/* phones: the state cards follow the map, so the compact list of live states (.plist) stays hidden there too */
 @media (max-width: 699px){
-  .plist{display:block;margin-top:26px}
   .legend{margin-top:12px}
   .hint .h-pt{display:none}
   .hint .h-ph{display:inline}
@@ -355,7 +355,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
 <header class="top wrap">
   <a class="wordmark" href="/" aria-label="Eats Ranked, home"><span class="mk" aria-hidden="true"><i></i><i></i><i></i></span>Eats Ranked</a>
   <nav class="nav" aria-label="Sections">
-    <a class="opt" href="#states">Map</a>
+    <a class="opt" href="#apps">Apps</a>
     <a href="#how">How it works</a>
     <a href="#prices">Prices</a>
   </nav>
@@ -367,15 +367,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
     <p>Free restaurant apps from public records and open data, one state at a time.</p>
   </section>
 
-  <section class="wrap" id="apps" aria-labelledby="apps-h">
-    <p class="eyebrow">@@LIVE_LABEL@@</p>
-    <h2 class="h2 apps-h" id="apps-h">Restaurant guides by state</h2>
-    <div class="apps">
-@@CARDS@@
-    </div>
-  </section>
-
-  <section class="sec wrap" id="states" aria-labelledby="states-h">
+  <section class="wrap" id="states" aria-labelledby="states-h">
     <p class="eyebrow" aria-hidden="true">The map</p>
     <div class="sechead">
       <h2 class="h2" id="states-h">@@COMING_SOON@@</h2>
@@ -399,7 +391,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
           <li><i class="key-live"></i>@@LIVE_LABEL@@</li>
           <li><i class="key-soon"></i>Coming soon</li>
         </ul>
-        <p class="hint" aria-hidden="true"><span class="h-pt">Point to or tap a state to see what&rsquo;s there.</span><span class="h-ph">Tap a highlighted state, or pick one below.</span><span class="h-kb">Arrow keys move between states. Enter opens a live one.</span></p>
+        <p class="hint" aria-hidden="true"><span class="h-pt">Point to or tap a state to see what&rsquo;s there.</span><span class="h-ph">Tap a highlighted state, or see every guide below.</span><span class="h-kb">Arrow keys move between states. Enter opens a live one.</span></p>
         <p class="sr-only" id="map-d">Use the arrow keys to move between states. Press Enter on a live state to see its app.</p>
         <p class="sr-only" aria-live="polite" id="map-say"></p>
       </div>
@@ -413,6 +405,14 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
 @@PICKS@@
       </ul>
       <p class="else">Every other state: coming soon. <a href="@@MAILTO_NEXT@@">Tell us which state</a>.</p>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="apps" aria-labelledby="apps-h">
+    <p class="eyebrow">@@LIVE_LABEL@@</p>
+    <h2 class="h2 apps-h" id="apps-h">Restaurant guides by state</h2>
+    <div class="apps">
+@@CARDS@@
     </div>
   </section>
 

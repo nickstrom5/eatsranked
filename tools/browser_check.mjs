@@ -331,7 +331,7 @@ try {
   await fullHeight(390);
   if (SHOTS) await shot("phone-390-full");
   const vis = await js("({plist:getComputedStyle(document.querySelector('.plist')).display, legend:getComputedStyle(document.querySelector('.legend')).position})");
-  check("phone shows the compact list under the map", vis.plist === "block", JSON.stringify(vis));
+  check("phone: no compact list under the map (the state cards follow it)", vis.plist === "none", JSON.stringify(vis));
   st = await js("[].filter.call(document.querySelectorAll('.hint span'),function(c){return getComputedStyle(c).display!=='none'}).map(function(c){return c.textContent}).join('|')");
   check("phone: the map caption points to the highlighted states and the list", /^Tap a highlighted state/.test(st), st);
   st = await js(`['IL','WI'].map(function(ab){var el=document.getElementById('st-'+ab),svg=el.ownerSVGElement,p=svg.createSVGPoint();p.x=+el.dataset.x;p.y=+el.dataset.y;var q=p.matrixTransform(svg.getScreenCTM()),
@@ -383,10 +383,10 @@ try {
   const tw = await js("({sw:document.documentElement.scrollWidth, iw:window.innerWidth})");
   check("phone: the open table scrolls inside its box, not the page", tw.sw <= tw.iw, JSON.stringify(tw));
   await js("document.querySelector('details.tbl').open = false");
-  const pk = await js("document.querySelector('.pick[data-abbr=WI]').getBoundingClientRect().top + window.scrollY + 20");
-  await tap(100, pk);
+  const pk = await js("(function(){var p=document.querySelector('.pin[data-abbr=WI]');p.scrollIntoView({block:'center'});var r=p.getBoundingClientRect();return [r.left+r.width/2, r.top+r.height/2]})()");
+  await tap(pk[0], pk[1]);
   st = await js("({open:!document.getElementById('pop-wi').hidden})");
-  check("tapping Wisconsin in the list opens its card", st.open);
+  check("tapping Wisconsin's pin on the map opens its card", st.open);
 
   // ---------------------------------------------------------------- the 404 page, light and dark, desktop and phone
   // (GitHub Pages serves 404.html for every missing path; a local static server serves it only by name)
