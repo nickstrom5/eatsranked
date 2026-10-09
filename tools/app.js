@@ -216,13 +216,6 @@
         tipTimer = setTimeout(restoreTip, 1800);
       }
     });
-    Object.keys(pins).forEach(function (k) {
-      pins[k].addEventListener("click", function (e) {
-        e.preventDefault();
-        setOpen(k, { sticky: true, reveal: true });
-        opener = byAbbr[k];
-      });
-    });
     map.addEventListener("pointermove", function (e) {
       if (e.pointerType !== "mouse") return;
       var el = e.target.closest && e.target.closest(".st");

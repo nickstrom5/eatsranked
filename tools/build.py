@@ -537,8 +537,10 @@ for st in GEO["states"]:
             f'<a class="st live" href="#app-{a.lower()}" id="st-{a}" data-abbr="{a}" data-name="{esc(st["name"])}" '
             f'data-x="{x}" data-y="{y}"{adj} aria-label="{esc(label)}" aria-controls="pop-{a.lower()}" aria-expanded="false" '
             f'style="--fill:{c["bg"]};--fill-dark:{c["accent"]}"><path d="{d}"/></a>')
+        # the icon goes straight to the state's site (Nick, 2026-10-09); pointing at it still previews the card,
+        # and the state shape (and the keyboard) open the card with its links
         pins.append(
-            f'<a class="pin" href="#app-{a.lower()}" data-abbr="{a}" tabindex="-1" aria-hidden="true" '
+            f'<a class="pin" {ext(s["site"])} data-abbr="{a}" tabindex="-1" aria-hidden="true" '
             f'style="left:{100 * x / VBW:.3f}%;top:{100 * y / VBH:.3f}%">'
             f'<img src="{esc(s["icon"])}" width="50" height="50" alt="" decoding="async"></a>')
     else:

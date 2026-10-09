@@ -101,6 +101,13 @@ async function key(k, shift = false) {
 // centre of a state's interior point, in page coordinates
 const statePoint = (abbr) => js(`(function(){var el=document.getElementById('st-${abbr}'),svg=el.ownerSVGElement,vb=svg.viewBox.baseVal,r=svg.getBoundingClientRect();
   return [r.left+(+el.dataset.x-vb.x)/vb.width*r.width, r.top+(+el.dataset.y-vb.y)/vb.height*r.height+window.scrollY];})()`);
+// a point on the state's own shape, as far from its icon as the shape allows (the icon is a link to the state's
+// site and grows while its card is open, so a tap or click meant for the card must land on the shape)
+const shapePoint = (abbr) => js(`(function(){var el=document.getElementById('st-${abbr}'),r=el.getBoundingClientRect(),
+  p=document.querySelector('.pin[data-abbr=${abbr}]').getBoundingClientRect(),px=p.left+p.width/2,py=p.top+p.height/2,best=null,bd=-1;
+  for(var x=r.left+2;x<r.right-1;x+=2)for(var y=r.top+2;y<r.bottom-1;y+=2){var h=document.elementFromPoint(x,y);
+    if(h&&h.closest&&h.closest('.st')===el){var d=Math.hypot(x-px,y-py);if(d>bd){bd=d;best=[x,y+window.scrollY];}}}
+  return best;})()`);
 const rectOf = (sel, pad = 0) => js(`(function(){var r=document.querySelector(${JSON.stringify(sel)}).getBoundingClientRect();
   return [Math.max(0,r.left-${pad}), Math.max(0,r.top+window.scrollY-${pad}), r.width+${2 * pad}, r.height+${2 * pad}];})()`);
 async function shot(name, clip) {
@@ -190,9 +197,10 @@ try {
   st = await js("document.querySelector('.map .tip').textContent");
   check("...until the pointer moves to another state", st === "Oklahoma · Coming soon", st);
   // a clicked card stays open after the pointer leaves; a click outside closes it
-  await mouse(ix, iy + 30);
-  await send("Input.dispatchMouseEvent", { type: "mousePressed", x: ix, y: iy + 30, button: "left", clickCount: 1 });
-  await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: ix, y: iy + 30, button: "left", clickCount: 1 });
+  const [isx, isy] = await shapePoint("IL");
+  await mouse(isx, isy);
+  await send("Input.dispatchMouseEvent", { type: "mousePressed", x: isx, y: isy, button: "left", clickCount: 1 });
+  await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: isx, y: isy, button: "left", clickCount: 1 });
   await mouse(5, 5); await sleep(600);
   check("a card opened by a click stays open after the pointer leaves", (await openPop()) === "pop-il");
   const [ox, oy] = await js("(function(){var r=document.querySelector('#states .h2').getBoundingClientRect();return [r.left+20,r.top+window.scrollY+20]})()");
@@ -315,10 +323,10 @@ try {
   // ---------------------------------------------------------------- tablet: the card opens below the map
   await open(768, 1024);
   await fullHeight(768);
-  const [tix, tiy] = await statePoint("IL");
-  await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: tix, y: tiy + 30 });
-  await send("Input.dispatchMouseEvent", { type: "mousePressed", x: tix, y: tiy + 30, button: "left", clickCount: 1 });
-  await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: tix, y: tiy + 30, button: "left", clickCount: 1 });
+  const [tix, tiy] = await shapePoint("IL");
+  await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: tix, y: tiy });
+  await send("Input.dispatchMouseEvent", { type: "mousePressed", x: tix, y: tiy, button: "left", clickCount: 1 });
+  await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: tix, y: tiy, button: "left", clickCount: 1 });
   await sleep(300);
   st = await js(`(function(){var p=document.getElementById('pop-il').getBoundingClientRect(),h=document.querySelector('.hint').getBoundingClientRect(),l=document.querySelector('.legend').getBoundingClientRect();
     function hit(a,b){return a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;}
@@ -338,8 +346,8 @@ try {
     r=document.querySelector('.pin[data-abbr='+ab+']').getBoundingClientRect(),s=el.getBoundingClientRect();
     return {ab:ab,w:r.width,off:Math.round(Math.hypot(r.left+r.width/2-q.x,r.top+r.height/2-q.y)*10)/10,share:Math.round(r.width*r.height/(s.width*s.height)*100)/100};})`);
   check("phone: small icons centred on their states, so the state colours show", st.every(p => p.w <= 22 && p.off <= 1 && p.share <= 0.4), JSON.stringify(st));
-  const [pix, piy] = await statePoint("IL");
-  await tap(pix, piy + 18);
+  const [pix, piy] = await shapePoint("IL");
+  await tap(pix, piy);
   st = await js("({open:!document.getElementById('pop-il').hidden, pos:getComputedStyle(document.getElementById('pop-il')).position})");
   check("tapping Illinois on a phone opens its card below the map", st.open && st.pos === "relative", JSON.stringify(st));
   if (SHOTS) await shot("phone-390-illinois", await rectOf("#states", 0));
@@ -384,9 +392,13 @@ try {
   check("phone: the open table scrolls inside its box, not the page", tw.sw <= tw.iw, JSON.stringify(tw));
   await js("document.querySelector('details.tbl').open = false");
   const pk = await js("(function(){var p=document.querySelector('.pin[data-abbr=WI]');p.scrollIntoView({block:'center'});var r=p.getBoundingClientRect();return [r.left+r.width/2, r.top+r.height/2]})()");
+  // the icon is a link to the state's site: record the tap's click (after the page's own handlers) and stop the
+  // navigation so the test stays on the page
+  await js("window.__pin=null;document.addEventListener('click',function(e){var p=e.target.closest('.pin');if(p){window.__pin={href:p.href,prevented:e.defaultPrevented};e.preventDefault();}},{once:true})");
   await tap(pk[0], pk[1]);
-  st = await js("({open:!document.getElementById('pop-wi').hidden})");
-  check("tapping Wisconsin's pin on the map opens its card", st.open);
+  st = await js("({pin:window.__pin, site:document.querySelector('#app-wi a.btn').href, open:!document.getElementById('pop-wi').hidden})");
+  check("tapping Wisconsin's icon on the map follows its link to the Wisconsin site (no card)",
+    st.pin && !st.pin.prevented && st.pin.href === st.site && !st.open, JSON.stringify(st));
 
   // ---------------------------------------------------------------- the 404 page, light and dark, desktop and phone
   // (GitHub Pages serves 404.html for every missing path; a local static server serves it only by name)
