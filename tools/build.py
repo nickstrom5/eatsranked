@@ -594,10 +594,11 @@ footer_apps = "".join(f'<li><a {ext(s["site"])}>{esc(s["app"])}</a></li>' for s 
 
 # ====================================================================== head
 TITLE = "Eats Ranked: Restaurant Grades & Rankings, State by State"
-# True of every app: Chicago grades from City inspections; Wisconsin grades only Madison/Dane County and is
-# mostly open map data plus hand-checked lists. No "free iPhone apps" claim: none may be on the App Store yet.
-DESC_BODY = ("Restaurant apps from public records and open data: our own inspection grades where cities "
-             "publish them, hand-checked local picks.")
+# True of every app: some show the official inspection result as published (California, Florida, Connecticut,
+# Washington), some a grade of their own labeled as theirs (Chicago; Wisconsin for Madison/Dane County), and some
+# no grades at all (Colorado), hence "where available". No "free iPhone apps" claim: none may be on the App Store yet.
+DESC_BODY = ("Restaurant apps from public records and open data: official inspection results or our own grades "
+             "where available, hand-checked local picks.")
 DESC = f"{DESC_BODY} Now in {LIVE_NAMES}."
 if len(DESC) > 160:
     DESC = f"{DESC_BODY} Now in {len(LIVE)} states."

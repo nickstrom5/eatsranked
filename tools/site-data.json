@@ -17,7 +17,7 @@
    "how": "https://chicago.eatsranked.com/how-chicago-restaurant-inspections-work.html",
    "app_store": null,
    "app_store_id": "6816931379",
-   "app_store_note": "Coming soon to the App Store (in review)",
+   "app_store_note": "Coming soon to the App Store",
    "platforms": "iPhone & iPad, free",
    "colors": {
     "bg": "#0E3386",
@@ -4818,5 +4818,5 @@
    }
   }
  },
- "how_it_works_note": "Sources differ by state: official inspection and license records where a state or city publishes them, Overture open map data for the rest, and places we check by hand (e.g. Wisconsin fish fries and supper clubs). Grades are ours, never official."
+ "how_it_works_note": "Sources differ by state: official inspection and license records where a state or city publishes them, Overture open map data for the rest, and places we check by hand (e.g. Wisconsin fish fries and supper clubs). Grades of our own are labeled as ours; official results are shown as published."
 }

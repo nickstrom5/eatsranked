@@ -61,7 +61,7 @@ To look at it locally: `python3 -m http.server 8741 --directory docs` and open <
    | `site`, `how` | website button; "How it works" link (left out when it's the same URL as `site`) |
    | `web_app`, `web_app_label` | optional web app link (e.g. "Search on the web") |
    | `app_store` | App Store URL once the app is approved; `null` shows "Coming soon to the App Store" (not a link) |
-   | `app_store_note` | hover text on the coming-soon badge |
+   | `app_store_note` | hover text on the coming-soon badge; keep it true (e.g. add "(in review)" only once the build has actually been submitted to App Review) |
    | `platforms` | e.g. `"iPhone & iPad, free"` (shown as "iPhone & iPad · Free") |
    | `colors.bg`, `colors.accent`, `colors.text` | card colours; `bg` fills the state on the map, `accent` fills it in dark mode. If `accent` reads below 4.5:1 on `bg`, the card's label, button and focus ring use the nearest same-hue shade that passes (build.py prints a note); `verify.py` fails if `text` doesn't pass |
    | `icon` | path under `docs/`, e.g. `"icons/texas.png"` |
@@ -137,5 +137,5 @@ official badge artwork instead, download it from Apple's marketing tools and com
   Bureau cartographic boundary files.
 - Prices: U.S. Bureau of Labor Statistics, Consumer Price Index (CPI-U), public domain.
 
-Not affiliated with any government agency. Grades in our apps are our own, from public records.
+Not affiliated with any government agency. Official inspection results are shown as published; grades of our own are labeled as ours.
 Contact: nick@eatsranked.com

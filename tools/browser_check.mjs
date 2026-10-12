@@ -388,7 +388,7 @@ try {
   const vis = await js("({plist:getComputedStyle(document.querySelector('.plist')).display, legend:getComputedStyle(document.querySelector('.legend')).position})");
   check("phone: no compact list under the map (the state cards follow it)", vis.plist === "none", JSON.stringify(vis));
   st = await js("[].filter.call(document.querySelectorAll('.hint span'),function(c){return getComputedStyle(c).display!=='none'}).map(function(c){return c.textContent}).join('|')");
-  check("phone: the map caption points to the highlighted states and the list", /^Tap a highlighted state/.test(st), st);
+  check("phone: the map caption says a state's icon opens its site, and points to the list", /^Tap a state.s icon to open its site/.test(st), st);
   st = await js(`['IL','WI'].map(function(ab){var el=document.getElementById('st-'+ab),svg=el.ownerSVGElement,p=svg.createSVGPoint();p.x=+el.dataset.x;p.y=+el.dataset.y;var q=p.matrixTransform(svg.getScreenCTM()),
     r=document.querySelector('.pin[data-abbr='+ab+']').getBoundingClientRect(),s=el.getBoundingClientRect();
     return {ab:ab,w:r.width,off:Math.round(Math.hypot(r.left+r.width/2-q.x,r.top+r.height/2-q.y)*10)/10,share:Math.round(r.width*r.height/(s.width*s.height)*100)/100};})`);

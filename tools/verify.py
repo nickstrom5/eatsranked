@@ -267,7 +267,7 @@ check("App Store links only where site-data has one",
 
 must = [
     D["coming_soon_message"], "This site uses no cookies and no analytics.",
-    "Not affiliated with any government agency. Grades in our apps are our own, from public records.",
+    "Not affiliated with any government agency. Official inspection results are shown as published; grades of our own are labeled as ours.",
     f'href="mailto:{D["brand"]["email"]}">{D["brand"]["email"]}</a>', "Tell us which state", html.escape(D["how_it_works_note"]),
     html.escape(D["prices"]["source"]), D["prices"]["source_url"], "Restaurants, ranked", "state by state.",
     "Eating out, by the numbers", "How it works", "Show the numbers", "us-atlas", "ISC License", "Mike Bostock",
