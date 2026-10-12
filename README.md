@@ -65,6 +65,7 @@ To look at it locally: `python3 -m http.server 8741 --directory docs` and open <
    | `platforms` | e.g. `"iPhone & iPad, free"` (shown as "iPhone & iPad · Free") |
    | `colors.bg`, `colors.accent`, `colors.text` | card colours; `bg` fills the state on the map, `accent` fills it in dark mode. If `accent` reads below 4.5:1 on `bg`, the card's label, button and focus ring use the nearest same-hue shade that passes (build.py prints a note); `verify.py` fails if `text` doesn't pass |
    | `icon` | path under `docs/`, e.g. `"icons/texas.png"` |
+   | `pin` | optional `[x, y]` for the state's map icon and label, in the units of `tools/us-states-paths.json` (viewBox `0 0 975 610`; Connecticut's icon sits at about `[888, 189]`); it must lie inside the state. Leave it out and the icon goes to the point deepest inside the state. Set it when that point puts the icon over a neighbour's: `verify.py --browser` fails if two map icons overlap at 320-1600 px |
 
    Every link (`site`, `how`, `web_app`, `app_store`) must be a plain `https://` URL: `build.py` stops on any
    other scheme or on spaces and control characters, and `verify.py` checks every link on the built pages.

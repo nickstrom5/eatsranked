@@ -1,5 +1,7 @@
 // Checks the built page in headless Chrome over the DevTools protocol, and can take screenshots.
-// Needs Node 22+ (built-in WebSocket) and Google Chrome. Serve docs/ first:
+// Needs Node 22+ (built-in WebSocket) and Google Chrome. `python3 tools/verify.py --browser` serves docs/ and runs it;
+// to run it alone, serve docs/ first (http.server's listen backlog of 5 can drop one of the parallel icon requests
+// now and then, failing "no script errors"; verify.py's server doesn't):
 //   python3 -m http.server 8741 --bind 127.0.0.1 --directory docs
 //   node tools/browser_check.mjs --url http://127.0.0.1:8741/ [--shots DIR] [--profile DIR]
 // Uses its own throwaway Chrome profile (never your browser's). Exits 1 if a check fails.
@@ -142,8 +144,13 @@ try {
   if (SHOTS) fs.mkdirSync(SHOTS, { recursive: true });
 
   // ---------------------------------------------------------------- layout at every width
-  for (const w of [360, 390, 414, 600, 768, 900, 1024, 1280, 1440, 1600]) {
+  for (const w of [320, 360, 390, 414, 600, 768, 900, 1024, 1280, 1440, 1600]) {
     await open(w, 900);
+    // a new state's icon can land on a neighbour's (New York's pole is next to Connecticut's); fix with its "pin"
+    const clash = await js(`(function(){var p=[].map.call(document.querySelectorAll('.pin'),function(e){return [e.dataset.abbr,e.getBoundingClientRect()];}),out=[];
+      for(var i=0;i<p.length;i++)for(var j=i+1;j<p.length;j++){var a=p[i][1],b=p[j][1];if(a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom)out.push(p[i][0]+'/'+p[j][0]);}
+      return {n:p.length,out:out};})()`);
+    check(`no two map icons overlap at ${w}px (${clash.n} icons)`, clash.n >= 1 && clash.out.length === 0, clash.out.join(" "));
     const m = await js("({sw:document.documentElement.scrollWidth, iw:window.innerWidth, cookie:document.cookie})");
     check(`no horizontal scroll at ${w}px`, m.sw <= m.iw, `scrollWidth=${m.sw}`);
     const ext = requests.filter(u => !u.startsWith(ORIGIN) && !u.startsWith("data:"));

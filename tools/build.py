@@ -542,10 +542,26 @@ def adjacency():
 
 
 ADJ = adjacency()
+GEO_BY = {st["abbr"]: st for st in GEO["states"]}
+
+
+def number(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
+
+
+# A live state's optional "pin": [x, y] (us-states-paths.json units) moves its map icon and label off the point
+# deepest inside the state, e.g. when that point puts the icon over a neighbour's (browser_check.mjs checks).
+for s in LIVE:
+    p = s.get("pin")
+    if p is not None and not (isinstance(p, list) and len(p) == 2 and all(number(v) for v in p)
+                              and any(inside((p[0], p[1]), r) for r in rings(GEO_BY[s["abbr"]]["d"]))):
+        sys.exit(f"build: {s['abbr']} pin must be [x, y] inside the state's shape (viewBox {GEO['viewBox']}), not {p!r}")
 shapes, live_shapes, pins = [], [], []
 for st in GEO["states"]:
     a = st["abbr"]
     x, y = pole(st["d"])
+    if a in LIVE_BY and LIVE_BY[a].get("pin") is not None:
+        x, y = (round(float(v), 1) for v in LIVE_BY[a]["pin"])
     d = compact(st["d"])
     adj = f' data-adj="{" ".join(ADJ[a])}"' if ADJ[a] else ""
     if a in LIVE_BY:
