@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-qOhFsq0QMV2REqNwk5hGH5bZE9SkX6gt6yeyKdYPv+U=' 'sha256-1rgohjGvVUz8qQ5dRd6Q2GoXfWr3hlbW1oZnv3yew/g='; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-qOhFsq0QMV2REqNwk5hGH5bZE9SkX6gt6yeyKdYPv+U=' 'sha256-dQcUjV0Xn7+r3aVpu3xSAdg6DNpjN9inleCAEjYUKZ8='; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Eats Ranked: Restaurant Grades &amp; Rankings, State by State</title>
 <meta name="description" content="Restaurant apps from public records and open data: our own inspection grades where cities publish them, hand-checked local picks. Now in 7 states.">
@@ -247,6 +247,7 @@ html:not(.js) .pops{display:none}
   .legend{position:absolute;right:0;bottom:4%;margin:0;flex-direction:column;align-items:flex-start;gap:8px}
   .js .pops{position:absolute;inset:0;margin:0;pointer-events:none}
   .js .pop{position:absolute;width:384px;pointer-events:auto;z-index:5}
+  .map.carded .hint{visibility:hidden}
 }
 .plist{display:none}
 .plist h3{margin:0;font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
@@ -841,7 +842,7 @@ var pops = {}, pins = {}, byAbbr = {};
 each(atlas.querySelectorAll(".pop"), function (p) { pops[p.getAttribute("data-abbr")] = p; });
 each(map.querySelectorAll(".pin"), function (p) { pins[p.getAttribute("data-abbr")] = p; });
 var picks = doc.querySelectorAll(".pick[data-abbr]");
-var open = null, sticky = false, opener = null, tipTimer = 0, leaveTimer = 0, focused = null;
+var open = null, sticky = false, opener = null, tipTimer = 0, leaveTimer = 0, switchTimer = 0, focused = null;
 var tipFor = null, muted = null;
 states.forEach(function (el) {
 byAbbr[el.getAttribute("data-abbr")] = el;
@@ -910,26 +911,58 @@ ring.setAttribute("d", p.getAttribute("d"));
 }
 function ringOff() { ring.setAttribute("d", ""); }
 /* ---- the state card ---- */
+function pinBoxes(a, clear) {
+return Object.keys(pins).map(function (k) {
+var r = pins[k].getBoundingClientRect();
+return [r.left - a.left - clear, r.top - a.top - clear, r.right - a.left + clear, r.bottom - a.top + clear];
+});
+}
+function covers(x, y, w, h, boxes) {
+var sum = 0;
+boxes.forEach(function (p) {
+var ow = Math.min(x + w, p[2]) - Math.max(x, p[0]), oh = Math.min(y + h, p[3]) - Math.max(y, p[1]);
+if (ow > 0 && oh > 0) sum += ow * oh;
+});
+return sum;
+}
+function gap(l1, t1, r1, b1, l2, t2, r2, b2) {
+return Math.sqrt(Math.pow(Math.max(0, l2 - r1, l1 - r2), 2) + Math.pow(Math.max(0, t2 - b1, t1 - b2), 2));
+}
 function place(abbr) {
 var pop = pops[abbr];
 if (!wide.matches) { pop.style.left = pop.style.top = ""; return; }
-var a = atlas.getBoundingClientRect();
+var a = atlas.getBoundingClientRect(), m = map.getBoundingClientRect();
 var b = byAbbr[abbr].getBoundingClientRect();
 var pin = pins[abbr];
-var cw = pop.offsetWidth, ch = pop.offsetHeight, gap = 22;
-var x = b.left - a.left - gap - cw;
-if (x < 0) x = Math.min(a.width - cw, b.right - a.left + gap);
-var legend = map.querySelector(".legend");
-var floor = getComputedStyle(legend).position === "absolute"
-? legend.getBoundingClientRect().top - a.top - 12 : map.offsetHeight;
-var py = pin ? pin.getBoundingClientRect().top + pin.offsetHeight / 2 - a.top : b.top - a.top;
-var y = Math.max(0, Math.min(floor - ch, py - ch * 0.35));
-pop.style.left = Math.round(x) + "px";
-pop.style.top = Math.round(y) + "px";
+var cw = pop.offsetWidth, ch = pop.offsetHeight;
+var left = m.left - a.left, right = Math.max(left, m.right - a.left - cw);
+var lg = map.querySelector(".legend"), l = lg.getBoundingClientRect();
+var legendIn = getComputedStyle(lg).position === "absolute";
+function lowest(x) {
+var under = legendIn && x < l.right - a.left + 12 && x + cw > l.left - a.left - 12;
+return Math.max(0, (under ? l.top - a.top - 12 : map.offsetHeight + 48) - ch);
+}
+var p = pin ? pin.getBoundingClientRect() : b;
+var px = (p.left + p.right) / 2 - a.left, py = (p.top + p.bottom) / 2 - a.top;
+var boxes = pinBoxes(a, 6), best = null;
+var own = [b.left - a.left, b.top - a.top, b.right - a.left, b.bottom - a.top];
+for (var x = left; x <= right + 7; x += 8) {
+x = Math.min(x, right);
+var low = lowest(x), want = Math.max(0, Math.min(low, py - ch * 0.35));
+for (var y = 0; y <= low + 3; y += 4) {
+y = Math.min(y, low);
+var score = covers(x, y, cw, ch, boxes) * 1e6 + (covers(x, y, cw, ch, [own]) > 0 ? 1e4 : 0)
++ 2 * gap(px, py, px, py, x, y, x + cw, y + ch) + Math.abs(y - want) / 10;
+if (!best || score < best[2]) best = [x, y, score];
+}
+}
+pop.style.left = Math.round(best[0]) + "px";
+pop.style.top = Math.round(best[1]) + "px";
 }
 function setOpen(abbr, opts) {
 opts = opts || {};
 clearTimeout(leaveTimer);
+clearTimeout(switchTimer);
 sticky = !!(abbr && opts.sticky);
 opener = null;   // callers that open by click, tap or key set it after this
 Object.keys(pops).forEach(function (k) { pops[k].hidden = k !== abbr; });
@@ -942,6 +975,7 @@ el.setAttribute("aria-expanded", on ? "true" : "false");
 Object.keys(pins).forEach(function (k) { pins[k].classList.toggle("on", k === abbr); });
 each(picks, function (p) { p.setAttribute("aria-expanded", p.getAttribute("data-abbr") === abbr ? "true" : "false"); });
 open = abbr;
+map.classList.toggle("carded", !!abbr);
 if (!abbr) return;
 place(abbr);
 if (opts.focus) pops[abbr].focus({ preventScroll: !opts.reveal || wide.matches });
@@ -1029,16 +1063,26 @@ restoreTip();
 function hoverOpen(e) {
 if (e.pointerType !== "mouse" || !wide.matches || !fine.matches) return;
 clearTimeout(leaveTimer);
+clearTimeout(switchTimer);
 var k = e.currentTarget.getAttribute("data-abbr");
-if (open !== k) setOpen(k);
+if (open === k) return;
+if (open) switchTimer = setTimeout(function () { setOpen(k); }, 160);
+else setOpen(k);
 }
 function hoverStay(e) { if (e.pointerType === "mouse") clearTimeout(leaveTimer); }
 function hoverLeave(e) {
-if (e.pointerType !== "mouse" || !open || sticky) return;
+if (e.pointerType !== "mouse") return;
+clearTimeout(switchTimer);
+if (!open || sticky) return;
 clearTimeout(leaveTimer);
+var wait = 300, from = e.currentTarget;
+if (!from.classList.contains("pop")) {
+var s = from.getBoundingClientRect(), c = pops[open].getBoundingClientRect();
+wait += Math.min(700, 2 * gap(s.left, s.top, s.right, s.bottom, c.left, c.top, c.right, c.bottom));
+}
 leaveTimer = setTimeout(function () {
 if (open && !sticky && !pops[open].contains(doc.activeElement)) setOpen(null);
-}, 300);
+}, wait);
 }
 states.forEach(function (el) {
 if (!isLive(el)) return;

@@ -23,7 +23,7 @@ tools/
   update_prices.py        refreshes the BLS series in site-data.json, then rebuilds
   make_images.py          favicons and the 1200x630 share image
   verify.py               recomputes every number from site-data.json and checks the page
-  browser_check.mjs       headless-Chrome checks (layout 360-1600 px, map keyboard/hover/tap, no outside requests)
+  browser_check.mjs       headless-Chrome checks (layout 360-1600 px, map keyboard/hover/tap, cards never over an icon, no outside requests)
 ```
 
 `tools/site-data.json` is the canonical copy of the site data from now on. It started as a copy of the

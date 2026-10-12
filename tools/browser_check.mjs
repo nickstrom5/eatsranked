@@ -85,6 +85,14 @@ async function mouse(x, y) {
   await send("Input.dispatchMouseEvent", { type: "mouseMoved", x, y });
   await sleep(300);
 }
+// a quick straight pointer move, as a hand makes it (about 1,000 px a second)
+async function glide(x0, y0, x1, y1) {
+  const steps = Math.max(2, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / 40));
+  for (let i = 1; i <= steps; i++) {
+    await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: x0 + (x1 - x0) * i / steps, y: y0 + (y1 - y0) * i / steps });
+    await sleep(40);
+  }
+}
 async function tap(x, y) {
   await send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
   await send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
@@ -150,6 +158,43 @@ try {
   const reqs = [...new Set(requests.map(u => u.replace(ORIGIN, "")))];
   console.log("    requests at 1600px:", reqs.join(" "));
 
+  // ---------------------------------------------------------------- a card never covers a map icon
+  // Each icon is a link to its state's site, so a card over one would take the click meant for it. Point at each
+  // icon in turn, straight from the last one, and hit-test every icon's centre and four inner points. (Below about
+  // 1000px a 384px card is nearly half the map and may have to cover an icon's edge; the card then covers the least.)
+  const iconPoints = `[].map.call(document.querySelectorAll('.pin'),function(p){var r=p.getBoundingClientRect(),x=r.width/4,y=r.height/4;
+    return {ab:p.dataset.abbr,pts:[[r.left+r.width/2,r.top+r.height/2],[r.left+x,r.top+y],[r.right-x,r.top+y],[r.left+x,r.bottom-y],[r.right-x,r.bottom-y]]};})`;
+  for (const w of [1024, 1280, 1440]) {
+    await open(w, 900);
+    await fullHeight(w);
+    const icons = await js(iconPoints);
+    const bad = [];
+    for (const { ab, pts } of icons) {
+      await mouse(pts[0][0], pts[0][1]);
+      const hit = await js(`(function(){var out=[];${iconPoints}.forEach(function(i){i.pts.forEach(function(q){var e=document.elementFromPoint(q[0],q[1]);
+        if(!e||!e.closest('.pin')||e.closest('.pin').dataset.abbr!==i.ab)out.push(i.ab);});});
+        return {open:(document.querySelector('.pop:not([hidden])')||{}).id||null,covered:out.filter(function(v,j,a){return a.indexOf(v)===j;})};})()`);
+      if (hit.open !== `pop-${ab.toLowerCase()}` || hit.covered.length) bad.push(`${ab}: card ${hit.open}, covers ${hit.covered.join(",")}`);
+    }
+    check(`${w}px: pointing at each state's icon shows its card, and every map icon stays uncovered and clickable`, bad.length === 0, bad.join("; "));
+    // A card can sit away from its state, past another live state: a quick, straight move from the icon to the card
+    // (about 1,000 px a second) reaches it, and crossing another state on the way doesn't swap the card.
+    const miss = [];
+    for (const { ab, pts } of icons) {
+      await mouse(5, 5); await sleep(1100);
+      const [px, py] = pts[0];
+      await mouse(px, py);
+      const [cx, cy] = await js(`(function(){var r=document.getElementById('pop-${ab.toLowerCase()}').getBoundingClientRect();
+        return [Math.max(r.left+24,Math.min(${px},r.right-24)),Math.max(r.top+24,Math.min(${py},r.bottom-24))];})()`);
+      await glide(px, py, cx, cy);
+      await sleep(500);
+      const got = await js(`({open:(document.querySelector('.pop:not([hidden])')||{}).id||null,on:!!(document.elementFromPoint(${cx},${cy})||{closest:function(){}}).closest('#pop-${ab.toLowerCase()}')})`);
+      if (got.open !== `pop-${ab.toLowerCase()}` || !got.on) miss.push(`${ab}: ${JSON.stringify(got)}`);
+    }
+    check(`${w}px: each card can be reached from its icon by a quick straight move`, miss.length === 0, miss.join("; "));
+    await mouse(5, 5); await sleep(1100);
+  }
+
   // ---------------------------------------------------------------- desktop interactions
   await open(1440, 900);
   await fullHeight(1440);
@@ -167,7 +212,7 @@ try {
   check("a card opened by pointing closes once the pointer leaves", st === null, String(st));
   await mouse(ix, iy + 30);
   const pc = await js("(function(){var r=document.getElementById('pop-il').getBoundingClientRect();return [r.left+r.width/2,r.top+window.scrollY+r.height/2]})()");
-  await mouse((ix + pc[0]) / 2, iy + 30); await mouse(pc[0], pc[1]); await sleep(500);
+  await glide(ix, iy + 30, pc[0], pc[1]); await sleep(500);
   st = await openPop();
   check("...but stays open while the pointer is on the card", st === "pop-il", String(st));
   await mouse(5, 5); await sleep(450);
@@ -185,6 +230,8 @@ try {
   st = await js("({il:!document.getElementById('pop-il').hidden, wi:!document.getElementById('pop-wi').hidden})");
   check("hovering Wisconsin swaps to its card", st.wi && !st.il, JSON.stringify(st));
   if (SHOTS) await shot("desktop-1440-wisconsin", await rectOf("#atlas", 24));
+  // Wisconsin's card may lie over Texas (a card covers coming-soon states, never an icon), so let it close first
+  await mouse(5, 5); await sleep(1100);
   const [tx, ty] = await statePoint("TX");
   await mouse(tx, ty);
   st = await js("({tip:document.querySelector('.map .tip').textContent, show:document.querySelector('.map .tip').classList.contains('show')})");
