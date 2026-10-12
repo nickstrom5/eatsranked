@@ -565,7 +565,7 @@ with urllib.request.urlopen(base_url + ".well-known/security.txt", timeout=10) a
     check("security.txt is served as text/plain", r_.headers.get_content_type() == "text/plain")
 
 if "--browser" in sys.argv:
-    r = subprocess.run(["node", str(TOOLS / "browser_check.mjs"), "--url", base_url], capture_output=True, text=True, timeout=480)
+    r = subprocess.run(["node", str(TOOLS / "browser_check.mjs"), "--url", base_url], capture_output=True, text=True, timeout=300)
     print(r.stdout.strip())
     check("browser checks (headless Chrome)", r.returncode == 0, r.stderr.strip()[-400:])
 srv.shutdown()

@@ -25,7 +25,7 @@
     // open: the state whose card is showing. sticky: opened by click, tap or keyboard (stays until closed);
     // otherwise it was opened by pointing at the state and closes when the pointer leaves.
     // opener: where focus goes back to when the card closes (never set by pointing).
-    var open = null, sticky = false, opener = null, tipTimer = 0, leaveTimer = 0, switchTimer = 0, focused = null;
+    var open = null, sticky = false, opener = null, tipTimer = 0, leaveTimer = 0, focused = null;
     // tipFor: the state the label is about. muted: the state whose label Escape hid; it stays hidden until
     // the pointer or focus moves to another state.
     var tipFor = null, muted = null;
@@ -106,70 +106,28 @@
     function ringOff() { ring.setAttribute("d", ""); }
 
     /* ---- the state card ---- */
-    // Every map icon is a link to its state's site, so a card must never sit over one: the click meant for
-    // that icon would land in the card. Icon boxes relative to the atlas, padded by `clear` px.
-    function pinBoxes(a, clear) {
-      return Object.keys(pins).map(function (k) {
-        var r = pins[k].getBoundingClientRect();
-        return [r.left - a.left - clear, r.top - a.top - clear, r.right - a.left + clear, r.bottom - a.top + clear];
-      });
-    }
-    // how much of the icons a card at x,y (w x h) would cover, in square px
-    function covers(x, y, w, h, boxes) {
-      var sum = 0;
-      boxes.forEach(function (p) {
-        var ow = Math.min(x + w, p[2]) - Math.max(x, p[0]), oh = Math.min(y + h, p[3]) - Math.max(y, p[1]);
-        if (ow > 0 && oh > 0) sum += ow * oh;
-      });
-      return sum;
-    }
-    // The distance between two boxes (left, top, right, bottom), in px; 0 if they touch or overlap.
-    function gap(l1, t1, r1, b1, l2, t2, r2, b2) {
-      return Math.sqrt(Math.pow(Math.max(0, l2 - r1, l1 - r2), 2) + Math.pow(Math.max(0, t2 - b1, t1 - b2), 2));
-    }
     function place(abbr) {
       var pop = pops[abbr];
       if (!wide.matches) { pop.style.left = pop.style.top = ""; return; }
-      var a = atlas.getBoundingClientRect(), m = map.getBoundingClientRect();
+      var a = atlas.getBoundingClientRect();
       var b = byAbbr[abbr].getBoundingClientRect();
       var pin = pins[abbr];
-      var cw = pop.offsetWidth, ch = pop.offsetHeight;
-      var left = m.left - a.left, right = Math.max(left, m.right - a.left - cw);
-      var lg = map.querySelector(".legend"), l = lg.getBoundingClientRect();
-      var legendIn = getComputedStyle(lg).position === "absolute";
-      // The card stays inside the map's width and above the legend where it would reach across it; elsewhere
-      // it may hang below the map, over the "Point to a state" line, down to 16px above the next section's
-      // first line (48px if there is no next section), but only where that clears an icon or brings it closer.
-      var mh = map.offsetHeight, sec = atlas.closest("section"), nx = sec && sec.nextElementSibling;
-      var base = nx && nx.firstElementChild ? nx.firstElementChild.getBoundingClientRect().top - a.top - 16 : mh + 48;
-      function lowest(x) {
-        var under = legendIn && x < l.right - a.left + 12 && x + cw > l.left - a.left - 12;
-        return Math.max(0, (under ? l.top - a.top - 12 : Math.max(mh, base)) - ch);
-      }
-      var p = pin ? pin.getBoundingClientRect() : b;
-      var px = (p.left + p.right) / 2 - a.left, py = (p.top + p.bottom) / 2 - a.top;
-      // The nearest spot to the state's icon that covers no icon (its own included), and not the state itself;
-      // if every spot covers one (on a narrow map the card is nearly half its width), the one that covers least.
-      var boxes = pinBoxes(a, 6), best = null;
-      var own = [b.left - a.left, b.top - a.top, b.right - a.left, b.bottom - a.top];
-      for (var x = left; x <= right + 7; x += 8) {
-        x = Math.min(x, right);
-        var low = lowest(x), want = Math.max(0, Math.min(low, py - ch * 0.35));
-        for (var y = 0; y <= low + 3; y += 4) {
-          y = Math.min(y, low);
-          var score = covers(x, y, cw, ch, boxes) * 1e6 + (covers(x, y, cw, ch, [own]) > 0 ? 1e4 : 0)
-            + 2 * gap(px, py, px, py, x, y, x + cw, y + ch) + 3 * Math.max(0, y + ch - mh) + Math.abs(y - want) / 10;
-          if (!best || score < best[2]) best = [x, y, score];
-        }
-      }
-      pop.style.left = Math.round(best[0]) + "px";
-      pop.style.top = Math.round(best[1]) + "px";
+      var cw = pop.offsetWidth, ch = pop.offsetHeight, gap = 22;
+      // Sit over the open Plains to the state's west; use the east side only if the west is too tight.
+      var x = b.left - a.left - gap - cw;
+      if (x < 0) x = Math.min(a.width - cw, b.right - a.left + gap);
+      var legend = map.querySelector(".legend");
+      var floor = getComputedStyle(legend).position === "absolute"
+        ? legend.getBoundingClientRect().top - a.top - 12 : map.offsetHeight;
+      var py = pin ? pin.getBoundingClientRect().top + pin.offsetHeight / 2 - a.top : b.top - a.top;
+      var y = Math.max(0, Math.min(floor - ch, py - ch * 0.35));
+      pop.style.left = Math.round(x) + "px";
+      pop.style.top = Math.round(y) + "px";
     }
 
     function setOpen(abbr, opts) {
       opts = opts || {};
       clearTimeout(leaveTimer);
-      clearTimeout(switchTimer);
       sticky = !!(abbr && opts.sticky);
       opener = null;   // callers that open by click, tap or key set it after this
       Object.keys(pops).forEach(function (k) { pops[k].hidden = k !== abbr; });
@@ -182,8 +140,6 @@
       Object.keys(pins).forEach(function (k) { pins[k].classList.toggle("on", k === abbr); });
       each(picks, function (p) { p.setAttribute("aria-expanded", p.getAttribute("data-abbr") === abbr ? "true" : "false"); });
       open = abbr;
-      // a card on a wide screen can hang over the "Point to a state" line below the map, which it replaces
-      map.classList.toggle("carded", !!abbr);
       if (!abbr) return;
       place(abbr);
       if (opts.focus) pops[abbr].focus({ preventScroll: !opts.reveal || wide.matches });
@@ -275,33 +231,19 @@
     });
     // Pointing at a live state (or its icon) on a wide screen shows its card while the pointer is on the
     // state, its icon or the card, and for a moment after, so the pointer can cross the gap to the card.
-    // With another state's card showing, the switch waits until the pointer has stayed 160ms: that card may
-    // sit beyond this state, and the pointer can cross this state on its way there.
     function hoverOpen(e) {
       if (e.pointerType !== "mouse" || !wide.matches || !fine.matches) return;
       clearTimeout(leaveTimer);
-      clearTimeout(switchTimer);
       var k = e.currentTarget.getAttribute("data-abbr");
-      if (open === k) return;
-      if (open) switchTimer = setTimeout(function () { setOpen(k); }, 160);
-      else setOpen(k);
+      if (open !== k) setOpen(k);
     }
     function hoverStay(e) { if (e.pointerType === "mouse") clearTimeout(leaveTimer); }
-    // A card can sit away from its state (it never covers another state's icon), so leaving the state or its
-    // icon gives the pointer 300ms plus 2ms for each pixel between them and the card (1s at most) to reach it.
     function hoverLeave(e) {
-      if (e.pointerType !== "mouse") return;
-      clearTimeout(switchTimer);
-      if (!open || sticky) return;
+      if (e.pointerType !== "mouse" || !open || sticky) return;
       clearTimeout(leaveTimer);
-      var wait = 300, from = e.currentTarget;
-      if (!from.classList.contains("pop")) {
-        var s = from.getBoundingClientRect(), c = pops[open].getBoundingClientRect();
-        wait += Math.min(700, 2 * gap(s.left, s.top, s.right, s.bottom, c.left, c.top, c.right, c.bottom));
-      }
       leaveTimer = setTimeout(function () {
         if (open && !sticky && !pops[open].contains(doc.activeElement)) setOpen(null);
-      }, wait);
+      }, 300);
     }
     states.forEach(function (el) {
       if (!isLive(el)) return;
