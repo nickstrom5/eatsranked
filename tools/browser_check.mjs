@@ -398,6 +398,15 @@ try {
   if (SHOTS) await shot("tablet-768-illinois", await rectOf("#states", 0));
 
   // ---------------------------------------------------------------- phone
+  // the header stays on one line at every phone width, with 44px tap targets
+  const hdr = [];
+  for (const w of [320, 340, 360, 375, 390, 412, 430]) {
+    await open(w, 800);
+    const h = await js(`(function(){var t=document.querySelector('.top'),out={h:Math.round(t.getBoundingClientRect().height),wm:Math.round(t.querySelector('.wordmark').getBoundingClientRect().height),links:[]};
+      t.querySelectorAll('.nav a').forEach(function(a){if(getComputedStyle(a).display==='none')return;var r=a.getBoundingClientRect();out.links.push([a.textContent,Math.round(r.width),Math.round(r.height)]);});return out;})()`);
+    if (h.h > 66 || h.wm > 46 || h.links.some(l => l[1] < 44 || l[2] < 44 || l[2] > 48)) hdr.push(`${w}: ${JSON.stringify(h)}`);
+  }
+  check("phone: the header stays on one line from 320 to 430px, with links at least 44x44", hdr.length === 0, hdr.join("; "));
   await open(390, 844);
   await fullHeight(390);
   if (SHOTS) await shot("phone-390-full");
