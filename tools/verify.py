@@ -24,6 +24,7 @@ import struct
 import subprocess
 import sys
 import threading
+import unicodedata
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -344,6 +345,8 @@ subs = ld_org.get("subOrganization", [])
 check(f"JSON-LD Organization lists the {len(live)} live state sites as subOrganization, linked by <site>#org",
       [(o.get("@type"), o.get("url"), o.get("@id")) for o in subs]
       == [("Organization", s["site"], s["site"].rstrip("/") + "/#org") for s in live], json.dumps(subs)[:300])
+check("JSON-LD subOrganization ids and urls are https URLs",
+      all(isinstance(o.get(k), str) and o[k].startswith("https://") for o in subs for k in ("@id", "url")))
 check("JSON-LD Organization sameAs is a list of https URLs",
       isinstance(ld_org.get("sameAs"), list) and ld_org["sameAs"] and all(u.startswith("https://") for u in ld_org["sameAs"]))
 
@@ -398,6 +401,35 @@ def csp_checks(name, doc):
 
 csp_checks("index.html", PAGE)
 csp_checks("404.html", (DOCS / "404.html").read_text())
+
+
+# ============================================================ link schemes
+class Links(html.parser.HTMLParser):
+    """Every <a> and its href as the browser reads it (character references decoded)."""
+    def __init__(self):
+        super().__init__()
+        self.hrefs = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "a":
+            self.hrefs.append(dict(attrs).get("href"))
+
+
+def safe_href(h):
+    if h is None or any(unicodedata.category(ch) in ("Cc", "Cf") or unicodedata.category(ch).startswith("Z") for ch in h):
+        return False
+    return (re.match(r"https://[A-Za-z0-9.-]+(?::\d+)?/", h) is not None
+            or re.fullmatch(r"mailto:[^\s:/?]+@[A-Za-z0-9.-]+(?:\?[^\s]*)?", h) is not None
+            or re.fullmatch(r"#[A-Za-z][\w-]*", h) is not None
+            or re.match(r"/(?!/)", h) is not None)
+
+
+for name, doc in (("index.html", PAGE), ("404.html", (DOCS / "404.html").read_text())):
+    lp = Links()
+    lp.feed(doc)
+    odd = [h for h in lp.hrefs if not safe_href(h)]
+    check(f"{name}: all {len(lp.hrefs)} links are https://, mailto:, #fragment or /path (no http:, data:, javascript:, "
+          f"no spaces or control characters)", lp.hrefs and not odd, repr(odd[:5]))
 
 # ============================================================ SEO, privacy, accessibility basics
 title = html.unescape(section(r"<title>(.*?)</title>"))

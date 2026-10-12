@@ -66,6 +66,9 @@ To look at it locally: `python3 -m http.server 8741 --directory docs` and open <
    | `colors.bg`, `colors.accent`, `colors.text` | card colours; `bg` fills the state on the map, `accent` fills it in dark mode. If `accent` reads below 4.5:1 on `bg`, the card's label, button and focus ring use the nearest same-hue shade that passes (build.py prints a note); `verify.py` fails if `text` doesn't pass |
    | `icon` | path under `docs/`, e.g. `"icons/texas.png"` |
 
+   Every link (`site`, `how`, `web_app`, `app_store`) must be a plain `https://` URL: `build.py` stops on any
+   other scheme or on spaces and control characters, and `verify.py` checks every link on the built pages.
+
 3. Run `python3 tools/build.py`, then `…/python tools/make_images.py` (so the share image shows the new icon),
    then `python3 tools/verify.py --browser`, and look at the page at phone and desktop width.
 

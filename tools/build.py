@@ -26,6 +26,7 @@ import math
 import pathlib
 import re
 import sys
+import unicodedata
 
 TOOLS = pathlib.Path(__file__).resolve().parent
 ROOT = TOOLS.parent
@@ -310,6 +311,24 @@ for s in LIVE:
         sys.exit(f"build: {s['abbr']} is not in us-states-paths.json")
     if not (DOCS / s["icon"]).is_file():
         sys.exit(f"build: missing icon docs/{s['icon']}")
+# Every link a state brings (the map icon goes straight to its site) must be a plain https:// URL: no other scheme
+# (http:, data:, javascript:) and no spaces, tabs, line breaks or invisible characters, which browsers strip
+# (so "java<TAB>script:" would still run). Other sessions edit site-data.json, so check before rendering anything.
+URL_OK = re.compile(r"https://[A-Za-z0-9.-]+(?::\d+)?/")
+
+
+def clean_url(v):
+    return (isinstance(v, str) and URL_OK.match(v) is not None
+            and not any(unicodedata.category(ch) in ("Cc", "Cf") or unicodedata.category(ch).startswith("Z") for ch in v))
+
+
+for s in LIVE:
+    for field in ("site", "how", "web_app", "app_store"):
+        if field != "site" and s.get(field) in (None, ""):
+            continue
+        if not clean_url(s.get(field)):
+            sys.exit(f"build: {s['abbr']} {field} must be an https:// URL without spaces or control characters, "
+                     f"not {s.get(field)!r}")
 LIVE_NAMES = and_list(NAMES[s["abbr"]] for s in LIVE)
 # "Live now" only once every live app has its App Store link; until then the websites are what's live.
 ON_STORE = all(s.get("app_store") for s in LIVE)
