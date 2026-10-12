@@ -138,10 +138,13 @@
       var lg = map.querySelector(".legend"), l = lg.getBoundingClientRect();
       var legendIn = getComputedStyle(lg).position === "absolute";
       // The card stays inside the map's width and above the legend where it would reach across it; elsewhere
-      // it may hang up to 48px below the map, over the "Point to a state" line, never down to the next section.
+      // it may hang below the map, over the "Point to a state" line, down to 16px above the next section's
+      // first line (48px if there is no next section), but only where that clears an icon or brings it closer.
+      var mh = map.offsetHeight, sec = atlas.closest("section"), nx = sec && sec.nextElementSibling;
+      var base = nx && nx.firstElementChild ? nx.firstElementChild.getBoundingClientRect().top - a.top - 16 : mh + 48;
       function lowest(x) {
         var under = legendIn && x < l.right - a.left + 12 && x + cw > l.left - a.left - 12;
-        return Math.max(0, (under ? l.top - a.top - 12 : map.offsetHeight + 48) - ch);
+        return Math.max(0, (under ? l.top - a.top - 12 : Math.max(mh, base)) - ch);
       }
       var p = pin ? pin.getBoundingClientRect() : b;
       var px = (p.left + p.right) / 2 - a.left, py = (p.top + p.bottom) / 2 - a.top;
@@ -155,7 +158,7 @@
         for (var y = 0; y <= low + 3; y += 4) {
           y = Math.min(y, low);
           var score = covers(x, y, cw, ch, boxes) * 1e6 + (covers(x, y, cw, ch, [own]) > 0 ? 1e4 : 0)
-            + 2 * gap(px, py, px, py, x, y, x + cw, y + ch) + Math.abs(y - want) / 10;
+            + 2 * gap(px, py, px, py, x, y, x + cw, y + ch) + 3 * Math.max(0, y + ch - mh) + Math.abs(y - want) / 10;
           if (!best || score < best[2]) best = [x, y, score];
         }
       }

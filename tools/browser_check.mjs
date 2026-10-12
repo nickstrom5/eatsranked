@@ -23,7 +23,8 @@ try { fs.unlinkSync(path.join(PROFILE, "DevToolsActivePort")); } catch {}
 const chrome = spawn(CHROME, ["--headless=new", "--disable-gpu", "--hide-scrollbars", "--mute-audio",
   `--user-data-dir=${PROFILE}`, "--remote-debugging-port=0", "--no-first-run", "--no-default-browser-check",
   "--disable-extensions", "--disable-background-networking", "--disable-component-update", "about:blank"], { stdio: "ignore" });
-const killer = setTimeout(() => { chrome.kill("SIGKILL"); console.error("timeout"); process.exit(2); }, 240000);
+// the card checks point at every icon at four widths, so the run grows with each state (about 100s with 7)
+const killer = setTimeout(() => { chrome.kill("SIGKILL"); console.error("timeout"); process.exit(2); }, 420000);
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 async function devtoolsPort() {
@@ -168,11 +169,11 @@ try {
 
   // ---------------------------------------------------------------- a card never covers a map icon
   // Each icon is a link to its state's site, so a card over one would take the click meant for it. Point at each
-  // icon in turn, straight from the last one, and hit-test every icon's centre and four inner points. (Below about
-  // 1000px a 384px card is nearly half the map and may have to cover an icon's edge; the card then covers the least.)
+  // icon in turn, straight from the last one, and hit-test every icon's centre and four inner points. (Near 900px a
+  // 384px card is nearly half the map and may have to cover an icon's edge; the card then covers the least.)
   const iconPoints = `[].map.call(document.querySelectorAll('.pin'),function(p){var r=p.getBoundingClientRect(),x=r.width/4,y=r.height/4;
     return {ab:p.dataset.abbr,pts:[[r.left+r.width/2,r.top+r.height/2],[r.left+x,r.top+y],[r.right-x,r.top+y],[r.left+x,r.bottom-y],[r.right-x,r.bottom-y]]};})`;
-  for (const w of [1024, 1280, 1440]) {
+  for (const w of [960, 1024, 1280, 1440]) {
     await open(w, 900);
     await fullHeight(w);
     const icons = await js(iconPoints);

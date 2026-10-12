@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-qOhFsq0QMV2REqNwk5hGH5bZE9SkX6gt6yeyKdYPv+U=' 'sha256-dQcUjV0Xn7+r3aVpu3xSAdg6DNpjN9inleCAEjYUKZ8='; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-qOhFsq0QMV2REqNwk5hGH5bZE9SkX6gt6yeyKdYPv+U=' 'sha256-DITaewEx1e/8oMnyEUXels1ZfSYI5GVZrhAl+EJpbLI='; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Eats Ranked: Restaurant Grades &amp; Rankings, State by State</title>
 <meta name="description" content="Restaurant apps from public records and open data: official inspection results or our own grades where available, hand-checked local picks. Now in 7 states.">
@@ -947,9 +947,11 @@ var cw = pop.offsetWidth, ch = pop.offsetHeight;
 var left = m.left - a.left, right = Math.max(left, m.right - a.left - cw);
 var lg = map.querySelector(".legend"), l = lg.getBoundingClientRect();
 var legendIn = getComputedStyle(lg).position === "absolute";
+var mh = map.offsetHeight, sec = atlas.closest("section"), nx = sec && sec.nextElementSibling;
+var base = nx && nx.firstElementChild ? nx.firstElementChild.getBoundingClientRect().top - a.top - 16 : mh + 48;
 function lowest(x) {
 var under = legendIn && x < l.right - a.left + 12 && x + cw > l.left - a.left - 12;
-return Math.max(0, (under ? l.top - a.top - 12 : map.offsetHeight + 48) - ch);
+return Math.max(0, (under ? l.top - a.top - 12 : Math.max(mh, base)) - ch);
 }
 var p = pin ? pin.getBoundingClientRect() : b;
 var px = (p.left + p.right) / 2 - a.left, py = (p.top + p.bottom) / 2 - a.top;
@@ -961,7 +963,7 @@ var low = lowest(x), want = Math.max(0, Math.min(low, py - ch * 0.35));
 for (var y = 0; y <= low + 3; y += 4) {
 y = Math.min(y, low);
 var score = covers(x, y, cw, ch, boxes) * 1e6 + (covers(x, y, cw, ch, [own]) > 0 ? 1e4 : 0)
-+ 2 * gap(px, py, px, py, x, y, x + cw, y + ch) + Math.abs(y - want) / 10;
++ 2 * gap(px, py, px, py, x, y, x + cw, y + ch) + 3 * Math.max(0, y + ch - mh) + Math.abs(y - want) / 10;
 if (!best || score < best[2]) best = [x, y, score];
 }
 }
