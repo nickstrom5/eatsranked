@@ -61,14 +61,15 @@ await send("Page.addScriptToEvaluateOnNewDocument", { source: "window.__csp=[];d
 const cspViolations = () => js("window.__csp || []");
 
 let mobile = false;
-async function open(width, height, { dark = false, still = false, nojs = false, url = URL_ } = {}) {
+async function open(width, height, { dark = false, still = false, forced = false, nojs = false, url = URL_ } = {}) {
   mobile = width < 600;
   await send("Emulation.setScriptExecutionDisabled", { value: nojs });
   await send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: mobile ? 2 : 1, mobile });
   await send("Emulation.setTouchEmulationEnabled", { enabled: mobile, maxTouchPoints: mobile ? 5 : 1 });
   await send("Emulation.setEmulatedMedia", { features: [
     { name: "prefers-color-scheme", value: dark ? "dark" : "light" },
-    { name: "prefers-reduced-motion", value: still ? "reduce" : "no-preference" }] });
+    { name: "prefers-reduced-motion", value: still ? "reduce" : "no-preference" },
+    { name: "forced-colors", value: forced ? "active" : "none" }] });
   requests = []; consoleErrors = [];
   const loaded = once("Page.loadEventFired");
   await send("Page.navigate", { url });
@@ -365,6 +366,21 @@ try {
       });
       return out;})()`);
     check(`every card and pop-up: label, Website button and focus ring contrast (${dark ? "dark" : "light"})`, low.length === 0, low.join(" "));
+  }
+
+  // forced colors (Windows High Contrast): cards keep their edges, the Website link keeps a button outline, the
+  // coming-soon badge is dashed so it doesn't look like a button, and the legend keys stay visible
+  for (const dark of [false, true]) {
+    await open(1440, 900, { dark, forced: true });
+    const fc = await js(`(function(){function cs(sel){var e=document.querySelector(sel);return e?getComputedStyle(e):null;}
+      var soon=cs('.badge.soon');
+      return {forced:matchMedia('(forced-colors: active)').matches, app:cs('.app').borderTopWidth, pop:cs('.pop').borderTopWidth,
+        btn:cs('.app .btn').borderTopWidth, soon:soon?soon.borderTopStyle:'no badge', keyLive:cs('.key-live').backgroundColor,
+        keySoon:cs('.key-soon').borderTopWidth};})()`);
+    check(`forced colors (${dark ? "dark" : "light"}): card and pop-up edges, Website button outline, dashed coming-soon badge, legend keys`,
+      fc.forced && parseFloat(fc.app) >= 1 && parseFloat(fc.pop) >= 1 && parseFloat(fc.btn) >= 1 && ["dashed", "no badge"].includes(fc.soon)
+      && !/^transparent$|^rgba\([^)]*,\s*0\)$/.test(fc.keyLive) && parseFloat(fc.keySoon) >= 1, JSON.stringify(fc));
+    if (SHOTS) { await fullHeight(1440); await shot(`forced-1440-${dark ? "dark" : "light"}-full`); }
   }
 
   // ---------------------------------------------------------------- tablet: the card opens below the map
