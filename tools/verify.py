@@ -34,7 +34,26 @@ TOOLS = pathlib.Path(__file__).resolve().parent
 DOCS = TOOLS.parent / "docs"
 D = json.loads((TOOLS / "site-data.json").read_text())
 GEO = json.loads((TOOLS / "us-states-paths.json").read_text())
-PAGE = (DOCS / "index.html").read_text()
+SERVED = (DOCS / "index.html").read_text()   # as served; PAGE below is the same page with styles back inline
+
+def unhoist(doc):
+    """The page as written before build.py's hoist_styles: each generated zs class back into a style attribute, so the
+    checks below can read chart positions and card colours where the templates put them."""
+    rules = dict(re.findall(r"\.(zs\d+)(?:\.\1){3}\{([^}]*)\}", doc))
+
+    def tag(m):
+        t = m.group(0)
+        cm = re.search(r'\sclass="([^"]*)"', t)
+        classes = cm.group(1).split()
+        rest, style = [c for c in classes if c not in rules], ";".join(rules[c] for c in classes if c in rules)
+        if not style:
+            return t
+        return t[:cm.start()] + (f' class="{" ".join(rest)}"' if rest else "") + t[cm.end():-1].rstrip("/") + f' style="{style}">'
+
+    return re.sub(r'<[a-zA-Z][^>]*\sclass="[^"]*\bzs\d+\b[^"]*"[^>]*>', tag, doc)
+
+
+PAGE = PAGE_STYLED = unhoist(SERVED)   # content checks read where the templates put things
 
 fails = []
 
@@ -191,13 +210,13 @@ for cls, sid in (("rest", R), ("groc", G), ("all", A)):
 want_starts = [axis[0]] + [axis[axis.index(m) + 1] for m in missing if axis.index(m) + 1 < len(axis)]
 check(f"chart lines: {npts} points within 0.01 points of the data", npts == 3 * (len(axis) - len(missing)) and worst < 0.01, f"worst {worst}")
 check("chart lines break at the unpublished months", all(v == want_starts for v in starts.values()), str(starts))
-dots = dict(re.findall(r'<span class="dot (\w+)" style="left:100%;top:([\d.]+)%"', PAGE))
+dots = dict(re.findall(r'<span class="dot (\w+)" style="left:100%;top:([\d.]+)%"', PAGE_STYLED))
 check("end dots sit on each line's last value",
       all(abs(to_pct(float(dots[k]) * 10) - E[k2]) < 0.01 for k, k2 in (("rest", "rest"), ("groc", "groc"), ("all", "all"))), str(dots))
 gapnotes = [text_of(g) for g in re.findall(r'<span class="gapnote"[^>]*>(.*?)</span>', PAGE)]
 check("gap note for each unpublished month", gapnotes == [f"{short(m)} not published" for m in missing], str(gapnotes))
-zero = [float(v) for v in re.findall(r'<div class="yax"[^>]*>.*?<span style="top:([\d.]+)%">0%</span>', PAGE)]
-gtops = [float(v) for v in re.findall(r'<span class="gapnote" style="left:[\d.]+%;top:([\d.]+)%"', PAGE)]
+zero = [float(v) for v in re.findall(r'<div class="yax"[^>]*>.*?<span style="top:([\d.]+)%">0%</span>', PAGE_STYLED)]
+gtops = [float(v) for v in re.findall(r'<span class="gapnote" style="left:[\d.]+%;top:([\d.]+)%"', PAGE_STYLED)]
 check("gap notes are anchored to the 0% line (and drawn above it)",
       zero and len(gtops) == len(missing) and all(abs(g - zero[0]) < 0.01 for g in gtops)
       and "translate(-100%,calc(-100% - 6px))" in PAGE, f"{zero} {gtops}")
@@ -316,7 +335,7 @@ check("card CSS still has the opacities the contrast gate assumes",
       and not re.search(r"\.(?:app|pop) [^{]*\{[^}]*opacity:\.(?:[0-6]|7[0-3])", PAGE))
 for s in live:
     a, c = s["abbr"].lower(), s["colors"]
-    styles = re.findall(rf'<article class="(?:app|pop)" id="(?:app|pop)-{a}"[^>]*style="--bg:(#[0-9A-Fa-f]{{6}});--ac:(#[0-9A-Fa-f]{{6}});--fg:(#[0-9A-Fa-f]{{6}})"', PAGE)
+    styles = re.findall(rf'<article class="(?:app|pop)" id="(?:app|pop)-{a}"[^>]*style="--bg:(#[0-9A-Fa-f]{{6}});--ac:(#[0-9A-Fa-f]{{6}});--fg:(#[0-9A-Fa-f]{{6}})"', PAGE_STYLED)
     if len(styles) != 2 or styles[0] != styles[1]:
         check(f"{s['abbr']} card and pop-up colours", False, str(styles))
         continue
@@ -393,22 +412,29 @@ def csp_checks(name, doc):
     p.feed(doc)
     run = [body for attrs, body in p.out if attrs.get("type") not in ("application/json", "application/ld+json") and "src" not in attrs]
     want = ["'sha256-" + base64.b64encode(hashlib.sha256(b.encode("utf-8")).digest()).decode() + "'" for b in run]
-    want_src = (["'self'"] + want) if run or any("src" in a for a, _ in p.out) else ["'none'"]
-    check(f"{name}: script-src allows exactly its {len(run)} inline script(s), by hash ('none' when it has none)",
-          d.get("script-src") == want_src and "\r" not in doc,
+    want_src = want or ["'none'"]
+    check(f"{name}: no script files, and script-src allows exactly its {len(run)} inline script(s), by hash ('none' when it has none)",
+          d.get("script-src") == want_src and "\r" not in doc and not any("src" in a for a, _ in p.out),
           f"{d.get('script-src')} != {want_src}")
+    styles = re.findall(r"<style>(.*?)</style>", doc, re.S)
+    want_css = ["'sha256-" + base64.b64encode(hashlib.sha256(b.encode("utf-8")).digest()).decode() + "'" for b in styles] or ["'none'"]
+    check(f"{name}: style-src allows exactly its {len(styles)} <style> block(s), by hash, and nothing inline",
+          d.get("style-src") == want_css, f"{d.get('style-src')} != {want_css}")
     uses_data = re.search(r"""(?:\ssrc=["']?|url\(\s*["']?)data:""", doc) is not None
-    fixed = {"default-src": ["'none'"], "style-src": ["'self'", "'unsafe-inline'"], "img-src": ["'self'"] + (["data:"] if uses_data else []),
+    fixed = {"default-src": ["'none'"], "img-src": ["'self'"] + (["data:"] if uses_data else []),
              "connect-src": ["'self'"], "manifest-src": ["'self'"], "base-uri": ["'none'"], "form-action": ["'none'"],
              "object-src": ["'none'"], "upgrade-insecure-requests": []}
     check(f"{name}: CSP blocks other hosts, plugins, <base> and forms", all(d.get(k) == v for k, v in fixed.items())
-          and set(d) == set(fixed) | {"script-src"} and not re.search(r"https?:|\*", pol), pol)
+          and set(d) == set(fixed) | {"script-src", "style-src"} and not re.search(r"https?:|\*", pol), pol)
     markup = re.sub(r"<(script|style)\b.*?</\1>", "", doc, flags=re.S)
+    check(f"{name}: no style attributes in the markup (the CSP allows styles only by hash)",
+          not re.search(r"<[a-zA-Z][^>]*\sstyle=", markup))
+    check(f"{name}: a referrer policy that keeps paths private", '<meta name="referrer" content="strict-origin-when-cross-origin">' in doc)
     check(f"{name}: no inline event handlers or javascript: links (the CSP would block them)",
           not re.search(r"<[^>]*\son[a-z]+\s*=", markup) and "javascript:" not in markup.lower())
 
 
-csp_checks("index.html", PAGE)
+csp_checks("index.html", SERVED)
 csp_checks("404.html", (DOCS / "404.html").read_text())
 
 
@@ -434,7 +460,7 @@ def safe_href(h):
             or re.match(r"/(?![/\\])", h) is not None)
 
 
-for name, doc in (("index.html", PAGE), ("404.html", (DOCS / "404.html").read_text())):
+for name, doc in (("index.html", SERVED), ("404.html", (DOCS / "404.html").read_text())):
     lp = Links()
     lp.feed(doc)
     odd = [h for h in lp.hrefs if not safe_href(h)]
@@ -454,7 +480,8 @@ check("og:url and og:image absolute", 'property="og:url" content="https://eatsra
 for n in ("twitter:card", "twitter:title", "twitter:description", "twitter:image"):
     check(f"meta {n}", f'name="{n}"' in PAGE)
 ld = json.loads(section(r'<script type="application/ld\+json">(.*?)</script>'))
-check("JSON-LD WebSite + Organization", [g["@type"] for g in ld["@graph"]] == ["WebSite", "Organization"])
+check("JSON-LD WebSite + founder Person + Organization", [g["@type"] for g in ld["@graph"]] == ["WebSite", "Person", "Organization"]
+      and ld["@graph"][2].get("founder", {}).get("@id") == ld["@graph"][1]["@id"] == "https://eatsranked.com/#nicholas-soderstrom")
 check("exactly one <h1>", PAGE.count("<h1") == 1)
 check("robots meta", '<meta name="robots" content="index,follow,max-image-preview:large">' in PAGE)
 imgs = re.findall(r"<img\b[^>]*>", PAGE)
@@ -516,7 +543,7 @@ check(".nojekyll is there, so Pages serves .well-known/ (and no page uses Jekyll
       and not (DOCS / "_config.yml").exists()
       and not any(re.search(r"\{%|\{\{|\A---\n", f.read_text()) for f in DOCS.glob("*.html")))
 # 150 KB was set with two states; each state adds about 4 KB of card, map and data (Nick, 2026-10-08: 200 KB)
-check("index.html under 200 KB", len(PAGE.encode()) < 200 * 1024, f"{len(PAGE.encode()) / 1024:.0f} KB")
+check("index.html under 200 KB", len(SERVED.encode()) < 200 * 1024, f"{len(SERVED.encode()) / 1024:.0f} KB")
 
 # ============================================================ serve docs/ and fetch every local link
 def free_port():

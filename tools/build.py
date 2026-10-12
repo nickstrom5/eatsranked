@@ -329,6 +329,9 @@ for s in LIVE:
         if not clean_url(s.get(field)):
             sys.exit(f"build: {s['abbr']} {field} must be an https:// URL without spaces, backslashes or control characters, "
                      f"not {s.get(field)!r}")
+    for g in s.get("guides") or []:
+        if not clean_url(g.get("url")) or not (isinstance(g.get("label"), str) and g["label"].strip()):
+            sys.exit(f"build: {s['abbr']} guides need a label and an https:// url, not {g!r}")
 LIVE_NAMES = and_list(NAMES[s["abbr"]] for s in LIVE)
 # "Live now" only once every live app has its App Store link; until then the websites are what's live.
 ON_STORE = all(s.get("app_store") for s in LIVE)
@@ -419,6 +422,9 @@ def more_links(s):
     if s.get("web_app"):
         out.append(f'<a class="more" {ext(s["web_app"])}>{esc(s.get("web_app_label") or "Search on the web")}'
                    f'<span class="sr-only"> with {esc(s["app"])}</span> <span aria-hidden="true">&rarr;</span></a>')
+    for g in s.get("guides") or []:   # the state's best guide pages, so the hub links deeper than each home page
+        out.append(f'<a class="more" {ext(g["url"])}>{esc(g["label"])}<span class="sr-only"> in {esc(s["app"])}</span> '
+                   f'<span aria-hidden="true">&rarr;</span></a>')
     return f'<div class="links">{"".join(out)}</div>' if out else ""
 
 
@@ -583,6 +589,9 @@ for st in GEO["states"]:
                       f'data-x="{x}" data-y="{y}"{adj} role="img" aria-label="{esc(st["name"])}: coming soon" d="{d}"/>')
 # Live states first, so a screen reader meets them before the 49 coming-soon shapes. Borders are drawn in
 # the same colour and width on every state, so paint order doesn't change how the map looks.
+# Live states in the page's own order (the lede, cards and footer), so Tab, Home and End meet Illinois first, not us-atlas order.
+ORDER = {s["abbr"]: i for i, s in enumerate(LIVE)}
+live_shapes.sort(key=lambda h: ORDER[re.search(r'data-abbr="([A-Z]{2})"', h).group(1)])
 MAP = "\n".join(live_shapes + shapes)
 PINS = "\n".join("          " + p for p in pins)
 
@@ -622,13 +631,40 @@ for s in LIVE:
 PICKS = "\n".join(picks)
 
 MAILTO_NEXT = f"mailto:{EMAIL}?subject=" + "Next%20state%20for%20Eats%20Ranked"
+
+# ====================================================================== questions
+# Every answer follows from site-data.json or from what the page already says, so it stays true as states launch.
+ON_ANY_STORE = [s for s in LIVE if s.get("app_store")]
+if ON_STORE:
+    DOWNLOAD = "Yes. Tap the App Store badge on a state&rsquo;s card."
+elif ON_ANY_STORE:
+    DOWNLOAD = (f"Yes for {esc(and_list(NAMES[s['abbr']] for s in ON_ANY_STORE))}: tap the App Store badge on its card. "
+                "The others are coming soon to the App Store, and their websites work today.")
+else:
+    DOWNLOAD = ("Not yet. The iPhone and iPad apps are coming soon to the App Store. Each state&rsquo;s website, "
+                "with search on the web, works today.")
+FAQ = [
+    ("Are the apps and websites free?", "Yes. Every app and website is free, with no ads and no account."),
+    ("Can I download the apps?", DOWNLOAD),
+    ("Where does the data come from?", esc(SITE.get("how_it_works_note", ""))),
+    ("Are the grades official?",
+     "Only where we say so. Where a city, county or state publishes an official inspection result, the app shows it as "
+     "published. Where an app shows a grade of its own, it&rsquo;s labeled as ours, never as official."),
+    ("Which state is next?", f'More states are on the way. <a href="{esc(MAILTO_NEXT)}">Tell us which one you want next</a>.'),
+    ("Who makes Eats Ranked?",
+     f'Eats Ranked is an independent project by Nicholas Soderstrom, not affiliated with any restaurant or government '
+     f'agency. Questions or corrections: <a href="mailto:{esc(EMAIL)}">{esc(EMAIL)}</a>.'),
+]
+FAQ_HTML = "\n".join(f"      <li><h3>{q}</h3><p>{a}</p></li>" for q, a in FAQ)
 MAP_TITLE = f"Map of the United States. {LIVE_LABEL}: {LIVE_NAMES}. Every other state is coming soon."
 LEDE_LIVE = f"Live now in {LIVE_NAMES}." if ON_STORE else f"Now in {LIVE_NAMES}."
 
 footer_apps = "".join(f'<li><a {ext(s["site"])}>{esc(s["app"])}</a></li>' for s in LIVE)
 
 # ====================================================================== head
-TITLE = "Eats Ranked: Restaurant Grades & Rankings, State by State"
+# True of every state: "Grades" overpromised (only Chicago, and Wisconsin's Madison/Dane County, grade), and several state
+# sites say their lists are never ordered by ratings, so no "Rankings" either; the brand name carries "Ranked"
+TITLE = "Eats Ranked: Free Restaurant Guides, State by State"
 # True of every app: some show the official inspection result as published (California, Florida, Connecticut,
 # Washington), some a grade of their own labeled as theirs (Chicago; Wisconsin for Madison/Dane County), and some
 # no grades at all (Colorado), hence "where available". No "free iPhone apps" claim: none may be on the App Store yet.
@@ -641,10 +677,11 @@ OG_ALT = f"Eats Ranked: restaurants, ranked state by state, with the app icons f
 JSONLD = jsonscript({
     "@context": "https://schema.org",
     "@graph": [
-        {"@type": "WebSite", "@id": URL + "#website", "url": URL, "name": BRAND["name"],
+        {"@type": "WebSite", "@id": URL + "#website", "url": URL, "name": BRAND["name"], "alternateName": ["EatsRanked"],
          "description": DESC, "inLanguage": "en-US", "publisher": {"@id": URL + "#organization"}},
+        {"@type": "Person", "@id": URL + "#nicholas-soderstrom", "name": "Nicholas Soderstrom"},
         {"@type": "Organization", "@id": URL + "#organization", "name": BRAND["name"], "url": URL,
-         "logo": URL + "icon-512.png", "email": EMAIL,
+         "logo": URL + "icon-512.png", "email": EMAIL, "founder": {"@id": URL + "#nicholas-soderstrom"},
          "contactPoint": {"@type": "ContactPoint", "email": EMAIL, "contactType": "customer support"},
          "sameAs": [REPO],
          # each state site names its own Organization <site>#org (and owns its name), so the two point at the same node
@@ -665,7 +702,7 @@ SUBS = {
     "LEDE_LIVE": esc(LEDE_LIVE),
     "MAILTO_NEXT": esc(MAILTO_NEXT), "VIEWBOX": esc(GEO["viewBox"]), "MAP_TITLE": esc(MAP_TITLE), "MAP": MAP,
     "PINS": PINS, "POPS": POPS, "PICKS": PICKS, "LEGEND_STYLE": LEGEND_STYLE,
-    "HOW_NOTE": esc(SITE.get("how_it_works_note", "")), "BILL": BILL_HTML, "FACTS": FACTS,
+    "HOW_NOTE": esc(SITE.get("how_it_works_note", "")), "FAQ": FAQ_HTML, "BILL": BILL_HTML, "FACTS": FACTS,
     "CHART_TITLE": esc(CHART_TITLE), "CHART_SUB": esc(CHART_SUB), "CHART_ALT": esc(CHART_ALT),
     "YTICKS": YTICKS, "XTICKS": XTICKS, "CHART_SVG": CHART_SVG, "CHART_HTML": CHART_HTML, "ENDS": ENDS,
     "TABLE": TABLE, "SOURCE": esc(P["source"]), "SOURCE_URL": esc(P["source_url"]),
@@ -696,9 +733,16 @@ def with_csp(doc):
             external = True
             continue
         hashes.append(f"'sha256-{base64.b64encode(hashlib.sha256(body.encode()).digest()).decode()}'")
-    script = " ".join(["'self'"] + hashes) if hashes or external else "'none'"
+    if external:
+        sys.exit("build: the page loads a script file; every script here is inline and allowed by hash")
+    script = " ".join(hashes) if hashes else "'none'"
+    styles = [f"'sha256-{base64.b64encode(hashlib.sha256(b.encode()).digest()).decode()}'"
+              for b in re.findall(r"<style>(.*?)</style>", doc, re.S)]
+    if re.search(r"<[a-zA-Z][^>]*\sstyle=", re.sub(r"<(script|style)\b.*?</\1>", "", doc, flags=re.S)):
+        sys.exit("build: a style attribute survived hoist_styles; the CSP would block it")
+    style = " ".join(styles) if styles else "'none'"
     img = "'self' data:" if re.search(r"""(?:\ssrc=["']?|url\(\s*["']?)data:""", doc) else "'self'"
-    policy = (f"default-src 'none'; script-src {script}; style-src 'self' 'unsafe-inline'; img-src {img}; "
+    policy = (f"default-src 'none'; script-src {script}; style-src {style}; img-src {img}; "
               "connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; "
               "upgrade-insecure-requests")
     if doc.count("@@CSP@@") != 1:
@@ -706,9 +750,36 @@ def with_csp(doc):
     return doc.replace("@@CSP@@", html.escape(policy, quote=False))   # no double quotes in it; keeps 'self' readable
 
 
+def hoist_styles(doc):
+    """Every style="…" attribute becomes a class whose rule sits in one more <style> block, so the CSP can allow styles
+    by hash with no 'unsafe-inline'. Each selector repeats its class four times: enough to beat the stylesheet's own
+    rules, as the inline style did, while app.js's runtime element.style values (allowed by the CSP) still win."""
+    rules = {}
+
+    def tag(m):
+        name, attrs = m.group(1), m.group(2)
+        st = re.search(r'\sstyle="([^"]*)"', attrs)
+        decl = html.unescape(st.group(1)).strip().rstrip(";")
+        cls = rules.setdefault(decl, f"zs{len(rules)}")
+        attrs = attrs[:st.start()] + attrs[st.end():]
+        cl = re.search(r'\sclass="([^"]*)"', attrs)
+        attrs = (attrs[:cl.start()] + f' class="{cl.group(1)} {cls}"' + attrs[cl.end():]) if cl else f' class="{cls}"' + attrs
+        return f"<{name}{attrs}>"
+
+    # only markup: script and style blocks are left as they are
+    parts = re.split(r"(<(?:script|style)\b.*?</(?:script|style)>)", doc, flags=re.S)
+    parts = [p if p.startswith(("<script", "<style")) else
+             re.sub(r'<([a-zA-Z][\w-]*)(\s[^>]*?\sstyle="[^"]*"[^>]*|\sstyle="[^"]*"[^>]*)>', tag, p) for p in parts]
+    doc = "".join(parts)
+    assert ".zs" not in "".join(re.findall(r"<style>(.*?)</style>", doc, re.S)), "class prefix zs is taken"
+    css = "".join(f".{c}.{c}.{c}.{c}{{{d}}}" for d, c in rules.items())
+    assert "</" not in css
+    return doc.replace("</head>", f"<style>{css}</style>\n</head>", 1) if rules else doc
+
+
 page = fill(TEMPLATE, SUBS)
 page = page.replace("A–F", '<span class="nw">A–F</span>')
-page = with_csp(page)
+page = with_csp(hoist_styles(page))
 
 # nothing on the page may load from another host
 assert not re.search(r"""\s(?:src|srcset|poster|data)=["']?(?:https?:)?//""", page), "remote src"
@@ -716,7 +787,7 @@ assert not re.search(r"""<link\b[^>]*\bhref=["']?(?:https?:)?//""", page.replace
 assert not re.search(r"""url\(\s*["']?(?:https?:)?//""", page) and "@import" not in page, "remote css"
 assert page.count("<h1") == 1
 
-page404 = with_csp(fill(TEMPLATE_404, {"URL": esc(URL), "EMAIL": esc(EMAIL)}))
+page404 = with_csp(hoist_styles(fill(TEMPLATE_404, {"URL": esc(URL), "EMAIL": esc(EMAIL)})))
 
 # ====================================================================== write
 if DRY_RUN:

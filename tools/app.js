@@ -165,6 +165,8 @@
       if (!el) return;
       focused = el;
       muted = null;
+      // moving to another state closes an open card, which could otherwise sit on top of the focused state
+      if (open && abbrOf(el) !== open) setOpen(null);
       setCurrent(el);
       if (kbdFocus(el)) {
         map.classList.add("kbd");
@@ -207,7 +209,8 @@
       if (!el) return;
       if (isLive(el)) {
         e.preventDefault();
-        setOpen(abbrOf(el), { sticky: true, reveal: true });
+        // detail 0: a screen reader's activation (no pointer), so focus moves into the card as with Enter
+        setOpen(abbrOf(el), { sticky: true, reveal: true, focus: e.detail === 0 });
         opener = el;
         hideTip();
       } else {

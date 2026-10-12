@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="@@CSP@@">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>@@TITLE@@</title>
 <meta name="description" content="@@DESC@@">
 <meta name="robots" content="index,follow,max-image-preview:large">
@@ -13,6 +14,7 @@
 <meta name="theme-color" content="#151411" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta property="og:type" content="website">
@@ -203,6 +205,11 @@ html:not(.js) .pops{display:none}
 .steps h3{font:500 clamp(24px,2.6vw,32px)/1.15 var(--serif);letter-spacing:-.01em;margin:0}
 .steps p{margin:0;color:var(--ink-2);font-size:17px}
 .note{margin:24px 0 0;max-width:74ch;font-size:14.5px;line-height:1.6;color:var(--ink-3)}
+.faq{list-style:none;margin:0;padding:0;max-width:880px}
+.faq li{padding:clamp(18px,2.2vw,26px) 0;border-top:1px solid var(--rule)}
+.faq li:last-child{border-bottom:1px solid var(--rule)}
+.faq h3{font:500 clamp(21px,2.2vw,26px)/1.2 var(--serif);letter-spacing:-.01em;margin:0 0 8px}
+.faq p{margin:0;color:var(--ink-2);font-size:17px;line-height:1.55;max-width:68ch}
 
 /* ---------- numbers ---------- */
 .bill{font-size:clamp(18px,1.9vw,22px);line-height:1.45;color:var(--ink-2);max-width:40ch;margin:clamp(18px,2.4vw,26px) 0 0}
@@ -307,7 +314,8 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
   .map{margin:0 calc(var(--gut) * -.5)}
   .pin{width:20px;height:20px;border-radius:26%;box-shadow:0 0 0 1.5px #fff,0 2px 5px -1px rgba(26,24,20,.45)}
   .pin img{border-radius:26%}
-  .pin::after{content:"";position:absolute;inset:-12px}
+  /* 24 px to tap (WCAG 2.5.8): a 44 px area spilled onto neighbours, so New Jersey taps opened Connecticut's site */
+  .pin::after{content:"";position:absolute;inset:-2px}
   .pop{padding:22px 20px 18px}
   .cg{grid-template-columns:40px minmax(0,1fr) 62px}
   .yax,.plot,.ends{height:280px}
@@ -356,6 +364,8 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
   .badge.soon{border:1px dashed GrayText;color:GrayText}
   .key-live{background:Highlight}
   .key-soon{background:Canvas;border:1px solid CanvasText}
+  /* the chart's legend keys, readout keys and dots keep their line colours, or nothing says which line is which */
+  .keys i,.ctip .r i,.dot,.hov{forced-color-adjust:none}
 }
 </style>
 </head>
@@ -433,6 +443,13 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
       <li><div class="lh"><span class="num" aria-hidden="true">3</span><h3>You find your place.</h3></div><p>Search, map and save restaurants. Free, with no ads and no account.</p></li>
     </ol>
     <p class="note">@@HOW_NOTE@@</p>
+  </section>
+
+  <section class="sec wrap" id="faq" aria-labelledby="faq-h">
+    <h2 class="eyebrow" id="faq-h">Questions</h2>
+    <ul class="faq">
+@@FAQ@@
+    </ul>
   </section>
 
   <section class="sec wrap" id="prices" aria-labelledby="num-h">

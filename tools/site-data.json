@@ -26,14 +26,24 @@
    },
    "icon": "icons/chicago.png",
    "web_app": "https://chicago.eatsranked.com/explore/",
-   "web_app_label": "Search on the web"
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Grades, explained",
+     "url": "https://chicago.eatsranked.com/chicago-restaurant-grades.html"
+    },
+    {
+     "label": "Chicago rankings",
+     "url": "https://chicago.eatsranked.com/lists/"
+    }
+   ]
   },
   {
    "abbr": "WI",
    "status": "live",
    "app": "Wisconsin Eats: Restaurants",
    "home_name": "WI Eats",
-   "tagline": "Friday fish fries, supper clubs and custard stands we checked by hand, plus every restaurant in the state.",
+   "tagline": "Friday fish fries, supper clubs and custard stands we checked by hand, plus 16,000+ restaurants statewide.",
    "site": "https://wisconsin.eatsranked.com/",
    "how": "https://wisconsin.eatsranked.com/",
    "app_store": null,
@@ -46,9 +56,19 @@
     "text": "#FFFFFF"
    },
    "icon": "icons/wisconsin.png",
-   "tagline_short": "Fish fry & supper club guide, plus every Wisconsin restaurant.",
+   "tagline_short": "Fish fry & supper club guide to 16,000+ Wisconsin restaurants.",
    "web_app": "https://wisconsin.eatsranked.com/explore/",
-   "web_app_label": "Search on the web"
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Fish fry guide",
+     "url": "https://wisconsin.eatsranked.com/wisconsin-fish-fry.html"
+    },
+    {
+     "label": "Supper clubs",
+     "url": "https://wisconsin.eatsranked.com/wisconsin-supper-clubs.html"
+    }
+   ]
   },
   {
    "abbr": "CO",
@@ -70,14 +90,24 @@
    "icon": "icons/colorado.png",
    "tagline_short": "Green chile & brewpub guide to 15,000+ Colorado restaurants.",
    "web_app": "https://nickstrom5.github.io/colorado-eats/explore/",
-   "web_app_label": "Search on the web"
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Green chile guide",
+     "url": "https://nickstrom5.github.io/colorado-eats/colorado-green-chile.html"
+    },
+    {
+     "label": "Brewpubs",
+     "url": "https://nickstrom5.github.io/colorado-eats/colorado-brewpubs.html"
+    }
+   ]
   },
   {
    "abbr": "WA",
    "status": "live",
    "app": "Washington Eats: Restaurants",
    "home_name": "WA Eats",
-   "tagline": "Seattle-style teriyaki, phở, drive-ins and oyster bars we checked by hand, plus every restaurant in Washington State.",
+   "tagline": "Seattle-style teriyaki, phở, drive-ins and oyster bars we checked by hand, plus 20,000+ restaurants statewide.",
    "site": "https://nickstrom5.github.io/washington-eats/",
    "how": "https://nickstrom5.github.io/washington-eats/",
    "app_store": null,
@@ -90,16 +120,26 @@
     "text": "#FFFFFF"
    },
    "icon": "icons/washington.png",
-   "tagline_short": "Teriyaki & phở guide, plus every Washington State restaurant.",
+   "tagline_short": "Teriyaki & phở guide to 20,000+ Washington State restaurants.",
    "web_app": "https://nickstrom5.github.io/washington-eats/explore/",
-   "web_app_label": "Search on the web"
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Teriyaki guide",
+     "url": "https://nickstrom5.github.io/washington-eats/washington-teriyaki.html"
+    },
+    {
+     "label": "Phở guide",
+     "url": "https://nickstrom5.github.io/washington-eats/washington-pho.html"
+    }
+   ]
   },
   {
    "abbr": "CT",
    "status": "live",
    "app": "Connecticut Eats: Restaurants",
    "home_name": "CT Eats",
-   "tagline": "New Haven apizza, lobster rolls and clam shacks, burger and hot dog icons, diners and dairy bars we checked by hand, plus every restaurant in Connecticut.",
+   "tagline": "New Haven apizza, lobster rolls and clam shacks, burger and hot dog icons, diners and dairy bars we checked by hand, plus 9,000+ restaurants statewide.",
    "site": "https://nickstrom5.github.io/connecticut-eats/",
    "how": "https://nickstrom5.github.io/connecticut-eats/",
    "app_store": null,
@@ -112,16 +152,26 @@
     "text": "#FFFFFF"
    },
    "icon": "icons/connecticut.png",
-   "tagline_short": "Apizza & lobster roll guide, plus every Connecticut restaurant.",
+   "tagline_short": "Apizza & lobster roll guide to 9,000+ Connecticut restaurants.",
    "web_app": "https://nickstrom5.github.io/connecticut-eats/explore/",
-   "web_app_label": "Search on the web"
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "New Haven apizza",
+     "url": "https://nickstrom5.github.io/connecticut-eats/new-haven-apizza.html"
+    },
+    {
+     "label": "Lobster rolls & clam shacks",
+     "url": "https://nickstrom5.github.io/connecticut-eats/connecticut-lobster-rolls.html"
+    }
+   ]
   },
   {
    "abbr": "FL",
    "status": "live",
    "app": "Florida Eats: Restaurants",
    "home_name": "FL Eats",
-   "tagline": "Cuban sandwiches and cafecito windows, stone crabs, grouper shacks, oyster bars and fish camps we checked by hand, MICHELIN and James Beard honorees, and 52,000+ Florida restaurants with the state's own inspection results.",
+   "tagline": "Cuban sandwiches and cafecito windows, stone crabs, grouper shacks, oyster bars and fish camps we checked by hand, MICHELIN and James Beard honorees, and 52,000+ Florida restaurants, most with the state's own inspection results.",
    "site": "https://nickstrom5.github.io/florida-eats/",
    "how": "https://nickstrom5.github.io/florida-eats/",
    "app_store": null,
@@ -136,7 +186,17 @@
    "icon": "icons/florida.png",
    "tagline_short": "Cuban, stone crab & oyster bar guide to 52,000+ Florida restaurants.",
    "web_app": "https://nickstrom5.github.io/florida-eats/explore/",
-   "web_app_label": "Search on the web"
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Inspections, explained",
+     "url": "https://nickstrom5.github.io/florida-eats/florida-restaurant-inspections.html"
+    },
+    {
+     "label": "Stone crab guide",
+     "url": "https://nickstrom5.github.io/florida-eats/florida-stone-crab.html"
+    }
+   ]
   },
   {
    "abbr": "CA",
@@ -158,7 +218,17 @@
    "icon": "icons/california.png",
    "tagline_short": "Taquería & dim sum guide, plus 100,000+ California restaurants.",
    "web_app": "https://nickstrom5.github.io/california-eats/explore/",
-   "web_app_label": "Search on the web"
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Taquería guide",
+     "url": "https://nickstrom5.github.io/california-eats/california-taquerias.html"
+    },
+    {
+     "label": "Dim sum guide",
+     "url": "https://nickstrom5.github.io/california-eats/california-dim-sum.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",

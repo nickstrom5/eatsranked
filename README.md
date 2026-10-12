@@ -1,8 +1,8 @@
 # eatsranked.com
 
 The landing page for **Eats Ranked**: free restaurant apps, one state at a time, built from public records.
-It links each state's app (today: Chicago Restaurants: Ranked for Illinois, Wisconsin Eats: Restaurants
-for Wisconsin), shows a U.S. map of where we're live, explains how the apps work, and has a short
+It links each state's app and website (the live states are the `"status": "live"` entries in `tools/site-data.json`),
+shows a U.S. map of where we're live, explains how the apps work, answers common questions, and has a short
 "Eating out, by the numbers" section from the Bureau of Labor Statistics.
 
 The site is one static page served by GitHub Pages from `docs/` at <https://eatsranked.com/>.
@@ -60,6 +60,7 @@ To look at it locally: `python3 -m http.server 8741 --directory docs` and open <
    | `region` | optional eyebrow label (e.g. `"Chicago + Illinois"`); defaults to the state name |
    | `site`, `how` | website button; "How it works" link (left out when it's the same URL as `site`) |
    | `web_app`, `web_app_label` | optional web app link (e.g. "Search on the web") |
+   | `guides` | optional list of `{"label", "url"}`: the state's best guide pages (e.g. a fish fry guide), shown as links on its card so the hub links deeper than each home page; plain `https://` like every link |
    | `app_store` | App Store URL once the app is approved; `null` shows "Coming soon to the App Store" (not a link) |
    | `app_store_note` | hover text on the coming-soon badge; keep it true (e.g. add "(in review)" only once the build has actually been submitted to App Review) |
    | `platforms` | e.g. `"iPhone & iPad, free"` (shown as "iPhone & iPad · Free") |
@@ -76,9 +77,12 @@ To look at it locally: `python3 -m http.server 8741 --directory docs` and open <
 The map's icon position, the "Now in …" lines, the legend swatch, the meta description and the
 JSON-LD all follow from the data; nothing else needs editing.
 
-Each page carries a Content-Security-Policy `<meta>` that allows only its own inline scripts, by hash.
-`build.py` recomputes the hashes on every build, so never edit `docs/index.html` by hand: a stale hash stops
-the script (`verify.py` checks them). `docs/.well-known/security.txt` expires on the date in `build.py`
+Each page carries a Content-Security-Policy `<meta>` that allows only its own inline scripts and `<style>` blocks, by
+hash: no script files, no `'unsafe-inline'`. `build.py` turns every `style="…"` attribute into a generated class
+(`zs0`, `zs1`, …) whose rule goes in one more hashed `<style>` block (`hoist_styles`), so templates may still use style
+attributes; app.js sets positions through `element.style`, which the policy allows. `build.py` recomputes the hashes on
+every build, so never edit `docs/index.html` by hand: a stale hash stops the script or the styles (`verify.py` checks
+them, and that no style attribute is left in the markup). `docs/.well-known/security.txt` expires on the date in `build.py`
 (`SECURITY_TXT_EXPIRES`); `verify.py` fails once it has passed, so move it on a year and rebuild.
 
 While any live app still has `app_store: null`, the page says **On the web now** (section label, map legend,
