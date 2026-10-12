@@ -488,8 +488,14 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         pass
 
 
+class Server(http.server.ThreadingHTTPServer):
+    # Chrome opens several connections at once, and socketserver's default listen backlog of 5 now and then
+    # dropped one (ERR_CONNECTION_RESET on an icon: 2 page loads in 400), failing the browser checks for nothing
+    request_queue_size = 64
+
+
 port = free_port()
-srv = http.server.ThreadingHTTPServer(("127.0.0.1", port), partial(Quiet, directory=str(DOCS)))
+srv = Server(("127.0.0.1", port), partial(Quiet, directory=str(DOCS)))
 threading.Thread(target=srv.serve_forever, daemon=True).start()
 base_url = f"http://127.0.0.1:{port}/"
 
