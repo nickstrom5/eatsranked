@@ -128,7 +128,8 @@ Draws the Eats Ranked mark (three bars, the last in the accent colour) into the 
 
 When an app is approved on the App Store: set its `app_store` to the listing URL
 (`https://apps.apple.com/app/id<APP_ID>`; Chicago Restaurants: Ranked is `app_store_id` 6816931379), run
-`build.py` and `verify.py`, commit. The badge becomes a "Download on the App Store" link. To use Apple's
+`build.py` and `verify.py`, commit. The badge becomes a "Download on the App Store" link, on the state's card and on
+its map pop-up; `verify.py` checks each of them (so the page has two App Store links per app). To use Apple's
 official badge artwork instead, download it from Apple's marketing tools and commit it under `docs/`
 (never hotlink it). When `chicago.eatsranked.com` is live, point Illinois's `site` and `how` at it
 (`future_site`).

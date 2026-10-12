@@ -236,11 +236,19 @@ for s in live:
     if s.get("web_app"):
         check(f"{s['abbr']} card: {s.get('web_app_label')} -> {s['web_app']}",
               f'href="{s["web_app"]}"' in card and html.escape(s.get("web_app_label", "")) in card)
-    if s.get("app_store"):
-        check(f"{s['abbr']} App Store link", f'href="{s["app_store"]}"' in card)
-    else:
-        check(f"{s['abbr']} App Store badge is 'Coming soon', not a link",
-              'class="badge soon"' in card and "Coming soon to the" in card and "apps.apple.com" not in card)
+    # the App Store badge is on the state's card and on its map pop-up: one link in each once site-data has the
+    # App Store URL, otherwise a "Coming soon" label (not a link) whose hover text is site-data's app_store_note
+    pop = section(rf'(<article class="pop" id="pop-{a}".*?</article>)')
+    for where_, frag in (("card", card), ("map pop-up", pop)):
+        if s.get("app_store"):
+            check(f"{s['abbr']} {where_}: one App Store link ({s['app_store']}), no 'Coming soon' badge",
+                  frag.count(f'href="{html.escape(s["app_store"])}"') == 1 and 'class="badge soon"' not in frag
+                  and frag.count("apps.apple.com") == (1 if "apps.apple.com" in s["app_store"] else 0))
+        else:
+            note = s.get("app_store_note") or "Coming soon to the App Store"
+            check(f"{s['abbr']} {where_}: App Store badge is 'Coming soon', not a link, with hover text {note!r}",
+                  frag.count('class="badge soon"') == 1 and f'class="badge soon" title="{html.escape(note)}"' in frag
+                  and "Coming soon to the" in frag and "apps.apple.com" not in frag)
     check(f"{s['abbr']} is filled on the map in its colour with its icon",
           re.search(rf'<a class="st live" href="#app-{a}" id="st-{s["abbr"]}"[^>]*--fill:{s["colors"]["bg"]}', PAGE) is not None
           and re.search(rf'<a class="pin"[^>]*data-abbr="{s["abbr"]}"[^>]*>\s*<img src="{re.escape(s["icon"])}"', PAGE) is not None)
@@ -263,8 +271,9 @@ check(f"border neighbours for arrow keys: {len(adj)} states, symmetric",
 soon = [a for a in names if a not in {s["abbr"] for s in live}]
 check(f"{len(soon)} other states are on the map as coming soon",
       all(f'aria-label="{html.escape(names[a])}: coming soon"' in PAGE for a in soon))
-check("App Store links only where site-data has one",
-      PAGE.count("apps.apple.com") == sum(1 for s in live if s.get("app_store") and "apps.apple.com" in s["app_store"]))
+n_store = sum(1 for s in live if s.get("app_store") and "apps.apple.com" in s["app_store"])
+check(f"App Store links only where site-data has one: {2 * n_store} on the page (a card and a map pop-up per app)",
+      PAGE.count("apps.apple.com") == 2 * n_store)
 
 must = [
     D["coming_soon_message"], "This site uses no cookies and no analytics.",
