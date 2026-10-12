@@ -425,12 +425,13 @@ class Links(html.parser.HTMLParser):
 
 
 def safe_href(h):
-    if h is None or any(unicodedata.category(ch) in ("Cc", "Cf") or unicodedata.category(ch).startswith("Z") for ch in h):
+    # A browser reads a backslash as a slash in http(s) links (/\evil.com opens https://evil.com/), so none at all.
+    if h is None or "\\" in h or any(unicodedata.category(ch) in ("Cc", "Cf") or unicodedata.category(ch).startswith("Z") for ch in h):
         return False
     return (re.match(r"https://[A-Za-z0-9.-]+(?::\d+)?/", h) is not None
             or re.fullmatch(r"mailto:[^\s:/?]+@[A-Za-z0-9.-]+(?:\?[^\s]*)?", h) is not None
             or re.fullmatch(r"#[A-Za-z][\w-]*", h) is not None
-            or re.match(r"/(?!/)", h) is not None)
+            or re.match(r"/(?![/\\])", h) is not None)
 
 
 for name, doc in (("index.html", PAGE), ("404.html", (DOCS / "404.html").read_text())):

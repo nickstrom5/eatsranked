@@ -318,7 +318,7 @@ URL_OK = re.compile(r"https://[A-Za-z0-9.-]+(?::\d+)?/")
 
 
 def clean_url(v):
-    return (isinstance(v, str) and URL_OK.match(v) is not None
+    return (isinstance(v, str) and URL_OK.match(v) is not None and "\\" not in v
             and not any(unicodedata.category(ch) in ("Cc", "Cf") or unicodedata.category(ch).startswith("Z") for ch in v))
 
 
@@ -327,7 +327,7 @@ for s in LIVE:
         if field != "site" and s.get(field) in (None, ""):
             continue
         if not clean_url(s.get(field)):
-            sys.exit(f"build: {s['abbr']} {field} must be an https:// URL without spaces or control characters, "
+            sys.exit(f"build: {s['abbr']} {field} must be an https:// URL without spaces, backslashes or control characters, "
                      f"not {s.get(field)!r}")
 LIVE_NAMES = and_list(NAMES[s["abbr"]] for s in LIVE)
 # "Live now" only once every live app has its App Store link; until then the websites are what's live.

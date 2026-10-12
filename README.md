@@ -68,7 +68,7 @@ To look at it locally: `python3 -m http.server 8741 --directory docs` and open <
    | `pin` | optional `[x, y]` for the state's map icon and label, in the units of `tools/us-states-paths.json` (viewBox `0 0 975 610`; Connecticut's icon sits at about `[888, 189]`); it must lie inside the state. Leave it out and the icon goes to the point deepest inside the state. Set it when that point puts the icon over a neighbour's: `verify.py --browser` fails if two map icons overlap at 320-1600 px |
 
    Every link (`site`, `how`, `web_app`, `app_store`) must be a plain `https://` URL: `build.py` stops on any
-   other scheme or on spaces and control characters, and `verify.py` checks every link on the built pages.
+   other scheme or on spaces, backslashes and control characters, and `verify.py` checks every link on the built pages.
 
 3. Run `python3 tools/build.py`, then `…/python tools/make_images.py` (so the share image shows the new icon),
    then `python3 tools/verify.py --browser`, and look at the page at phone and desktop width.
