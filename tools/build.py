@@ -47,6 +47,7 @@ DOMAIN = BRAND["domain"]
 URL = f"https://{DOMAIN}/"
 EMAIL = BRAND["email"]
 REPO = "https://github.com/nickstrom5/eatsranked"   # the site's public source, the Organization's sameAs
+AUTHOR_URL = "https://work-with-nick.com/"         # Nick's portfolio: the Person's url and @id, linked from the FAQ and footers
 SECURITY_TXT_EXPIRES = "2027-10-01T00:00:00Z"       # RFC 9116: under a year ahead; verify.py fails once it passes
 
 
@@ -652,8 +653,9 @@ FAQ = [
      "published. Where an app shows a grade of its own, it&rsquo;s labeled as ours, never as official."),
     ("Which state is next?", f'More states are on the way. <a href="{esc(MAILTO_NEXT)}">Tell us which one you want next</a>.'),
     ("Who makes Eats Ranked?",
-     f'Eats Ranked is an independent project by Nicholas Soderstrom, not affiliated with any restaurant or government '
-     f'agency. Questions or corrections: <a href="mailto:{esc(EMAIL)}">{esc(EMAIL)}</a>.'),
+     f'Eats Ranked is an independent project by <a href="{esc(AUTHOR_URL)}" rel="author noopener">Nicholas Soderstrom</a>, '
+     f'not affiliated with any restaurant or government agency. Questions or corrections: '
+     f'<a href="mailto:{esc(EMAIL)}">{esc(EMAIL)}</a>.'),
 ]
 FAQ_HTML = "\n".join(f"      <li><h3>{q}</h3><p>{a}</p></li>" for q, a in FAQ)
 MAP_TITLE = f"Map of the United States. {LIVE_LABEL}: {LIVE_NAMES}. Every other state is coming soon."
@@ -679,9 +681,9 @@ JSONLD = jsonscript({
     "@graph": [
         {"@type": "WebSite", "@id": URL + "#website", "url": URL, "name": BRAND["name"], "alternateName": ["EatsRanked"],
          "description": DESC, "inLanguage": "en-US", "publisher": {"@id": URL + "#organization"}},
-        {"@type": "Person", "@id": URL + "#nicholas-soderstrom", "name": "Nicholas Soderstrom"},
+        {"@type": "Person", "@id": AUTHOR_URL + "#person", "name": "Nicholas Soderstrom", "url": AUTHOR_URL},
         {"@type": "Organization", "@id": URL + "#organization", "name": BRAND["name"], "url": URL,
-         "logo": URL + "icon-512.png", "email": EMAIL, "founder": {"@id": URL + "#nicholas-soderstrom"},
+         "logo": URL + "icon-512.png", "email": EMAIL, "founder": {"@id": AUTHOR_URL + "#person"},
          "contactPoint": {"@type": "ContactPoint", "email": EMAIL, "contactType": "customer support"},
          "sameAs": [REPO],
          # each state site names its own Organization <site>#org (and owns its name), so the two point at the same node
