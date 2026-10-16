@@ -481,13 +481,14 @@ for n in ("twitter:card", "twitter:title", "twitter:description", "twitter:image
     check(f"meta {n}", f'name="{n}"' in PAGE)
 ld = json.loads(section(r'<script type="application/ld\+json">(.*?)</script>'))
 check("JSON-LD WebSite + founder Person + Organization", [g["@type"] for g in ld["@graph"]] == ["WebSite", "Person", "Organization"]
-      and ld["@graph"][2].get("founder", {}).get("@id") == ld["@graph"][1]["@id"] == "https://eatsranked.com/#nicholas-soderstrom")
+      and ld["@graph"][2].get("founder", {}).get("@id") == ld["@graph"][1]["@id"] == "https://work-with-nick.com/#person"
+      and ld["@graph"][1].get("url") == "https://work-with-nick.com/")
 check("exactly one <h1>", PAGE.count("<h1") == 1)
 check("robots meta", '<meta name="robots" content="index,follow,max-image-preview:large">' in PAGE)
 imgs = re.findall(r"<img\b[^>]*>", PAGE)
 check(f"all {len(imgs)} images have alt, width and height", all(" alt=" in i and " width=" in i and " height=" in i for i in imgs))
 ext_links = re.findall(r'<a\b[^>]*href="https?://[^"]*"[^>]*>', PAGE)
-check(f"all {len(ext_links)} external links have rel=noopener", all('rel="noopener"' in a for a in ext_links))
+check(f"all {len(ext_links)} external links have rel=noopener", all(re.search(r'\srel="(?:[^"]*\s)?noopener(?:\s[^"]*)?"', a) for a in ext_links))
 check("no external scripts, styles, fonts or images",
       not re.search(r"""<(?:script|img|iframe|source|video|audio)\b[^>]*\ssrc=["']?(?:https?:)?//""", PAGE)
       and not re.search(r"""<link\b(?![^>]*rel="canonical")[^>]*href=["']?(?:https?:)?//""", PAGE)
