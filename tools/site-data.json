@@ -229,6 +229,38 @@
      "url": "https://nickstrom5.github.io/california-eats/california-dim-sum.html"
     }
    ]
+  },
+  {
+   "abbr": "ME",
+   "status": "live",
+   "app": "Maine Eats: Restaurants",
+   "home_name": "Maine Eats",
+   "tagline": "Lobster shacks and pounds, clam shacks, red snappers and Maine Italians, whoopie pies, diners, oyster bars and dairy bars we checked by hand, plus 4,200+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/maine-eats/",
+   "how": "https://nickstrom5.github.io/maine-eats/",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#0E4D5C",
+    "accent": "#F2B705",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/maine.png",
+   "tagline_short": "Lobster shack & clam guide to 4,200+ Maine restaurants.",
+   "web_app": "https://nickstrom5.github.io/maine-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Lobster shacks & rolls",
+     "url": "https://nickstrom5.github.io/maine-eats/maine-lobster-shacks.html"
+    },
+    {
+     "label": "Clam shacks",
+     "url": "https://nickstrom5.github.io/maine-eats/maine-clam-shacks.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
