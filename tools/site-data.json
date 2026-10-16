@@ -261,6 +261,38 @@
      "url": "https://nickstrom5.github.io/maine-eats/maine-clam-shacks.html"
     }
    ]
+  },
+  {
+   "abbr": "ID",
+   "status": "live",
+   "app": "Idaho Eats: Restaurants",
+   "home_name": "Idaho Eats",
+   "tagline": "Basque kitchens, finger steaks and drive-ins, spud plates, huckleberry and Idaho trout we checked by hand, plus 4,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/idaho-eats/",
+   "how": "https://nickstrom5.github.io/idaho-eats/idaho-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#4B2A5C",
+    "accent": "#C9A06B",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/idaho.png",
+   "tagline_short": "Finger steak & Basque guide to 4,000+ Idaho restaurants.",
+   "web_app": "https://nickstrom5.github.io/idaho-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Basque on the Basque Block",
+     "url": "https://nickstrom5.github.io/idaho-eats/idaho-basque-restaurants.html"
+    },
+    {
+     "label": "Finger steaks & drive-ins",
+     "url": "https://nickstrom5.github.io/idaho-eats/idaho-finger-steaks-drive-ins.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
