@@ -3,15 +3,19 @@
 
   favicon.svg, favicon.ico (16, 32, 48), favicon-32.png, apple-touch-icon.png (180), icon-192.png, icon-512.png
   og.png (1200x630): wordmark, headline and each live app's icon, rendered by headless Chrome
+  icons/<name>.<hash>.webp: a WebP copy of each state's icon PNG, which the page loads instead (see webp_icons)
 
 Needs Pillow (e.g. chi-eats/.venv/bin/python) and Google Chrome. Rerun it when a state goes
-live so the share image shows the new app icon:
+live so the share image shows the new app icon, then run build.py so the page uses its WebP:
 
-    ../chi-eats/.venv/bin/python tools/make_images.py
+    ../chi-eats/.venv/bin/python tools/make_images.py           # everything
+    ../chi-eats/.venv/bin/python tools/make_images.py --icons   # only the WebP icons
 """
+import hashlib
 import html
 import json
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
@@ -61,6 +65,33 @@ def favicon_ico(out):
     the mark drawn at each size rather than scaled down from one."""
     frames = [mark_png(n) for n in (48, 32, 16)]
     frames[0].save(out, format="ICO", sizes=[(n, n) for n in (48, 32, 16)], append_images=frames[1:])
+
+
+def webp_name(png):
+    """docs/icons/texas.png -> docs/icons/texas.<first 10 hex digits of the PNG's SHA-256>.webp. build.py and verify.py
+    work out the same name and use the WebP only when it is there, so a replaced PNG is never shown as its old WebP."""
+    return png.with_name(f"{png.stem}.{hashlib.sha256(png.read_bytes()).hexdigest()[:10]}.webp")
+
+
+def webp_icons():
+    """Each state's icon PNG (the 256x256 file the README asks for, which og.png still reads) as a WebP of the same
+    size: about a fifth of the bytes, and every browser the page supports reads it (Safari 14+). The page shows the
+    icons at 20 to 88 CSS px, where q85 looks the same as the PNG; 256 px stays sharp on 3x screens. Covers every
+    state in site-data.json, live or not, and removes the WebP of an icon's earlier PNG."""
+    out = []
+    for s in SITE["states"]:
+        png = DOCS / s.get("icon", "")
+        if png.suffix.lower() != ".png" or not png.is_file():
+            continue
+        webp = webp_name(png)
+        im = Image.open(png)
+        im = im.convert("RGBA" if "A" in im.getbands() or "transparency" in im.info else "RGB")
+        im.save(webp, "WEBP", quality=85, method=6)
+        for old in png.parent.glob(f"{png.stem}.*.webp"):
+            if old != webp and re.fullmatch(rf"{re.escape(png.stem)}\.[0-9a-f]{{10}}\.webp", old.name):
+                old.unlink()
+        out.append((png, webp))
+    return out
 
 
 def og_html():
@@ -123,8 +154,18 @@ def render_og(out):
         im.save(out, optimize=True)
 
 
+def report_icons():
+    for png, w in webp_icons():
+        print(f"docs/icons/{w.name}: {Image.open(w).size}, {w.stat().st_size / 1024:.1f} KB "
+              f"(PNG {png.stat().st_size / 1024:.1f} KB)")
+    print("now run python3 tools/build.py so the page loads these WebP icons")
+
+
 if __name__ == "__main__":
     DOCS.mkdir(exist_ok=True)
+    if "--icons" in sys.argv[1:]:
+        report_icons()
+        sys.exit(0)
     (DOCS / "favicon.svg").write_text(favicon_svg())
     favicon_ico(DOCS / "favicon.ico")
     mark_png(32).save(DOCS / "favicon-32.png", optimize=True)
@@ -139,3 +180,4 @@ if __name__ == "__main__":
         p = DOCS / f
         size = Image.open(p).size if p.suffix == ".png" else "svg"
         print(f"docs/{f}: {size}, {p.stat().st_size / 1024:.1f} KB")
+    report_icons()

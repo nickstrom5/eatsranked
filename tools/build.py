@@ -333,6 +333,21 @@ for s in LIVE:
     for g in s.get("guides") or []:
         if not clean_url(g.get("url")) or not (isinstance(g.get("label"), str) and g["label"].strip()):
             sys.exit(f"build: {s['abbr']} guides need a label and an https:// url, not {g!r}")
+
+
+def icon_src(s):
+    """The icon as the page loads it. make_images.py writes a WebP copy of each state's icon PNG (about a fifth of
+    the bytes) named after the PNG's SHA-256, icons/<name>.<first 10 hex digits>.webp; use it when it is there for
+    this exact PNG, else the PNG itself. So site-data.json keeps its "icon": "icons/<name>.png", a state added
+    before make_images.py has run still shows its icon, and a replaced PNG never shows its old WebP."""
+    png = DOCS / s["icon"]
+    if png.suffix.lower() != ".png":
+        return s["icon"]
+    webp = png.with_name(f"{png.stem}.{hashlib.sha256(png.read_bytes()).hexdigest()[:10]}.webp")
+    return webp.relative_to(DOCS).as_posix() if webp.is_file() else s["icon"]
+
+
+ICON = {s["abbr"]: icon_src(s) for s in LIVE}
 LIVE_NAMES = and_list(NAMES[s["abbr"]] for s in LIVE)
 # "Live now" only once every live app has its App Store link; until then the websites are what's live.
 ON_STORE = all(s.get("app_store") for s in LIVE)
@@ -438,7 +453,7 @@ for s in LIVE:
     a = s["abbr"].lower()
     cards.append(f"""      <article class="app" id="app-{a}" style="{colors(s)}" aria-labelledby="app-{a}-h">
         <div class="head">
-          <img class="icon" src="{esc(s['icon'])}" width="88" height="88" alt="{esc(s['app'])} app icon" decoding="async">
+          <img class="icon" src="{esc(ICON[s['abbr']])}" width="88" height="88" alt="{esc(s['app'])} app icon" decoding="async">
           <div><p class="where">{esc(where(s))}</p><p class="plat">{platforms(s)}</p></div>
         </div>
         <h3 id="app-{a}-h">{esc(s['app'])}</h3>
@@ -584,7 +599,7 @@ for st in GEO["states"]:
         pins.append(
             f'<a class="pin" {ext(s["site"])} data-abbr="{a}" tabindex="-1" aria-hidden="true" '
             f'style="left:{100 * x / VBW:.3f}%;top:{100 * y / VBH:.3f}%">'
-            f'<img src="{esc(s["icon"])}" width="50" height="50" alt="" decoding="async"></a>')
+            f'<img src="{esc(ICON[a])}" width="50" height="50" alt="" decoding="async"></a>')
     else:
         shapes.append(f'<path class="st" id="st-{a}" data-abbr="{a}" data-name="{esc(st["name"])}" '
                       f'data-x="{x}" data-y="{y}"{adj} role="img" aria-label="{esc(st["name"])}: coming soon" d="{d}"/>')
@@ -611,7 +626,7 @@ for s in LIVE:
     a = s["abbr"].lower()
     pops.append(f"""          <article class="pop" id="pop-{a}" data-abbr="{s['abbr']}" style="{colors(s)}" tabindex="-1" aria-labelledby="pop-{a}-h" hidden>
             <button class="x" type="button" aria-label="Close {esc(s['app'])}">{CLOSE}</button>
-            <div class="row"><img src="{esc(s['icon'])}" width="56" height="56" alt="" loading="lazy" decoding="async">
+            <div class="row"><img src="{esc(ICON[s['abbr']])}" width="56" height="56" alt="" loading="lazy" decoding="async">
               <div><p class="w">{esc(where(s))}</p><p class="n" id="pop-{a}-h">{esc(s['app'])}</p></div></div>
             <p class="tg">{esc(s.get('tagline_short') or s['tagline'])}</p>
             <p class="pl">{platforms(s)}</p>
@@ -627,7 +642,7 @@ picks = []
 for s in LIVE:
     a = s["abbr"].lower()
     picks.append(f'          <li><a class="pick" href="#app-{a}" data-abbr="{s["abbr"]}" aria-controls="pop-{a}" aria-expanded="false">'
-                 f'<img src="{esc(s["icon"])}" width="44" height="44" alt="" loading="lazy" decoding="async">'
+                 f'<img src="{esc(ICON[s["abbr"]])}" width="44" height="44" alt="" loading="lazy" decoding="async">'
                  f'<span class="pk"><span class="ps">{esc(where(s))}</span><span class="pa">{esc(s["app"])}</span></span>{CHEVRON}</a></li>')
 PICKS = "\n".join(picks)
 
@@ -779,7 +794,29 @@ def hoist_styles(doc):
     return doc.replace("</head>", f"<style>{css}</style>\n</head>", 1) if rules else doc
 
 
-page = fill(TEMPLATE, SUBS)
+# A card may name another company's mark as a fact (Florida's and California's "MICHELIN and James Beard honors").
+# That is nominative use, which stays safe with a trademark line and no hint of sponsorship (chi-eats/ios/playbook/
+# app-review-risk.md, 5.2.1; chicago.eatsranked.com carries the same line). So the footer names the owner of each
+# mark the page's text mentions, in the Chicago site's words, and says nothing when the page mentions none.
+TRADEMARKS = [
+    (r"\b(?:michelin|bib gourmand)\b", "MICHELIN, MICHELIN Guide and Bib Gourmand are trademarks of Michelin.", "Michelin"),
+    (r"\bjames beard\b", "James Beard Foundation and James Beard Award are trademarks of the James Beard Foundation.",
+     "the James Beard Foundation"),
+]
+
+
+def trademark_line(doc):
+    body = re.sub(r"<(script|style)\b.*?</\1>", " ", doc[doc.index("<body"):], flags=re.S)
+    words = html.unescape(re.sub(r"<[^>]+>", " ", body))
+    named = [(line, owner) for pattern, line, owner in TRADEMARKS if re.search(pattern, words, re.I)]
+    if not named:
+        return ""
+    who = named[0][1] if len(named) == 1 else "either" if len(named) == 2 else "any of them"
+    return f'\n      <p>{" ".join(line for line, _ in named)} {esc(BRAND["name"])} is not affiliated with or endorsed by {who}.</p>'
+
+
+page = fill(TEMPLATE, {**SUBS, "TRADEMARKS": ""})
+page = fill(TEMPLATE, {**SUBS, "TRADEMARKS": trademark_line(page)})
 page = page.replace("A–F", '<span class="nw">A–F</span>')
 page = with_csp(hoist_styles(page))
 
@@ -833,6 +870,10 @@ print(f"docs/index.html {'written' if changed else 'unchanged'} ({len(page.encod
 print(f"  live: {LIVE_NAMES} ({LIVE_LABEL}); latest BLS month {LAST}; missing months {MISSING}")
 if TWELVE_TO != LAST:
     print(f"  note: no year-ago value for {LAST}; the 12-month stat runs to {TWELVE_TO}")
+for s in LIVE:
+    if ICON[s["abbr"]] == s["icon"]:
+        print(f"  note: {s['abbr']} icon loads as {s['icon']}: no WebP for this PNG yet; run "
+              f"../chi-eats/.venv/bin/python tools/make_images.py --icons, then build.py again")
 for s in LIVE:
     c = s["colors"]
     if ACCENT[s["abbr"]] != c["accent"]:

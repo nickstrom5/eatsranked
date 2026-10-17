@@ -245,12 +245,68 @@ check("every number in the page text is recomputed or comes from site-data.json"
 # ============================================================ states, links, copy
 live = [s for s in D["states"] if s.get("status") == "live"]
 names = {s["abbr"]: s["name"] for s in GEO["states"]}
+
+
+def icon_src(s):
+    """The icon the page should load, worked out here rather than taken from build.py: make_images.py's WebP copy of
+    the state's PNG, icons/<name>.<first 10 hex digits of the PNG's SHA-256>.webp, when it is there for this exact PNG;
+    otherwise the PNG named in site-data.json."""
+    png = DOCS / s["icon"]
+    if png.suffix.lower() != ".png" or not png.is_file():
+        return s["icon"]
+    webp = png.with_name(f"{png.stem}.{hashlib.sha256(png.read_bytes()).hexdigest()[:10]}.webp")
+    return webp.relative_to(DOCS).as_posix() if webp.is_file() else s["icon"]
+
+
+def png_size(p):
+    b = p.read_bytes()[:24]
+    return struct.unpack(">II", b[16:24]) if b[:8] == b"\x89PNG\r\n\x1a\n" else None
+
+
+def webp_size(p):
+    """Width and height from a WebP file's header (lossy VP8, lossless VP8L or extended VP8X), or None if it isn't one."""
+    b = p.read_bytes()
+    if len(b) < 30 or b[:4] != b"RIFF" or b[8:12] != b"WEBP" or int.from_bytes(b[4:8], "little") + 8 != len(b):
+        return None
+    kind, d = b[12:16], b[20:]
+    if kind == b"VP8 " and d[3:6] == b"\x9d\x01\x2a":
+        return int.from_bytes(d[6:8], "little") & 0x3FFF, int.from_bytes(d[8:10], "little") & 0x3FFF
+    if kind == b"VP8L" and d[0] == 0x2F:
+        bits = int.from_bytes(d[1:5], "little")
+        return (bits & 0x3FFF) + 1, ((bits >> 14) & 0x3FFF) + 1
+    if kind == b"VP8X":
+        return int.from_bytes(d[4:7], "little") + 1, int.from_bytes(d[7:10], "little") + 1
+    return None
+
+
+ICON = {s["abbr"]: icon_src(s) for s in live}
+USED = {}
 for s in live:
     a = s["abbr"].lower()
+    # The icon shows four times (map pin, map pop-up, phone list, card), always as the same file: make_images.py's
+    # WebP of this exact PNG (a fifth of the bytes) or the PNG itself. Never another WebP: one named after an earlier
+    # PNG would show the old icon. The PNG still passes (a state added before make_images.py ran), with a warning.
+    stem = pathlib.PurePosixPath(s["icon"]).stem
+    uses = re.findall(rf'<img\b[^>]*\ssrc="(icons/{re.escape(stem)}(?:\.[0-9a-f]{{10}})?\.(?:png|webp))"', PAGE)
+    used = USED[s["abbr"]] = uses[0] if uses else s["icon"]
+    check(f"{s['abbr']} icon loads as one file on its map pin, map pop-up, phone list and card: "
+          f"{ICON[s['abbr']]}" + (f" or {s['icon']}" if ICON[s["abbr"]] != s["icon"] else ""),
+          len(uses) == 4 and len(set(uses)) == 1 and used in (ICON[s["abbr"]], s["icon"]), str(uses))
+    if used.endswith(".webp"):
+        size = png_size(DOCS / s["icon"])
+        got = webp_size(DOCS / used) if (DOCS / used).is_file() else "missing"   # a page naming a WebP that isn't there
+        check(f"{s['abbr']} {used} is a WebP the size of its PNG {size}", size is not None and got == size, str(got))
+    elif ICON[s["abbr"]] != s["icon"]:
+        print(f"WARN: {s['abbr']} icon loads as the PNG, but make_images.py has made {ICON[s['abbr']]}: "
+              f"run python3 tools/build.py again so the page uses it (a fifth of the bytes)")
+    else:
+        print(f"WARN: {s['abbr']} icon loads as the PNG: run ../chi-eats/.venv/bin/python tools/make_images.py --icons, "
+              f"then python3 tools/build.py, for its WebP (a fifth of the bytes)")
     card = section(rf'(<article class="app" id="app-{a}".*?</article>)')
     check(f"{s['abbr']} card: app name, tagline, region, colours, icon",
           all(x in text_of(card) for x in (s["app"], s["tagline"], s.get("region") or names[s["abbr"]]))
-          and all(x in card for x in (s["colors"]["bg"], s["colors"]["text"], s["icon"])))
+          and all(x in card for x in (s["colors"]["bg"], s["colors"]["text"]))
+          and f'<img class="icon" src="{html.escape(used)}"' in card)
     check(f"{s['abbr']} card: website link {s['site']}", f'href="{s["site"]}"' in card)
     if s.get("web_app"):
         check(f"{s['abbr']} card: {s.get('web_app_label')} -> {s['web_app']}",
@@ -270,7 +326,7 @@ for s in live:
                   and "Coming soon to the" in frag and "apps.apple.com" not in frag)
     check(f"{s['abbr']} is filled on the map in its colour with its icon",
           re.search(rf'<a class="st live" href="#app-{a}" id="st-{s["abbr"]}"[^>]*--fill:{s["colors"]["bg"]}', PAGE) is not None
-          and re.search(rf'<a class="pin"[^>]*data-abbr="{s["abbr"]}"[^>]*>\s*<img src="{re.escape(s["icon"])}"', PAGE) is not None)
+          and re.search(rf'<a class="pin"[^>]*data-abbr="{s["abbr"]}"[^>]*>\s*<img src="{re.escape(USED[s["abbr"]])}"', PAGE) is not None)
     check(f"{s['abbr']} has a map card", f'id="pop-{a}"' in PAGE)
     check(f"{s['abbr']} icon file exists", (DOCS / s["icon"]).is_file())
 on_store = all(s.get("app_store") for s in live)
@@ -304,6 +360,22 @@ must = [
 ]
 for m in must:
     check(f"page has: {m[:60]}", m in PAGE)
+# A card may name another company's mark as a fact (Florida's and California's "MICHELIN and James Beard honors"):
+# nominative use, safe with a trademark line and no hint of sponsorship (chi-eats/ios/playbook/app-review-risk.md 5.2.1).
+# So the footer names the owner of each mark the rest of the page mentions, says Eats Ranked isn't affiliated with or
+# endorsed by them, and names no owner whose marks the page doesn't mention.
+MARKS = {"Michelin": (r"\b(?:michelin|bib gourmand)\b", "MICHELIN, MICHELIN Guide and Bib Gourmand are trademarks of Michelin."),
+         "the James Beard Foundation": (r"\bjames beard\b", "James Beard Foundation and James Beard Award are trademarks of the James Beard Foundation.")}
+tm = re.search(r"<p>([^<]*\btrademarks? of\b[^<]*)</p>", section(r'(<footer class="foot">.*?</footer>)'))
+body = PAGE[PAGE.index("<body"):]
+named = [o for o, (pat, _) in MARKS.items() if re.search(pat, text_of(body.replace(tm.group(0), "") if tm else body), re.I)]
+if named:
+    tm_line = html.unescape(tm.group(1)) if tm else ""
+    who = named[0] if len(named) == 1 else "either"
+    check(f"footer trademark line for {' and '.join(named)} (named on the page), not affiliated or endorsed",
+          tm_line == " ".join(MARKS[o][1] for o in named) + f" Eats Ranked is not affiliated with or endorsed by {who}.", tm_line)
+else:
+    check("no trademark line, as the page names no MICHELIN or James Beard mark", tm is None, tm.group(0) if tm else "")
 check("'Tell us which state' is a mailto link",
       re.search(rf'<a href="mailto:{re.escape(D["brand"]["email"])}\?subject=[^"]+">Tell us which state</a>', PAGE) is not None)
 
@@ -511,11 +583,6 @@ p404 = (DOCS / "404.html").read_text()
 check("404.html is noindex and links home", 'content="noindex"' in p404 and 'href="/"' in p404)
 man = json.loads((DOCS / "site.webmanifest").read_text())
 check("site.webmanifest parses and lists icons", man.get("name") == "Eats Ranked" and len(man.get("icons", [])) >= 2)
-
-
-def png_size(p):
-    b = p.read_bytes()[:24]
-    return struct.unpack(">II", b[16:24]) if b[:8] == b"\x89PNG\r\n\x1a\n" else None
 
 
 for name, size in (("favicon-32.png", (32, 32)), ("apple-touch-icon.png", (180, 180)), ("icon-192.png", (192, 192)),
