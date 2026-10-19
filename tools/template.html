@@ -407,7 +407,6 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
       <div class="map" data-live="@@LIVE_LABEL@@">
         <div class="stage">
         <svg viewBox="@@VIEWBOX@@" role="group" aria-labelledby="map-t" aria-describedby="map-d">
-          <title id="map-t">@@MAP_TITLE@@</title>
           <g class="land">
 @@MAP@@
           </g>
@@ -421,6 +420,7 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
           <li><i class="key-soon"></i>Coming soon</li>
         </ul>
         <p class="hint" aria-hidden="true"><span class="h-pt">Point to or tap a state to see what&rsquo;s there.</span><span class="h-ph">Tap a state&rsquo;s icon to open its site, or see every guide below.</span><span class="h-kb">Arrow keys move between states. Enter opens a live one.</span></p>
+        <p class="sr-only" id="map-t">@@MAP_TITLE@@</p>
         <p class="sr-only" id="map-d">Use the arrow keys to move between states. Press Enter on a live state to see its app.</p>
         <p class="sr-only" aria-live="polite" id="map-say"></p>
       </div>
