@@ -2,7 +2,7 @@
 
 The landing page for **Eats Ranked**: free restaurant apps, one state at a time, built from public records.
 It links each state's app and website (the live states are the `"status": "live"` entries in `tools/site-data.json`),
-shows a U.S. map of where we're live, explains how the apps work, answers common questions, and has a short
+shows a hex-tile U.S. map of where we're live, explains how the apps work, answers common questions, and has a short
 "Eating out, by the numbers" section from the Bureau of Labor Statistics.
 
 The site is one static page served by GitHub Pages from `docs/` at <https://eatsranked.com/>.
@@ -17,7 +17,7 @@ docs/                     what GitHub Pages serves
   favicon.svg, favicon.ico, favicon-32.png, apple-touch-icon.png, icon-192.png, icon-512.png, og.png   from make_images.py
 tools/
   site-data.json          the single source of truth: states, taglines, links, App Store status, colours, icons, BLS prices
-  us-states-paths.json    state outlines (us-atlas, see Credits)
+  us-states-paths.json    state names and codes (the map itself is a hex-tile layout, HEX_ROWS in build.py)
   template.html, app.js, template-404.html   the page template and its script
   build.py                site-data.json + template -> docs/
   update_prices.py        refreshes the BLS series in site-data.json, then rebuilds

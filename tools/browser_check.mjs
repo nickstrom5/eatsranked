@@ -240,15 +240,15 @@ try {
   check("with keyboard focus the caption explains the keys", /^Arrow keys/.test(st), st);
   const pos = (idv) => js(`(function(){var e=document.getElementById('${idv}');return [+e.dataset.x,+e.dataset.y]})()`);
   const arrows = [];
-  for (const [k, want] of [["ArrowUp", "st-WI"], ["ArrowDown", "st-IL"], ["ArrowRight", "st-IN"], ["ArrowLeft", "st-IL"]]) {
+  for (const [k, want] of [["ArrowUp", "st-WI"], ["ArrowDown", "st-IL"], ["ArrowRight", "st-MI"], ["ArrowLeft", "st-IL"]]) {
     await key(k); const got = await js("document.activeElement.id"); arrows.push(`${k}->${got}`);
     if (got !== want) { arrows.push(`(wanted ${want})`); break; }
   }
-  check("arrow keys follow the map: Illinois Up is Wisconsin, Wisconsin Down is Illinois, Right is Indiana",
+  check("arrow keys follow the hex map: Illinois Up is Wisconsin, Wisconsin Down is Illinois, Right is Michigan",
     !arrows.some(a => a.startsWith("(wanted")), arrows.join(" "));
   await key("ArrowLeft");
   const w1 = await js("document.activeElement.id");
-  check("ArrowLeft moves to a western neighbour", ["st-IA", "st-MO"].includes(w1), w1);
+  check("ArrowLeft moves to the tile on the left", w1 === "st-MN", w1);
   await key("ArrowDown");
   const s1 = await js("document.activeElement.id");
   const [p0, p1] = [await pos(w1), await pos(s1)];

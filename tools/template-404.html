@@ -16,13 +16,12 @@
 <link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
-@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:500 800;font-display:swap;src:url(/fonts/bricolage-vietnamese.woff2) format("woff2");unicode-range:U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB}
-@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:500 800;font-display:swap;src:url(/fonts/bricolage-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
-@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:500 800;font-display:swap;src:url(/fonts/bricolage-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Schibsted Grotesk";font-style:normal;font-weight:600 800;font-display:swap;src:url(/fonts/schibsted-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Schibsted Grotesk";font-style:normal;font-weight:600 800;font-display:swap;src:url(/fonts/schibsted-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:"Instrument Sans";font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/instrument-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:"Instrument Sans";font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/instrument-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 :root{--paper:#FFFFFF;--ink:#17181A;--ink-2:#4C4D50;--rule:#E4E3DF;--accent:#B8430F;
-  --display:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --display:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
   --sans:"Instrument Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color-scheme:light}
 @media (prefers-color-scheme: dark){:root{--paper:#141517;--ink:#F3F3F0;--ink-2:#BDBDC0;--rule:#2B2C30;--accent:#F07A45;color-scheme:dark}}
 *,*::before,*::after{box-sizing:border-box}
@@ -36,7 +35,7 @@ header.wrap{padding-top:26px}
 .mk i:nth-child(1){height:18px}.mk i:nth-child(2){height:12px}.mk i:nth-child(3){height:7px;background:var(--accent)}
 main.wrap{flex:1;padding-top:clamp(72px,14vw,160px);padding-bottom:clamp(72px,14vw,160px)}
 p.code{margin:0 0 18px;font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
-h1{font:800 clamp(40px,6.4vw,80px)/.98 var(--display);letter-spacing:-.04em;margin:0;max-width:14ch}
+h1{font:800 clamp(40px,6.4vw,80px)/.98 var(--display);letter-spacing:-.03em;margin:0;max-width:14ch}
 main p{color:var(--ink-2);max-width:40ch;margin:24px 0 0;font-size:clamp(17px,1.8vw,20px)}
 .home{display:inline-flex;align-items:center;gap:8px;margin-top:34px;min-height:48px;padding:0 22px;border-radius:999px;background:var(--ink);color:var(--paper);font-weight:600;text-decoration:none}
 footer{border-top:1px solid var(--rule);padding:28px 0 40px;font-size:14px;color:var(--ink-2)}

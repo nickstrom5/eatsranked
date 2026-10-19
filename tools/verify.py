@@ -341,8 +341,8 @@ check("description makes no install or 'live' claim before the App Store links e
 first_st = re.search(r'<(?:a|path) class="st( live)?"', PAGE)
 check("live states come first in the map's reading order", first_st is not None and first_st.group(1) == " live")
 adj = {a: set(v.split()) for a, v in re.findall(r'data-abbr="([A-Z]{2})" data-name="[^"]*" data-x="[^"]*" data-y="[^"]*" data-adj="([^"]*)"', PAGE)}
-check(f"border neighbours for arrow keys: {len(adj)} states, symmetric",
-      len(adj) >= 49 and all(a in adj.get(b, set()) for a in adj for b in adj[a]) and {"WI", "IN", "IA", "MO", "KY"} <= adj.get("IL", set()))
+check(f"tile neighbours for arrow keys: {len(adj)} states, symmetric",
+      len(adj) >= 48 and all(a in adj.get(b, set()) for a in adj for b in adj[a]) and {"WI", "IN", "IA", "MI", "MN"} <= adj.get("IL", set()))   # hex tiles touching Illinois
 soon = [a for a in names if a not in {s["abbr"] for s in live}]
 check(f"{len(soon)} other states are on the map as coming soon",
       all(f'aria-label="{html.escape(names[a])}: coming soon"' in PAGE for a in soon))
@@ -355,8 +355,7 @@ must = [
     "Not affiliated with any government agency. Official inspection results are shown as published; grades of our own are labeled as ours.",
     f'href="mailto:{D["brand"]["email"]}">{D["brand"]["email"]}</a>', "Tell us which state", html.escape(D["how_it_works_note"]),
     html.escape(D["prices"]["source"]), D["prices"]["source_url"], "Restaurants, ranked", "state by state.",
-    "Eating out, by the numbers", "How it works", "Show the numbers", "us-atlas", "ISC License", "Mike Bostock",
-    "U.S. Census Bureau",
+    "Eating out, by the numbers", "How it works", "Show the numbers",
 ]
 for m in must:
     check(f"page has: {m[:60]}", m in PAGE)

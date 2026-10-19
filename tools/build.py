@@ -38,6 +38,45 @@ DRY_RUN = "--dry-run" in ARGS
 
 SITE = json.loads(DATA.read_text())
 GEO = json.loads((TOOLS / "us-states-paths.json").read_text())
+
+# The map is a hex-tile map (Nick, 2026-10-19): one equal hexagon per state on a rough U.S. layout, so small states
+# (Connecticut, Maine) get the same room for their icon as big ones. us-states-paths.json now supplies only the names.
+# Corners sit on a lattice of half-hex steps, so neighbouring tiles share exactly two corner points and adjacency(),
+# pole(), compact() and the arrow-key order all keep working on these shapes as they did on the outlines.
+HEX_ROWS = [
+    "AK . . . . . . . . . ME",
+    ". . . . . WI . . . VT NH",
+    "WA ID MT ND MN IL MI . NY MA .",
+    "OR NV WY SD IA IN OH PA NJ CT RI",
+    "CA UT CO NE MO KY WV VA MD DE .",
+    ". AZ NM KS AR TN NC SC DC . .",
+    ". . . OK LA MS AL GA . . .",
+    "HI . . TX . . . FL . . .",
+]
+HEX_W, HEX_PAD = 80.0, 4.0
+HEX_R = HEX_W / math.sqrt(3)   # centre to corner, pointy-top
+HEX_CENTRE = {}
+
+
+def hexify(geo):
+    cells = {a: (c, r) for r, row in enumerate(HEX_ROWS) for c, a in enumerate(row.split()) if a != "."}
+    missing = sorted({st["abbr"] for st in geo["states"]} ^ set(cells))
+    if missing:
+        sys.exit(f"build: HEX_ROWS and us-states-paths.json disagree on {missing}")
+    pt = lambda j, k: (HEX_PAD + j * HEX_W / 2, HEX_PAD + k * HEX_R / 2)
+    for st in geo["states"]:
+        c, r = cells[st["abbr"]]
+        J, K = 2 * c + 1 + r % 2, 2 + 3 * r
+        corners = [pt(J, K - 2), pt(J + 1, K - 1), pt(J + 1, K + 1), pt(J, K + 2), pt(J - 1, K + 1), pt(J - 1, K - 1)]
+        st["d"] = "M" + "L".join(f"{x:.1f},{y:.1f}" for x, y in corners) + "Z"
+        HEX_CENTRE[st["abbr"]] = pt(J, K)
+    cols = max(len(row.split()) for row in HEX_ROWS)
+    w, h = 2 * HEX_PAD + (2 * cols + 1) * HEX_W / 2, 2 * HEX_PAD + (3 * len(HEX_ROWS) + 1) * HEX_R / 2
+    geo["viewBox"] = f"0 0 {w:.0f} {h:.0f}"
+    return geo
+
+
+GEO = hexify(GEO)
 TEMPLATE = (TOOLS / "template.html").read_text()
 TEMPLATE_404 = (TOOLS / "template-404.html").read_text()
 APP_JS = (TOOLS / "app.js").read_text()
@@ -556,7 +595,7 @@ def compact(d):
 
 
 def adjacency():
-    """States that share a border (at least two boundary points in common)."""
+    """States whose tiles touch (two corner points in common), so the arrow keys move to the tile you see that way."""
     pts = {}
     for st in GEO["states"]:
         pts[st["abbr"]] = {(round(x, 1), round(y, 1)) for r in rings(st["d"]) for x, y in r}
@@ -608,7 +647,9 @@ for st in GEO["states"]:
 # Live states in the page's own order (the lede, cards and footer), so Tab, Home and End meet Illinois first, not us-atlas order.
 ORDER = {s["abbr"]: i for i, s in enumerate(LIVE)}
 live_shapes.sort(key=lambda h: ORDER[re.search(r'data-abbr="([A-Z]{2})"', h).group(1)])
-MAP = "\n".join(live_shapes + shapes)
+LABELS = "".join(f'<text x="{HEX_CENTRE[st["abbr"]][0]:.1f}" y="{HEX_CENTRE[st["abbr"]][1]:.1f}">{st["abbr"]}</text>'
+                 for st in GEO["states"] if st["abbr"] not in LIVE_BY)
+MAP = "\n".join(live_shapes + shapes + [f'<g class="abbr" aria-hidden="true">{LABELS}</g>'])
 PINS = "\n".join("          " + p for p in pins)
 
 
