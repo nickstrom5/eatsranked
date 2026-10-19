@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qOhFsq0QMV2REqNwk5hGH5bZE9SkX6gt6yeyKdYPv+U=' 'sha256-yW9Yf+rmouRGTgIi8JApmFIb5MXGUNmgWaXcYp/QaTI='; style-src 'sha256-nUIav//eQLickIe8rg015qm7fSMfJ2bVH3IJUtOXF1o=' 'sha256-SrFE8Uk/TFbWG1wD0vq5iIgWPqClB/Cn0AkWQpNP73k='; img-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-qOhFsq0QMV2REqNwk5hGH5bZE9SkX6gt6yeyKdYPv+U=' 'sha256-yW9Yf+rmouRGTgIi8JApmFIb5MXGUNmgWaXcYp/QaTI='; style-src 'sha256-3wv2sa7zDFyQQjrzbk+LCg9kfRkP9AHEWtpWVtLtNJ4=' 'sha256-SrFE8Uk/TFbWG1wD0vq5iIgWPqClB/Cn0AkWQpNP73k='; img-src 'self'; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Eats Ranked: Free Restaurant Guides, State by State</title>
@@ -10,8 +10,8 @@
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://eatsranked.com/">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#FAF8F3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#151411" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141517" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
@@ -126,29 +126,36 @@
 }
 </script>
 <script>document.documentElement.classList.add("js")</script>
+<link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/instrument-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:500 800;font-display:swap;src:url(fonts/bricolage-vietnamese.woff2) format("woff2");unicode-range:U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB}
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:500 800;font-display:swap;src:url(fonts/bricolage-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:500 800;font-display:swap;src:url(fonts/bricolage-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/instrument-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/instrument-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 :root{
-  --paper:#FAF8F3; --paper-2:#F2EEE6; --surface:#FFFFFF;
-  --ink:#1A1814; --ink-2:#57534A; --ink-3:#6B665C;
-  --rule:#E3DED3; --rule-2:#CFC8BA;
+  --paper:#FFFFFF; --paper-2:#F2F1EE; --surface:#FFFFFF;
+  --ink:#17181A; --ink-2:#4C4D50; --ink-3:#5E5F62;
+  --rule:#E4E3DF; --rule-2:#C9C8C3;
   --accent:#B8430F; --focus:#B8430F;
-  --land:#E6E1D7; --land-hover:#D6CFC1; --land-line:#FAF8F3;
+  --land:#ECEAE5; --land-hover:#DDDBD5; --land-line:#FFFFFF;
   --s-rest:#B8430F; --s-groc:#57534A; --s-all:#8F897C;
-  --tip-bg:#1A1814; --tip-fg:#FAF8F3; --tip-mute:#C9C3B7;
-  --serif:ui-serif,"New York","Iowan Old Style",Charter,"Palatino Linotype",Palatino,Georgia,serif;
-  --sans:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --tip-bg:#17181A; --tip-fg:#FFFFFF; --tip-mute:#BDBDC0;
+  --display:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sans:"Instrument Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --wrap:1180px; --gut:clamp(20px,5vw,56px);
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root{
-    --paper:#151411; --paper-2:#1D1B17; --surface:#1D1B17;
-    --ink:#F3F0E8; --ink-2:#BDB7AA; --ink-3:#A39D90;
-    --rule:#2C2924; --rule-2:#3D3932;
+    --paper:#141517; --paper-2:#1E1F22; --surface:#1E1F22;
+    --ink:#F3F3F0; --ink-2:#BDBDC0; --ink-3:#A3A3A7;
+    --rule:#2B2C30; --rule-2:#3C3D42;
     --accent:#F07A45; --focus:#F07A45;
-    --land:#2B2823; --land-hover:#3A362F; --land-line:#151411;
+    --land:#2A2B2F; --land-hover:#393A3F; --land-line:#141517;
     --s-rest:#F07A45; --s-groc:#CFC9BC; --s-all:#827C70;
-    --tip-bg:#F3F0E8; --tip-fg:#151411; --tip-mute:#57534A;
+    --tip-bg:#F3F3F0; --tip-fg:#141517; --tip-mute:#5E5F62;
     color-scheme:dark;
   }
 }
@@ -168,27 +175,30 @@ p,li{text-wrap:pretty}
 
 /* ---------- header ---------- */
 .top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:18px}
-.wordmark{display:inline-flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;font:600 20px/1 var(--serif);letter-spacing:-.01em;color:var(--ink)}
+.wordmark{display:inline-flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;font:800 22px/1 var(--display);letter-spacing:-.02em;color:var(--ink)}
 .wordmark .mk{display:inline-flex;align-items:flex-end;gap:3px;height:18px}
 .wordmark .mk i{display:block;width:5px;border-radius:1.5px;background:var(--ink)}
 .wordmark .mk i:nth-child(1){height:18px}
 .wordmark .mk i:nth-child(2){height:12px}
 .wordmark .mk i:nth-child(3){height:7px;background:var(--accent)}
-.nav{display:flex;gap:26px;font-size:15px}
-.nav a{color:var(--ink-2);text-decoration:none;padding:6px 0}
-.nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.nav{display:flex;flex-wrap:wrap;gap:8px;font-size:15px;font-weight:600}
+.nav a{color:var(--ink);text-decoration:none;padding:10px 14px;border-radius:999px;background:var(--paper-2)}
+.nav a:hover{background:var(--rule)}
 
 /* ---------- hero ---------- */
-.hero{padding-top:clamp(56px,10vw,120px);padding-bottom:clamp(40px,6vw,72px)}
-.hero h1{font:500 clamp(44px,7.6vw,104px)/1 var(--serif);letter-spacing:-.028em;margin:0}
-.hero h1 .l{display:block}
-.hero p{font-size:clamp(18px,1.9vw,22px);line-height:1.45;color:var(--ink-2);max-width:36ch;text-wrap:balance;margin:clamp(22px,3vw,34px) 0 0}
+.hero{display:flex;flex-wrap:wrap;align-items:flex-end;gap:32px 56px;padding-top:clamp(48px,8vw,104px);padding-bottom:clamp(40px,6vw,64px)}
+.hero h1{flex:999 1 560px;min-width:0;font:800 clamp(44px,7.4vw,108px)/.95 var(--display);letter-spacing:-.045em;margin:0}
+.hero-side{flex:1 1 280px;min-width:0}
+.hero p{font-size:clamp(18px,1.8vw,21px);line-height:1.45;color:var(--ink-2);max-width:36ch;text-wrap:balance;margin:0 0 22px}
+.hero-icons{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+.hero-icons a{display:block;border-radius:11px}
+.hero-icons img{width:44px;height:44px;border-radius:11px}
 
 /* ---------- section scaffolding ---------- */
 .sec{padding-top:clamp(72px,10vw,128px)}
 .eyebrow{display:flex;align-items:center;gap:14px;font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 clamp(26px,3.4vw,40px)}
 .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
-.h2{font:500 clamp(34px,4.6vw,56px)/1.04 var(--serif);letter-spacing:-.02em;margin:0;text-wrap:balance}
+.h2{font:700 clamp(32px,4vw,48px)/1.05 var(--display);letter-spacing:-.03em;margin:0;text-wrap:balance}
 .lede{color:var(--ink-2);margin:0;font-size:17px;max-width:44ch}
 .lede a{color:var(--accent);font-weight:600;text-underline-offset:3px;text-decoration-thickness:1px}
 
@@ -200,7 +210,7 @@ p,li{text-wrap:pretty}
 .app .icon{width:88px;height:88px;border-radius:20px;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
 .app .where,.pop .w{margin:0;font:600 12px/1.25 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ac)}
 .app .plat{margin:6px 0 0;font-size:14px;opacity:.8}
-.app h3{font:500 clamp(28px,3vw,38px)/1.08 var(--serif);letter-spacing:-.015em;margin:0 0 14px}
+.app h3{font:700 clamp(26px,2.6vw,32px)/1.08 var(--display);letter-spacing:-.02em;margin:0 0 14px}
 .app .tag{margin:0 0 clamp(28px,3.4vw,40px);font-size:17px;line-height:1.5;opacity:.9;max-width:42ch}
 .actions{margin-top:auto;display:flex;flex-wrap:wrap;align-items:center;gap:12px 14px}
 .btn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;background:var(--ac);color:var(--bg);font:600 16px/1 var(--sans);text-decoration:none;white-space:nowrap}
@@ -254,7 +264,7 @@ html:not(.js) .hint{display:none}
 .pop:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 .pop .row{display:flex;gap:14px;align-items:center;padding-right:34px;margin-bottom:14px}
 .pop img{width:56px;height:56px;border-radius:13px;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
-.pop .n{margin:4px 0 0;font:500 23px/1.15 var(--serif);letter-spacing:-.01em}
+.pop .n{margin:4px 0 0;font:700 23px/1.15 var(--display);letter-spacing:-.02em}
 .pop .tg{margin:0 0 6px;font-size:15.5px;line-height:1.5;opacity:.9}
 .pop .pl{margin:0 0 16px;font-size:13.5px;opacity:.75}
 .pop .actions{gap:10px}
@@ -287,18 +297,16 @@ html:not(.js) .pops{display:none}
 @media (prefers-reduced-motion: reduce){ path.st,.st.live path,.pin{transition:none} }
 
 /* ---------- how it works ---------- */
-.steps{list-style:none;margin:0;padding:0}
-.steps li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2vw,28px);align-items:baseline;padding:clamp(22px,2.8vw,34px) 0;border-top:1px solid var(--rule)}
-.steps li:last-child{border-bottom:1px solid var(--rule)}
-.steps .lh{display:grid;grid-template-columns:clamp(48px,6vw,84px) minmax(0,1fr);align-items:baseline}
-.steps .num{font:400 clamp(40px,5vw,64px)/.9 var(--serif);color:var(--accent);font-variant-numeric:lining-nums}
-.steps h3{font:500 clamp(24px,2.6vw,32px)/1.15 var(--serif);letter-spacing:-.01em;margin:0}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.steps li{padding:28px;border-radius:24px;background:var(--paper-2)}
+.steps .num{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:999px;background:var(--ink);color:var(--paper);font:700 17px/1 var(--sans)}
+.steps h3{font:700 22px/1.2 var(--display);letter-spacing:-.02em;margin:16px 0 6px}
 .steps p{margin:0;color:var(--ink-2);font-size:17px}
 .note{margin:24px 0 0;max-width:74ch;font-size:14.5px;line-height:1.6;color:var(--ink-3)}
 .faq{list-style:none;margin:0;padding:0;max-width:880px}
 .faq li{padding:clamp(18px,2.2vw,26px) 0;border-top:1px solid var(--rule)}
 .faq li:last-child{border-bottom:1px solid var(--rule)}
-.faq h3{font:500 clamp(21px,2.2vw,26px)/1.2 var(--serif);letter-spacing:-.01em;margin:0 0 8px}
+.faq h3{font:700 clamp(20px,2vw,24px)/1.2 var(--display);letter-spacing:-.02em;margin:0 0 8px}
 .faq p{margin:0;color:var(--ink-2);font-size:17px;line-height:1.55;max-width:68ch}
 
 /* ---------- numbers ---------- */
@@ -306,14 +314,14 @@ html:not(.js) .pops{display:none}
 .bill b{color:var(--ink);font-weight:600}
 .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,56px);margin:clamp(36px,4.6vw,56px) 0 0;padding:0}
 .fact{margin:0;border-top:2px solid var(--ink);padding-top:18px}
-.fact dt{font:400 clamp(60px,7.4vw,104px)/.95 var(--serif);letter-spacing:-.035em;font-variant-numeric:lining-nums;margin:0 0 16px;white-space:nowrap}
+.fact dt{font:800 clamp(56px,7vw,96px)/.95 var(--display);letter-spacing:-.045em;font-variant-numeric:lining-nums;margin:0 0 16px;white-space:nowrap}
 .fact dt .u{font-size:.5em;letter-spacing:0;margin-left:.04em;vertical-align:.62em}
 .fact dd{margin:0;color:var(--ink-2);font-size:16px;line-height:1.5}
 .fact dd b{color:var(--ink);font-weight:600}
 
 .chart{margin:clamp(64px,8vw,96px) 0 0}
 .chart figcaption{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 28px;margin-bottom:22px}
-.chart .ct{font:500 clamp(22px,2.2vw,28px)/1.2 var(--serif);margin:0;letter-spacing:-.01em}
+.chart .ct{font:700 clamp(22px,2.2vw,28px)/1.2 var(--display);margin:0;letter-spacing:-.02em}
 .chart .cs{color:var(--ink-3);font-size:14px;margin:6px 0 0}
 .keys{display:flex;flex-wrap:wrap;gap:6px 20px;list-style:none;margin:0;padding:0;font-size:14px;color:var(--ink-2)}
 .keys li{display:inline-flex;align-items:center;gap:8px}
@@ -377,9 +385,6 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
 @media (max-width: 900px){
   .sechead{grid-template-columns:1fr}
   .facts{grid-template-columns:1fr;gap:36px}
-  .steps li{grid-template-columns:1fr;row-gap:8px}
-  .steps .lh{grid-template-columns:clamp(44px,10vw,72px) minmax(0,1fr)}
-  .steps p{padding-left:clamp(44px,10vw,72px)}
   .foot .fg{grid-template-columns:1fr 1fr}
   .foot .fb{grid-column:1/-1}
 }
@@ -396,7 +401,8 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
 }
 @media (max-width: 640px){
   body{font-size:16px}
-  .nav{gap:18px;font-size:14px}
+  .nav{gap:6px;font-size:14px}
+  .nav a{padding:10px 12px}
   .hero h1{font-size:max(34px,10.5vw)}
   .app{border-radius:22px}
   .app .icon{width:60px;height:60px;border-radius:14px}
@@ -473,8 +479,21 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
 
 <main id="main">
   <section class="hero wrap" aria-labelledby="h1">
-    <h1 id="h1"><span class="l">Restaurants, ranked</span> <span class="l">state by state.</span></h1>
-    <p>Free restaurant apps from public records and open data.</p>
+    <h1 id="h1">Restaurants, ranked state by state.</h1>
+    <div class="hero-side">
+      <p>Free restaurant apps built from public records and open data. No ads, no account.</p>
+      <ul class="hero-icons" aria-label="On the web now">
+      <li><a href="#app-il"><img src="icons/chicago.083f7a9ae1.webp" width="44" height="44" alt="Chicago + Illinois" decoding="async"></a></li>
+      <li><a href="#app-wi"><img src="icons/wisconsin.a087e9de22.webp" width="44" height="44" alt="Wisconsin" decoding="async"></a></li>
+      <li><a href="#app-co"><img src="icons/colorado.3f516dbc30.webp" width="44" height="44" alt="Colorado" decoding="async"></a></li>
+      <li><a href="#app-wa"><img src="icons/washington.21abdf22f1.webp" width="44" height="44" alt="Washington" decoding="async"></a></li>
+      <li><a href="#app-ct"><img src="icons/connecticut.39149f67f2.webp" width="44" height="44" alt="Connecticut" decoding="async"></a></li>
+      <li><a href="#app-fl"><img src="icons/florida.f588ac3407.webp" width="44" height="44" alt="Florida" decoding="async"></a></li>
+      <li><a href="#app-ca"><img src="icons/california.7d8e51b542.webp" width="44" height="44" alt="California" decoding="async"></a></li>
+      <li><a href="#app-me"><img src="icons/maine.3b618e60b2.webp" width="44" height="44" alt="Maine" decoding="async"></a></li>
+      <li><a href="#app-id"><img src="icons/idaho.99b5d97f6b.webp" width="44" height="44" alt="Idaho" decoding="async"></a></li>
+      </ul>
+    </div>
   </section>
 
   <section class="wrap" id="states" aria-labelledby="states-h">

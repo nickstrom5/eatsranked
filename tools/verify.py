@@ -283,15 +283,15 @@ ICON = {s["abbr"]: icon_src(s) for s in live}
 USED = {}
 for s in live:
     a = s["abbr"].lower()
-    # The icon shows four times (map pin, map pop-up, phone list, card), always as the same file: make_images.py's
+    # The icon shows five times (hero row, map pin, map pop-up, phone list, card), always as the same file: make_images.py's
     # WebP of this exact PNG (a fifth of the bytes) or the PNG itself. Never another WebP: one named after an earlier
     # PNG would show the old icon. The PNG still passes (a state added before make_images.py ran), with a warning.
     stem = pathlib.PurePosixPath(s["icon"]).stem
     uses = re.findall(rf'<img\b[^>]*\ssrc="(icons/{re.escape(stem)}(?:\.[0-9a-f]{{10}})?\.(?:png|webp))"', PAGE)
     used = USED[s["abbr"]] = uses[0] if uses else s["icon"]
-    check(f"{s['abbr']} icon loads as one file on its map pin, map pop-up, phone list and card: "
+    check(f"{s['abbr']} icon loads as one file in the hero row, map pin, map pop-up, phone list and card: "
           f"{ICON[s['abbr']]}" + (f" or {s['icon']}" if ICON[s["abbr"]] != s["icon"] else ""),
-          len(uses) == 4 and len(set(uses)) == 1 and used in (ICON[s["abbr"]], s["icon"]), str(uses))
+          len(uses) == 5 and len(set(uses)) == 1 and used in (ICON[s["abbr"]], s["icon"]), str(uses))
     if used.endswith(".webp"):
         size = png_size(DOCS / s["icon"])
         got = webp_size(DOCS / used) if (DOCS / used).is_file() else "missing"   # a page naming a WebP that isn't there
@@ -494,7 +494,7 @@ def csp_checks(name, doc):
           d.get("style-src") == want_css, f"{d.get('style-src')} != {want_css}")
     uses_data = re.search(r"""(?:\ssrc=["']?|url\(\s*["']?)data:""", doc) is not None
     fixed = {"default-src": ["'none'"], "img-src": ["'self'"] + (["data:"] if uses_data else []),
-             "connect-src": ["'self'"], "manifest-src": ["'self'"], "base-uri": ["'none'"], "form-action": ["'none'"],
+             "font-src": ["'self'"], "connect-src": ["'self'"], "manifest-src": ["'self'"], "base-uri": ["'none'"], "form-action": ["'none'"],
              "object-src": ["'none'"], "upgrade-insecure-requests": []}
     check(f"{name}: CSP blocks other hosts, plugins, <base> and forms", all(d.get(k) == v for k, v in fixed.items())
           and set(d) == set(fixed) | {"script-src", "style-src"} and not re.search(r"https?:|\*", pol), pol)

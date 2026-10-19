@@ -646,6 +646,10 @@ for s in LIVE:
                  f'<span class="pk"><span class="ps">{esc(where(s))}</span><span class="pa">{esc(s["app"])}</span></span>{CHEVRON}</a></li>')
 PICKS = "\n".join(picks)
 
+HERO_ICONS = "\n".join(
+    f'      <li><a href="#app-{s["abbr"].lower()}"><img src="{esc(ICON[s["abbr"]])}" width="44" height="44" '
+    f'alt="{esc(where(s))}" decoding="async"></a></li>' for s in LIVE)
+
 MAILTO_NEXT = f"mailto:{EMAIL}?subject=" + "Next%20state%20for%20Eats%20Ranked"
 
 # ====================================================================== questions
@@ -718,7 +722,7 @@ SUBS = {
     "CARDS": CARDS, "COMING_SOON": esc(SITE["coming_soon_message"]), "LIVE_LABEL": esc(LIVE_LABEL),
     "LEDE_LIVE": esc(LEDE_LIVE),
     "MAILTO_NEXT": esc(MAILTO_NEXT), "VIEWBOX": esc(GEO["viewBox"]), "MAP_TITLE": esc(MAP_TITLE), "MAP": MAP,
-    "PINS": PINS, "POPS": POPS, "PICKS": PICKS, "LEGEND_STYLE": LEGEND_STYLE,
+    "PINS": PINS, "POPS": POPS, "PICKS": PICKS, "HERO_ICONS": HERO_ICONS, "LEGEND_STYLE": LEGEND_STYLE,
     "HOW_NOTE": esc(SITE.get("how_it_works_note", "")), "FAQ": FAQ_HTML, "BILL": BILL_HTML, "FACTS": FACTS,
     "CHART_TITLE": esc(CHART_TITLE), "CHART_SUB": esc(CHART_SUB), "CHART_ALT": esc(CHART_ALT),
     "YTICKS": YTICKS, "XTICKS": XTICKS, "CHART_SVG": CHART_SVG, "CHART_HTML": CHART_HTML, "ENDS": ENDS,
@@ -760,7 +764,7 @@ def with_csp(doc):
     style = " ".join(styles) if styles else "'none'"
     img = "'self' data:" if re.search(r"""(?:\ssrc=["']?|url\(\s*["']?)data:""", doc) else "'self'"
     policy = (f"default-src 'none'; script-src {script}; style-src {style}; img-src {img}; "
-              "connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; "
+              "font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; "
               "upgrade-insecure-requests")
     if doc.count("@@CSP@@") != 1:
         sys.exit("build: a page needs exactly one @@CSP@@ slot")
@@ -849,7 +853,7 @@ if changed:
     "name": BRAND["name"], "short_name": BRAND["name"],
     "description": "Restaurants, ranked state by state.",
     "start_url": "/", "scope": "/", "display": "browser",
-    "background_color": "#FAF8F3", "theme_color": "#FAF8F3",
+    "background_color": "#FFFFFF", "theme_color": "#FFFFFF",
     "icons": [
         {"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml"},
         {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
