@@ -293,6 +293,38 @@
      "url": "https://nickstrom5.github.io/idaho-eats/idaho-finger-steaks-drive-ins.html"
     }
    ]
+  },
+  {
+   "abbr": "NY",
+   "status": "live",
+   "app": "New York Eats: Restaurants",
+   "home_name": "NY Eats",
+   "tagline": "Pizza slices, bagels and delis, Buffalo wings, Rochester plates, Utica classics and dim sum we checked by hand, New York City's official A/B/C grades, plus 61,000+ restaurants statewide.",
+   "site": "https://newyork.eatsranked.com/",
+   "how": "https://newyork.eatsranked.com/",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#14325C",
+    "accent": "#E0A526",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/newyork.png",
+   "tagline_short": "Pizza slice & bagel guide to 61,000+ New York restaurants.",
+   "web_app": "https://newyork.eatsranked.com/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Pizza slices",
+     "url": "https://newyork.eatsranked.com/new-york-pizza-slices.html"
+    },
+    {
+     "label": "Bagels & delis",
+     "url": "https://newyork.eatsranked.com/new-york-bagels-delis.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
