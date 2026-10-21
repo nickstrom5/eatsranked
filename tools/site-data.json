@@ -325,6 +325,38 @@
      "url": "https://newyork.eatsranked.com/new-york-bagels-delis.html"
     }
    ]
+  },
+  {
+   "abbr": "HI",
+   "status": "live",
+   "app": "Hawaiʻi Eats: Restaurants",
+   "home_name": "Hawaiʻi Eats",
+   "tagline": "Plate lunch, poke, saimin, shave ice, musubi and Hawaiian food we checked by hand, plus 3,800+ restaurants on six islands.",
+   "site": "https://nickstrom5.github.io/hawaii-eats/",
+   "how": "https://nickstrom5.github.io/hawaii-eats/hawaii-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#0A4D68",
+    "accent": "#FFC845",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/hawaii.png",
+   "tagline_short": "Plate lunch, poke & shave ice guide to 3,800+ Hawaii restaurants.",
+   "web_app": "https://nickstrom5.github.io/hawaii-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Plate lunch & drive-ins",
+     "url": "https://nickstrom5.github.io/hawaii-eats/hawaii-plate-lunch-drive-ins.html"
+    },
+    {
+     "label": "Poke counters & fish markets",
+     "url": "https://nickstrom5.github.io/hawaii-eats/hawaii-poke.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
