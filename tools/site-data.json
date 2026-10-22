@@ -357,6 +357,38 @@
      "url": "https://nickstrom5.github.io/hawaii-eats/hawaii-poke.html"
     }
    ]
+  },
+  {
+   "abbr": "TX",
+   "status": "live",
+   "app": "Texas Eats: Restaurants",
+   "home_name": "Texas Eats",
+   "tagline": "Barbecue joints, Tex-Mex, taquerías, kolaches and chicken-fried steak we checked by hand, MICHELIN and James Beard honors, Austin, El Paso and Arlington inspection scores, plus 78,000+ restaurants statewide.",
+   "site": "https://texas.eatsranked.com/",
+   "how": "https://texas.eatsranked.com/texas-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#002868",
+    "accent": "#BF0A30",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/texas.png",
+   "tagline_short": "BBQ, Tex-Mex & taquería guide to 78,000+ Texas restaurants.",
+   "web_app": "https://texas.eatsranked.com/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Barbecue joints",
+     "url": "https://texas.eatsranked.com/texas-barbecue.html"
+    },
+    {
+     "label": "Tex-Mex",
+     "url": "https://texas.eatsranked.com/texas-tex-mex.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",

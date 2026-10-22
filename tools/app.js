@@ -70,7 +70,7 @@
       return pick(from._adj.map(function (a) { return byAbbr[a]; }), 1.2, true) || pick(states, 1, false);
     }
 
-    /* ---- the small label: "Texas · Coming soon" ---- */
+    /* ---- the small label: "Kansas · Coming soon" ---- */
     function label(el) {
       tipFor = el;
       tip.textContent = "";
