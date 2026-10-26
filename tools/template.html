@@ -322,6 +322,8 @@ details.tbl td.na{color:var(--ink-3);font-style:italic}
   .pin img{border-radius:26%}
   /* 24 px to tap (WCAG 2.5.8): a 44 px area spilled onto neighbours, so New Jersey taps opened Connecticut's site */
   .pin::after{content:"";position:absolute;inset:-2px}
+  /* the coming-soon codes, in map units: 17 drew them about 6 px tall on a phone, 27 bold draws them about 10 px and still fits a tile */
+  .abbr text{font-size:27px;font-weight:700}
   .pop{padding:22px 20px 18px}
   .cg{grid-template-columns:40px minmax(0,1fr) 62px}
   .yax,.plot,.ends{height:280px}
