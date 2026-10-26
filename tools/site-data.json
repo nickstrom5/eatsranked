@@ -581,6 +581,38 @@
      "url": "https://nickstrom5.github.io/oregon-eats/oregon-coast-seafood.html"
     }
    ]
+  },
+  {
+   "abbr": "MI",
+   "status": "live",
+   "app": "Michigan Eats: Restaurants",
+   "home_name": "MI Eats",
+   "tagline": "Coney Islands, Detroit-style pizza, pasties, pączki and Dearborn's Middle Eastern restaurants we checked by hand, James Beard honors, Detroit inspection results, plus 24,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/michigan-eats/",
+   "how": "https://nickstrom5.github.io/michigan-eats/detroit-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#0D3F63",
+    "accent": "#E3D5AE",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/michigan.png",
+   "tagline_short": "Coney & pasty guide to 24,000+ Michigan restaurants.",
+   "web_app": "https://nickstrom5.github.io/michigan-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Coney Islands",
+     "url": "https://nickstrom5.github.io/michigan-eats/michigan-coney-islands.html"
+    },
+    {
+     "label": "Detroit-style pizza",
+     "url": "https://nickstrom5.github.io/michigan-eats/detroit-style-pizza.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
