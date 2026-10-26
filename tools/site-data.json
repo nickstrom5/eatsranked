@@ -389,6 +389,38 @@
      "url": "https://texas.eatsranked.com/texas-tex-mex.html"
     }
    ]
+  },
+  {
+   "abbr": "OH",
+   "status": "live",
+   "app": "Ohio Eats: Restaurants",
+   "home_name": "Ohio Eats",
+   "tagline": "Cincinnati chili, Ohio's pizza styles, Amish Country cooking, pierogi and Lake Erie perch we checked by hand, James Beard honors, Cincinnati inspection results, plus 25,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/ohio-eats/",
+   "how": "https://nickstrom5.github.io/ohio-eats/ohio-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#3B2314",
+    "accent": "#D9A45B",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/ohio.png",
+   "tagline_short": "Chili, pierogi & pizza guide to 25,000+ Ohio restaurants.",
+   "web_app": "https://nickstrom5.github.io/ohio-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Cincinnati chili parlors",
+     "url": "https://nickstrom5.github.io/ohio-eats/cincinnati-chili-parlors.html"
+    },
+    {
+     "label": "Ohio pizza styles",
+     "url": "https://nickstrom5.github.io/ohio-eats/ohio-pizza-styles.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
