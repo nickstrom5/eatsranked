@@ -421,6 +421,38 @@
      "url": "https://nickstrom5.github.io/ohio-eats/ohio-pizza-styles.html"
     }
    ]
+  },
+  {
+   "abbr": "AK",
+   "status": "live",
+   "app": "Alaska Eats: Restaurants",
+   "home_name": "Alaska Eats",
+   "tagline": "Halibut, salmon and crab, Anchorage's global kitchens, roadhouses and reindeer dogs we checked by hand, James Beard honors, Anchorage's own inspection scores, plus 1,900+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/alaska-eats/",
+   "how": "https://nickstrom5.github.io/alaska-eats/anchorage-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#0F204B",
+    "accent": "#FFB612",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/alaska.png",
+   "tagline_short": "Halibut, roadhouses & reindeer guide to 1,900+ Alaska restaurants.",
+   "web_app": "https://nickstrom5.github.io/alaska-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Halibut, salmon & crab",
+     "url": "https://nickstrom5.github.io/alaska-eats/alaska-seafood-restaurants.html"
+    },
+    {
+     "label": "Anchorage's global kitchens",
+     "url": "https://nickstrom5.github.io/alaska-eats/anchorage-global-kitchens.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
