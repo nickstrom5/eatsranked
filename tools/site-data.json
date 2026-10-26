@@ -453,6 +453,38 @@
      "url": "https://nickstrom5.github.io/alaska-eats/anchorage-global-kitchens.html"
     }
    ]
+  },
+  {
+   "abbr": "NC",
+   "status": "live",
+   "app": "North Carolina Eats",
+   "home_name": "NC Eats",
+   "tagline": "Eastern and Lexington barbecue, Carolina hot dogs, calabash seafood and biscuits we checked by hand, MICHELIN and James Beard honors, Wake County inspection results, plus 22,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/north-carolina-eats/",
+   "how": "https://nickstrom5.github.io/north-carolina-eats/north-carolina-restaurant-grades.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#13294B",
+    "accent": "#E9A23B",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/northcarolina.png",
+   "tagline_short": "Barbecue & biscuit guide to 22,000+ North Carolina restaurants.",
+   "web_app": "https://nickstrom5.github.io/north-carolina-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Eastern NC barbecue",
+     "url": "https://nickstrom5.github.io/north-carolina-eats/eastern-north-carolina-barbecue.html"
+    },
+    {
+     "label": "Lexington barbecue",
+     "url": "https://nickstrom5.github.io/north-carolina-eats/lexington-barbecue.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
