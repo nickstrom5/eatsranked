@@ -485,6 +485,102 @@
      "url": "https://nickstrom5.github.io/north-carolina-eats/lexington-barbecue.html"
     }
    ]
+  },
+  {
+   "abbr": "AZ",
+   "status": "live",
+   "app": "Arizona Eats: Restaurants",
+   "home_name": "Arizona Eats",
+   "tagline": "Sonoran hot dogs, Sonoran Mexican food, chimichangas, Route 66 diners and frontier saloons we checked by hand, MICHELIN and James Beard honors, county inspection ratings, plus 17,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/arizona-eats/",
+   "how": "https://nickstrom5.github.io/arizona-eats/arizona-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#002868",
+    "accent": "#FFD100",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/arizona.png",
+   "tagline_short": "Sonoran dog & Route 66 guide to 17,000+ Arizona restaurants.",
+   "web_app": "https://nickstrom5.github.io/arizona-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Sonoran hot dogs",
+     "url": "https://nickstrom5.github.io/arizona-eats/arizona-sonoran-hot-dogs.html"
+    },
+    {
+     "label": "Route 66 diners",
+     "url": "https://nickstrom5.github.io/arizona-eats/arizona-route-66-diners.html"
+    }
+   ]
+  },
+  {
+   "abbr": "TN",
+   "status": "live",
+   "app": "Tennessee Eats: Restaurants",
+   "home_name": "TN Eats",
+   "tagline": "Nashville hot chicken, Memphis and whole-hog barbecue, biscuits and country ham, meat-and-threes and Smoky Mountain pancake houses we checked by hand, MICHELIN and James Beard honors, plus 14,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/tennessee-eats/",
+   "how": "https://nickstrom5.github.io/tennessee-eats/tennessee-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#002D72",
+    "accent": "#E8A33D",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/tennessee.png",
+   "tagline_short": "Hot chicken & barbecue guide to 14,000+ Tennessee restaurants.",
+   "web_app": "https://nickstrom5.github.io/tennessee-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Nashville hot chicken",
+     "url": "https://nickstrom5.github.io/tennessee-eats/nashville-hot-chicken.html"
+    },
+    {
+     "label": "Memphis barbecue",
+     "url": "https://nickstrom5.github.io/tennessee-eats/memphis-barbecue.html"
+    }
+   ]
+  },
+  {
+   "abbr": "OR",
+   "status": "live",
+   "app": "Oregon Eats: Restaurants",
+   "home_name": "Oregon Eats",
+   "tagline": "Food carts, Oregon Coast seafood, doughnut shops and Willamette Valley wine country we checked by hand, 266 brewpubs with a state Brewery Public House license, James Beard honors, plus 12,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/oregon-eats/",
+   "how": "https://nickstrom5.github.io/oregon-eats/oregon-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#14305C",
+    "accent": "#F2B705",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/oregon.png",
+   "tagline_short": "Food cart & brewpub guide to 12,000+ Oregon restaurants.",
+   "web_app": "https://nickstrom5.github.io/oregon-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Food carts",
+     "url": "https://nickstrom5.github.io/oregon-eats/oregon-food-carts.html"
+    },
+    {
+     "label": "Coast seafood",
+     "url": "https://nickstrom5.github.io/oregon-eats/oregon-coast-seafood.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
