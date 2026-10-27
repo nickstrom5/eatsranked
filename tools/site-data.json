@@ -613,6 +613,38 @@
      "url": "https://nickstrom5.github.io/michigan-eats/detroit-style-pizza.html"
     }
    ]
+  },
+  {
+   "abbr": "PA",
+   "status": "live",
+   "app": "Pennsylvania Eats",
+   "home_name": "PA Eats",
+   "tagline": "Philly cheesesteaks and hoagies, tomato pie and Old Forge pizza, and Pennsylvania Dutch cooking we checked by hand, MICHELIN and James Beard honors, plus 23,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/pennsylvania-eats/",
+   "how": "https://nickstrom5.github.io/pennsylvania-eats/",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#2E4E3F",
+    "accent": "#E8A33D",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/pennsylvania.png",
+   "tagline_short": "Cheesesteak & tomato pie guide to 23,000+ Pennsylvania restaurants.",
+   "web_app": "https://nickstrom5.github.io/pennsylvania-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Cheesesteaks & hoagies",
+     "url": "https://nickstrom5.github.io/pennsylvania-eats/philadelphia-cheesesteaks-hoagies.html"
+    },
+    {
+     "label": "Tomato pie & Old Forge pizza",
+     "url": "https://nickstrom5.github.io/pennsylvania-eats/tomato-pie-old-forge-pizza.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
