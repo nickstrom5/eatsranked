@@ -645,6 +645,38 @@
      "url": "https://nickstrom5.github.io/pennsylvania-eats/tomato-pie-old-forge-pizza.html"
     }
    ]
+  },
+  {
+   "abbr": "NJ",
+   "status": "live",
+   "app": "Garden State Eats: Restaurants",
+   "home_name": "Garden State",
+   "tagline": "Diners, pork roll, egg & cheese, tomato pie, hot dogs, subs and Shore seafood we checked by hand, James Beard honors, Monmouth and Camden county inspection results, plus 21,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/new-jersey-eats/",
+   "how": "https://nickstrom5.github.io/new-jersey-eats/new-jersey-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#195E8F",
+    "accent": "#E1B584",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/newjersey.png",
+   "tagline_short": "Diner & pork roll guide to 21,000+ New Jersey restaurants.",
+   "web_app": "https://nickstrom5.github.io/new-jersey-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Diners",
+     "url": "https://nickstrom5.github.io/new-jersey-eats/new-jersey-diners.html"
+    },
+    {
+     "label": "Pork roll, egg & cheese",
+     "url": "https://nickstrom5.github.io/new-jersey-eats/new-jersey-pork-roll-egg-and-cheese.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
