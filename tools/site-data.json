@@ -677,6 +677,167 @@
      "url": "https://nickstrom5.github.io/new-jersey-eats/new-jersey-pork-roll-egg-and-cheese.html"
     }
    ]
+  },
+  {
+   "abbr": "NV",
+   "status": "live",
+   "app": "Nevada Eats: Restaurants",
+   "home_name": "Nevada Eats",
+   "tagline": "Las Vegas buffets, Basque dining, Chinatown, Hawaiian plate lunch and Nevada's oldest restaurants we checked by hand, MICHELIN and James Beard honors, Las Vegas grade cards, plus 9,500+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/nevada-eats/",
+   "how": "https://nickstrom5.github.io/nevada-eats/clark-county-restaurant-grades.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#0047AB",
+    "accent": "#F2B705",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/nevada.png",
+   "tagline_short": "Buffet & Basque guide to 9,500+ Nevada restaurants.",
+   "web_app": "https://nickstrom5.github.io/nevada-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Las Vegas buffets",
+     "url": "https://nickstrom5.github.io/nevada-eats/las-vegas-buffets.html"
+    },
+    {
+     "label": "Basque dining",
+     "url": "https://nickstrom5.github.io/nevada-eats/nevada-basque-restaurants.html"
+    }
+   ]
+  },
+  {
+   "abbr": "DC",
+   "status": "live",
+   "app": "DC Eats: Restaurants",
+   "home_name": "DC Eats",
+   "region": "Washington, DC",
+   "tagline": "Ethiopian restaurants, half-smokes, pupusas and the jumbo slice we checked by hand, MICHELIN and James Beard honors, the District's food and alcohol licenses, plus 2,900+ restaurants across DC.",
+   "site": "https://nickstrom5.github.io/dc-eats/",
+   "how": "https://nickstrom5.github.io/dc-eats/dc-restaurant-licenses-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#041E42",
+    "accent": "#C8102E",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/dc.png",
+   "tagline_short": "Ethiopian & half-smoke guide to 2,900+ DC restaurants.",
+   "web_app": "https://nickstrom5.github.io/dc-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Ethiopian restaurants",
+     "url": "https://nickstrom5.github.io/dc-eats/dc-ethiopian-restaurants.html"
+    },
+    {
+     "label": "MICHELIN & James Beard",
+     "url": "https://nickstrom5.github.io/dc-eats/dc-michelin-james-beard.html"
+    }
+   ]
+  },
+  {
+   "abbr": "DE",
+   "status": "live",
+   "app": "Delaware Eats: Restaurants",
+   "home_name": "Delaware Eats",
+   "tagline": "Scrapple, brewpubs, farm creameries, Wilmington Italian and crabs we checked by hand, James Beard honors, state inspection records, plus 2,800+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/delaware-eats/",
+   "how": "https://nickstrom5.github.io/delaware-eats/delaware-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1F3B6F",
+    "accent": "#E3C79A",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/delaware.png",
+   "tagline_short": "Scrapple & crab guide to 2,800+ Delaware restaurants.",
+   "web_app": "https://nickstrom5.github.io/delaware-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Scrapple",
+     "url": "https://nickstrom5.github.io/delaware-eats/delaware-scrapple.html"
+    },
+    {
+     "label": "Farm creameries",
+     "url": "https://nickstrom5.github.io/delaware-eats/delaware-farm-creameries.html"
+    }
+   ]
+  },
+  {
+   "abbr": "GA",
+   "status": "live",
+   "app": "Georgia Eats: Restaurants",
+   "home_name": "GA Eats",
+   "tagline": "Lemon pepper wings, Buford Highway, meat-and-threes and soul food, Lowcountry seafood and Georgia's oldest restaurants we checked by hand, MICHELIN and James Beard honors, plus 23,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/georgia-eats/",
+   "how": "https://nickstrom5.github.io/georgia-eats/georgia-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1F4D3A",
+    "accent": "#F6A57A",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/georgia.png",
+   "tagline_short": "Lemon pepper wing guide to 23,000+ Georgia restaurants.",
+   "web_app": "https://nickstrom5.github.io/georgia-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Lemon pepper wings",
+     "url": "https://nickstrom5.github.io/georgia-eats/atlanta-lemon-pepper-wings.html"
+    },
+    {
+     "label": "Buford Highway",
+     "url": "https://nickstrom5.github.io/georgia-eats/buford-highway-restaurants.html"
+    }
+   ]
+  },
+  {
+   "abbr": "SC",
+   "status": "live",
+   "app": "South Carolina Eats",
+   "home_name": "SC Eats",
+   "tagline": "Whole-hog and mustard barbecue, Lowcountry and Grand Strand seafood, Gullah Geechee cooking and meat-and-threes we checked by hand, MICHELIN and James Beard honors, SCDA inspection grades, plus 15,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/southcarolina-eats/",
+   "how": "https://nickstrom5.github.io/southcarolina-eats/south-carolina-restaurant-inspection-grades.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1B2A57",
+    "accent": "#E8836B",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/southcarolina.png",
+   "tagline_short": "Barbecue & seafood guide to 15,000+ South Carolina restaurants.",
+   "web_app": "https://nickstrom5.github.io/southcarolina-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Whole-hog & mustard barbecue",
+     "url": "https://nickstrom5.github.io/southcarolina-eats/south-carolina-whole-hog-mustard-barbecue.html"
+    },
+    {
+     "label": "Gullah Geechee cooking",
+     "url": "https://nickstrom5.github.io/southcarolina-eats/gullah-geechee-restaurants.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",

@@ -609,8 +609,9 @@ if expires is not None and now < expires < now + datetime.timedelta(days=60):
 check(".nojekyll is there, so Pages serves .well-known/ (and no page uses Jekyll)", (DOCS / ".nojekyll").exists()
       and not (DOCS / "_config.yml").exists()
       and not any(re.search(r"\{%|\{\{|\A---\n", f.read_text()) for f in DOCS.glob("*.html")))
-# 150 KB was set with two states; each state adds about 4 KB of card, map and data (Nick, 2026-10-08: 200 KB)
-check("index.html under 200 KB", len(SERVED.encode()) < 200 * 1024, f"{len(SERVED.encode()) / 1024:.0f} KB")
+# 150 KB was set with two states; each state adds about 4 KB of card, map and data (Nick, 2026-10-08: 200 KB). 2026-11-03: 240 KB
+# for 26 states (215 KB, 35 KB gzipped) and the three in progress (RI, LA, MD)
+check("index.html under 240 KB", len(SERVED.encode()) < 240 * 1024, f"{len(SERVED.encode()) / 1024:.0f} KB")
 
 # ============================================================ serve docs/ and fetch every local link
 def free_port():
