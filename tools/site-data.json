@@ -838,6 +838,102 @@
      "url": "https://nickstrom5.github.io/southcarolina-eats/gullah-geechee-restaurants.html"
     }
    ]
+  },
+  {
+   "abbr": "RI",
+   "status": "live",
+   "app": "Rhode Island Eats: Restaurants",
+   "home_name": "RI Eats",
+   "tagline": "Clam shacks, hot wieners, Federal Hill Italian and frozen lemonade we checked by hand, James Beard honors, plus 2,800+ restaurants in all 39 cities and towns.",
+   "site": "https://nickstrom5.github.io/rhode-island-eats/",
+   "how": "https://nickstrom5.github.io/rhode-island-eats/rhode-island-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1D3F73",
+    "accent": "#F2C14E",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/rhodeisland.png",
+   "tagline_short": "Clam shack guide to 2,800+ Rhode Island restaurants.",
+   "web_app": "https://nickstrom5.github.io/rhode-island-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Clam shacks",
+     "url": "https://nickstrom5.github.io/rhode-island-eats/rhode-island-clam-shacks.html"
+    },
+    {
+     "label": "Hot wieners",
+     "url": "https://nickstrom5.github.io/rhode-island-eats/rhode-island-hot-wieners.html"
+    }
+   ]
+  },
+  {
+   "abbr": "LA",
+   "status": "live",
+   "app": "Bayou Eats: Louisiana Restaurants",
+   "home_name": "Bayou Eats",
+   "tagline": "Po-boys, Creole dining rooms, beignets, boudin stops and oyster bars we checked by hand, MICHELIN and James Beard honors, plus 11,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/louisiana-eats/",
+   "how": "https://nickstrom5.github.io/louisiana-eats/louisiana-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#2F5D50",
+    "accent": "#D3BC8D",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/louisiana.png",
+   "tagline_short": "Po-boy & boudin guide to 11,000+ Louisiana restaurants.",
+   "web_app": "https://nickstrom5.github.io/louisiana-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "New Orleans po-boys",
+     "url": "https://nickstrom5.github.io/louisiana-eats/new-orleans-po-boys.html"
+    },
+    {
+     "label": "Boudin in Acadiana",
+     "url": "https://nickstrom5.github.io/louisiana-eats/louisiana-boudin-cracklins.html"
+    }
+   ]
+  },
+  {
+   "abbr": "MD",
+   "status": "live",
+   "app": "Maryland Eats: Restaurants",
+   "home_name": "MD Eats",
+   "tagline": "Crab cakes, oyster bars, snowballs, pupuserías and Route 40 Korean restaurants we checked by hand, James Beard honors, plus 12,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/maryland-eats/",
+   "how": "https://nickstrom5.github.io/maryland-eats/maryland-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1A1A1A",
+    "accent": "#F2B705",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/maryland.png",
+   "tagline_short": "Crab cake guide to 12,000+ Maryland restaurants.",
+   "web_app": "https://nickstrom5.github.io/maryland-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Baltimore crab cakes",
+     "url": "https://nickstrom5.github.io/maryland-eats/baltimore-crab-cakes.html"
+    },
+    {
+     "label": "Oyster bars",
+     "url": "https://nickstrom5.github.io/maryland-eats/maryland-oyster-bars.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
