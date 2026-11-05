@@ -12,7 +12,7 @@
    "app": "Chicago Restaurants: Ranked",
    "home_name": "Chi Ranked",
    "region": "Chicago + Illinois",
-   "tagline": "Nearly every Chicago restaurant with our A–F grade from City inspection records, plus 17,000+ more across Illinois.",
+   "tagline": "Nearly every Chicago restaurant, ranked on City inspections, years open and MICHELIN and James Beard honors, plus 17,000+ more across Illinois.",
    "site": "https://chicago.eatsranked.com/",
    "how": "https://chicago.eatsranked.com/how-chicago-restaurant-inspections-work.html",
    "app_store": "https://apps.apple.com/app/id6816931379",
@@ -29,7 +29,7 @@
    "web_app_label": "Search on the web",
    "guides": [
     {
-     "label": "Grades, explained",
+     "label": "How we rank",
      "url": "https://chicago.eatsranked.com/chicago-restaurant-grades.html"
     },
     {
@@ -5753,5 +5753,5 @@
    }
   }
  },
- "how_it_works_note": "Sources differ by state: official inspection and license records where a state or city publishes them, Overture open map data for the rest, and places we check by hand (e.g. Wisconsin fish fries and supper clubs). Grades of our own are labeled as ours; official results are shown as published."
+ "how_it_works_note": "Sources differ by state: official inspection and license records where a state or city publishes them, Overture open map data for the rest, and places we check by hand (e.g. Wisconsin fish fries and supper clubs). Scores and grades of our own are labeled as ours; official results are shown as published."
 }
