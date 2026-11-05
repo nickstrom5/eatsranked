@@ -934,6 +934,166 @@
      "url": "https://nickstrom5.github.io/maryland-eats/maryland-oyster-bars.html"
     }
    ]
+  },
+  {
+   "abbr": "UT",
+   "status": "live",
+   "app": "Beehive Eats: Utah Restaurants",
+   "home_name": "UT Eats",
+   "tagline": "Salt Lake classics, red rock country stops, pastrami burgers, pie stops and Pacific Islander kitchens we checked by hand, MICHELIN and James Beard honors, plus 6,100+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/utah-eats/",
+   "how": "https://nickstrom5.github.io/utah-eats/utah-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#071D49",
+    "accent": "#FFB81D",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/utah.png",
+   "tagline_short": "Pastrami burger guide to 6,100+ Utah restaurants.",
+   "web_app": "https://nickstrom5.github.io/utah-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Salt Lake City classics",
+     "url": "https://nickstrom5.github.io/utah-eats/salt-lake-city-classic-restaurants.html"
+    },
+    {
+     "label": "Pastrami burgers",
+     "url": "https://nickstrom5.github.io/utah-eats/utah-pastrami-burgers-fry-sauce.html"
+    }
+   ]
+  },
+  {
+   "abbr": "VT",
+   "status": "live",
+   "app": "Green Mountain Eats: Vermont Restaurants",
+   "home_name": "Green Mountain Eats",
+   "tagline": "Diners and fry stands, maple creemees, cider mills, sugarhouses and farm pizza we checked by hand, James Beard honors, plus 1,500+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/vermont-eats/",
+   "how": "https://nickstrom5.github.io/vermont-eats/vermont-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1E4D2B",
+    "accent": "#D9A441",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/vermont.png",
+   "tagline_short": "Maple creemee guide to 1,500+ Vermont restaurants.",
+   "web_app": "https://nickstrom5.github.io/vermont-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Maple creemees",
+     "url": "https://nickstrom5.github.io/vermont-eats/vermont-maple-creemees.html"
+    },
+    {
+     "label": "Sugarhouses",
+     "url": "https://nickstrom5.github.io/vermont-eats/vermont-sugarhouses.html"
+    }
+   ]
+  },
+  {
+   "abbr": "VA",
+   "status": "live",
+   "app": "Old Dominion Eats: Virginia Restaurants",
+   "home_name": "Old Dominion Eats",
+   "tagline": "Ham biscuits, oyster bars, classic lunch counters, pollo a la brasa and pupusas we checked by hand, MICHELIN and James Beard honors, plus 17,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/virginia-eats/",
+   "how": "https://nickstrom5.github.io/virginia-eats/virginia-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1F3A5F",
+    "accent": "#E4A11B",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/virginia.png",
+   "tagline_short": "Ham biscuit guide to 17,000+ Virginia restaurants.",
+   "web_app": "https://nickstrom5.github.io/virginia-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Ham biscuits",
+     "url": "https://nickstrom5.github.io/virginia-eats/virginia-ham-biscuits.html"
+    },
+    {
+     "label": "Oyster bars",
+     "url": "https://nickstrom5.github.io/virginia-eats/virginia-oyster-bars.html"
+    }
+   ]
+  },
+  {
+   "abbr": "WV",
+   "status": "live",
+   "app": "West Virginia Eats: Restaurants",
+   "home_name": "West Virginia Eats",
+   "tagline": "Pepperoni rolls, hot dogs, classic Italian and ramps we checked by hand, James Beard honors, plus 3,300+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/west-virginia-eats/",
+   "how": "https://nickstrom5.github.io/west-virginia-eats/west-virginia-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#2E5E3E",
+    "accent": "#E0A526",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/westvirginia.png",
+   "tagline_short": "Pepperoni roll guide to 3,300+ West Virginia restaurants.",
+   "web_app": "https://nickstrom5.github.io/west-virginia-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Pepperoni rolls",
+     "url": "https://nickstrom5.github.io/west-virginia-eats/west-virginia-pepperoni-rolls.html"
+    },
+    {
+     "label": "West Virginia hot dogs",
+     "url": "https://nickstrom5.github.io/west-virginia-eats/west-virginia-hot-dogs.html"
+    }
+   ]
+  },
+  {
+   "abbr": "WY",
+   "status": "live",
+   "app": "Cowboy State Eats: Wyoming Restaurants",
+   "home_name": "Cowboy State Eats",
+   "tagline": "Historic saloons, steakhouses, small-town cafés and soda fountains we checked by hand, James Beard honors, plus 1,400+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/wyoming-eats/",
+   "how": "https://nickstrom5.github.io/wyoming-eats/wyoming-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#3E4F3A",
+    "accent": "#D9A441",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/wyoming.png",
+   "tagline_short": "Saloon & steakhouse guide to 1,400+ Wyoming restaurants.",
+   "web_app": "https://nickstrom5.github.io/wyoming-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Historic saloons",
+     "url": "https://nickstrom5.github.io/wyoming-eats/wyoming-historic-saloons.html"
+    },
+    {
+     "label": "Steakhouses",
+     "url": "https://nickstrom5.github.io/wyoming-eats/wyoming-steakhouses.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
