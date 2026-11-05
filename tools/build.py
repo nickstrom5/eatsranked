@@ -390,6 +390,7 @@ ICON = {s["abbr"]: icon_src(s) for s in LIVE}
 LIVE_NAMES = and_list(NAMES[s["abbr"]] for s in LIVE)
 # "Live now" only once every live app has its App Store link; until then the websites are what's live.
 ON_STORE = all(s.get("app_store") for s in LIVE)
+ON_ANY_STORE = [s for s in LIVE if s.get("app_store")]
 LIVE_LABEL = "Live now" if ON_STORE else "On the web now"
 VB = [float(v) for v in GEO["viewBox"].split()]
 VBW, VBH = VB[2], VB[3]
@@ -695,7 +696,6 @@ MAILTO_NEXT = f"mailto:{EMAIL}?subject=" + "Next%20state%20for%20Eats%20Ranked"
 
 # ====================================================================== questions
 # Every answer follows from site-data.json or from what the page already says, so it stays true as states launch.
-ON_ANY_STORE = [s for s in LIVE if s.get("app_store")]
 if ON_STORE:
     DOWNLOAD = "Yes. Tap the App Store badge on a state&rsquo;s card."
 elif ON_ANY_STORE:
@@ -749,6 +749,13 @@ JSONLD = jsonscript({
          # each state site names its own Organization <site>#org (and owns its name), so the two point at the same node
          "subOrganization": [{"@type": "Organization", "@id": s["site"].rstrip("/") + "/#org", "url": s["site"]}
                              for s in LIVE]},
+        # each app on the App Store, under the @id its state site gives its own MobileApplication (<site>#app), so
+        # search engines tie the hub, the state site and the listing together. No rating or review markup, ever.
+        *({"@type": "MobileApplication", "@id": s["site"].rstrip("/") + "/#app", "name": s["app"], "url": s["site"],
+           "operatingSystem": "iOS", "applicationCategory": "LifestyleApplication",
+           "downloadUrl": s["app_store"], "installUrl": s["app_store"],
+           "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+           "publisher": {"@id": s["site"].rstrip("/") + "/#org"}} for s in ON_ANY_STORE),
     ],
 }, indent=1)
 

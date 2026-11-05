@@ -348,7 +348,7 @@ check(f"{len(soon)} other states are on the map as coming soon",
       all(f'aria-label="{html.escape(names[a])}: coming soon"' in PAGE for a in soon))
 n_store = sum(1 for s in live if s.get("app_store") and "apps.apple.com" in s["app_store"])
 check(f"App Store links only where site-data has one: {2 * n_store} on the page (a card and a map pop-up per app)",
-      PAGE.count("apps.apple.com") == 2 * n_store)
+      len(re.findall(r'href="[^"]*apps\.apple\.com', PAGE)) == 2 * n_store)   # links only: the JSON-LD names it too
 
 must = [
     D["coming_soon_message"], "This site uses no cookies and no analytics.",
@@ -551,7 +551,13 @@ check("og:url and og:image absolute", 'property="og:url" content="https://eatsra
 for n in ("twitter:card", "twitter:title", "twitter:description", "twitter:image"):
     check(f"meta {n}", f'name="{n}"' in PAGE)
 ld = json.loads(section(r'<script type="application/ld\+json">(.*?)</script>'))
-check("JSON-LD WebSite + founder Person + Organization", [g["@type"] for g in ld["@graph"]] == ["WebSite", "Person", "Organization"]
+on_any = [s for s in live if s.get("app_store")]
+apps_ld = ld["@graph"][3:]
+check(f"JSON-LD: a MobileApplication for each of the {len(on_any)} apps on the App Store, <site>#app, its App Store link, free, no rating",
+      [(g.get("@type"), g.get("@id"), g.get("downloadUrl"), g.get("installUrl"), (g.get("offers") or {}).get("price")) for g in apps_ld]
+      == [("MobileApplication", s["site"].rstrip("/") + "/#app", s["app_store"], s["app_store"], "0") for s in on_any]
+      and not any(k in g for g in apps_ld for k in ("aggregateRating", "review")), json.dumps(apps_ld)[:300])
+check("JSON-LD WebSite + founder Person + Organization", [g["@type"] for g in ld["@graph"]][:3] == ["WebSite", "Person", "Organization"]
       and ld["@graph"][2].get("founder", {}).get("@id") == ld["@graph"][1]["@id"] == "https://work-with-nick.com/#person"
       and ld["@graph"][1].get("url") == "https://work-with-nick.com/")
 check("exactly one <h1>", PAGE.count("<h1") == 1)

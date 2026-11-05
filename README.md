@@ -61,7 +61,7 @@ To look at it locally: `python3 -m http.server 8741 --directory docs` and open <
    | `site`, `how` | website button; "How it works" link (left out when it's the same URL as `site`) |
    | `web_app`, `web_app_label` | optional web app link (e.g. "Search on the web") |
    | `guides` | optional list of `{"label", "url"}`: the state's best guide pages (e.g. a fish fry guide), shown as links on its card so the hub links deeper than each home page; plain `https://` like every link |
-   | `app_store` | App Store URL once the app is approved; `null` shows "Coming soon to the App Store" (not a link) |
+   | `app_store` | App Store URL once the app is approved and live; `null` shows "Coming soon to the App Store" (not a link). With a URL, the JSON-LD also gets the app's `MobileApplication` (`<site>#app`, the same id the state site uses) with it as `downloadUrl`/`installUrl` |
    | `app_store_note` | hover text on the coming-soon badge; keep it true (e.g. add "(in review)" only once the build has actually been submitted to App Review) |
    | `platforms` | e.g. `"iPhone & iPad, free"` (shown as "iPhone & iPad · Free") |
    | `colors.bg`, `colors.accent`, `colors.text` | card colours; `bg` fills the state on the map, `accent` fills it in dark mode. If `accent` reads below 4.5:1 on `bg`, the card's label, button and focus ring use the nearest same-hue shade that passes (build.py prints a note); `verify.py` fails if `text` doesn't pass |
