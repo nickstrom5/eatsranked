@@ -283,15 +283,16 @@ ICON = {s["abbr"]: icon_src(s) for s in live}
 USED = {}
 for s in live:
     a = s["abbr"].lower()
-    # The icon shows five times (hero row, map pin, map pop-up, phone list, card), always as the same file: make_images.py's
+    # The icon shows four times in the page as served (hero row, map pin, phone list, card; app.js copies the card's into the
+    # map pop-up), always as the same file: make_images.py's
     # WebP of this exact PNG (a fifth of the bytes) or the PNG itself. Never another WebP: one named after an earlier
     # PNG would show the old icon. The PNG still passes (a state added before make_images.py ran), with a warning.
     stem = pathlib.PurePosixPath(s["icon"]).stem
     uses = re.findall(rf'<img\b[^>]*\ssrc="(icons/{re.escape(stem)}(?:\.[0-9a-f]{{10}})?\.(?:png|webp))"', PAGE)
     used = USED[s["abbr"]] = uses[0] if uses else s["icon"]
-    check(f"{s['abbr']} icon loads as one file in the hero row, map pin, map pop-up, phone list and card: "
+    check(f"{s['abbr']} icon loads as one file in the hero row, map pin, phone list and card: "
           f"{ICON[s['abbr']]}" + (f" or {s['icon']}" if ICON[s["abbr"]] != s["icon"] else ""),
-          len(uses) == 5 and len(set(uses)) == 1 and used in (ICON[s["abbr"]], s["icon"]), str(uses))
+          len(uses) == 4 and len(set(uses)) == 1 and used in (ICON[s["abbr"]], s["icon"]), str(uses))
     if used.endswith(".webp"):
         size = png_size(DOCS / s["icon"])
         got = webp_size(DOCS / used) if (DOCS / used).is_file() else "missing"   # a page naming a WebP that isn't there
@@ -311,10 +312,14 @@ for s in live:
     if s.get("web_app"):
         check(f"{s['abbr']} card: {s.get('web_app_label')} -> {s['web_app']}",
               f'href="{s["web_app"]}"' in card and html.escape(s.get("web_app_label", "")) in card)
-    # the App Store badge is on the state's card and on its map pop-up: one link in each once site-data has the
-    # App Store URL, otherwise a "Coming soon" label (not a link) whose hover text is site-data's app_store_note
-    pop = section(rf'(<article class="pop" id="pop-{a}".*?</article>)')
-    for where_, frag in (("card", card), ("map pop-up", pop)):
+    # the App Store badge is on the state's card (app.js copies it into the map pop-up): one link once site-data has
+    # the App Store URL, otherwise a "Coming soon" label (not a link) whose hover text is site-data's app_store_note
+    pop = section(rf'(<article class="pop" id="pop-{a}"[^>]*>.*?</article>)')
+    short = s.get("tagline_short") or s["tagline"]
+    check(f"{s['abbr']} map pop-up: an empty shell carrying the short tagline (app.js fills it from the card)",
+          re.fullmatch(rf'<article class="pop" id="pop-{a}"[^>]*\sdata-tg="{re.escape(html.escape(short))}"[^>]*>\s*</article>', pop) is not None,
+          pop[:300])
+    for where_, frag in (("card", card),):
         if s.get("app_store"):
             check(f"{s['abbr']} {where_}: one App Store link ({s['app_store']}), no 'Coming soon' badge",
                   frag.count(f'href="{html.escape(s["app_store"])}"') == 1 and 'class="badge soon"' not in frag
@@ -347,8 +352,8 @@ soon = [a for a in names if a not in {s["abbr"] for s in live}]
 check(f"{len(soon)} other states are on the map as coming soon",
       all(f'aria-label="{html.escape(names[a])}: coming soon"' in PAGE for a in soon))
 n_store = sum(1 for s in live if s.get("app_store") and "apps.apple.com" in s["app_store"])
-check(f"App Store links only where site-data has one: {2 * n_store} on the page (a card and a map pop-up per app)",
-      len(re.findall(r'href="[^"]*apps\.apple\.com', PAGE)) == 2 * n_store)   # links only: the JSON-LD names it too
+check(f"App Store links only where site-data has one: {n_store} on the page (one per card; app.js copies it into the pop-up)",
+      len(re.findall(r'href="[^"]*apps\.apple\.com', PAGE)) == n_store)   # links only: the JSON-LD names it too
 
 must = [
     D["coming_soon_message"], "This site uses no cookies and no analytics.",
@@ -617,7 +622,8 @@ check(".nojekyll is there, so Pages serves .well-known/ (and no page uses Jekyll
       and not any(re.search(r"\{%|\{\{|\A---\n", f.read_text()) for f in DOCS.glob("*.html")))
 # 150 KB was set with two states; each state adds about 4 KB of card, map and data (Nick, 2026-10-08: 200 KB). 2026-11-03: 240 KB
 # for 26 states (215 KB, 35 KB gzipped) and the three in progress (RI, LA, MD). 2026-11-05: 280 KB for 34 states (262 KB, 40 KB
-# gzipped). Next time, slim instead: the map pop-ups (63 KB for 29 states) repeat each state's card and could be built from it
+# gzipped). 2026-11-07: slimmed instead of raised: the map pop-ups (102 KB for 46 states) are now empty shells that app.js
+# fills from each card, so 46 states come to 247 KB (40 KB gzipped) and each new state adds about 2 KB.
 check("index.html under 280 KB", len(SERVED.encode()) < 280 * 1024, f"{len(SERVED.encode()) / 1024:.0f} KB")
 
 # ============================================================ serve docs/ and fetch every local link

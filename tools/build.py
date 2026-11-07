@@ -663,21 +663,16 @@ def swatch(key):
 
 LEGEND_STYLE = f"--sw:{swatch('bg')};--sw-dark:{swatch('accent')}"
 
+# Each map pop-up is an empty shell that app.js fills from the state's card (icon, region, name, platforms, Website and
+# App Store buttons, guide links) when the page loads. Only the short tagline lives here, as data-tg. Pop-ups exist only
+# with JavaScript on (without it the map links straight to the cards), so writing each card twice only cost bytes: at 46
+# states the pop-ups were 102 KB of the 331 KB page. The close button's icon is written once, in the template below.
 pops = []
 for s in LIVE:
     a = s["abbr"].lower()
-    pops.append(f"""          <article class="pop" id="pop-{a}" data-abbr="{s['abbr']}" style="{colors(s)}" tabindex="-1" aria-labelledby="pop-{a}-h" hidden>
-            <button class="x" type="button" aria-label="Close {esc(s['app'])}">{CLOSE}</button>
-            <div class="row"><img src="{esc(ICON[s['abbr']])}" width="56" height="56" alt="" loading="lazy" decoding="async">
-              <div><p class="w">{esc(where(s))}</p><p class="n" id="pop-{a}-h">{esc(s['app'])}</p></div></div>
-            <p class="tg">{esc(s.get('tagline_short') or s['tagline'])}</p>
-            <p class="pl">{platforms(s)}</p>
-            <div class="actions">
-              {website(s)}
-              {store(s)}
-            </div>
-            {more_links(s)}
-          </article>""")
+    pops.append(f'          <article class="pop" id="pop-{a}" data-abbr="{s["abbr"]}" style="{colors(s)}" tabindex="-1" '
+                f'aria-labelledby="pop-{a}-h" data-tg="{esc(s.get("tagline_short") or s["tagline"])}" hidden></article>')
+pops.append(f'          <template id="pop-close">{CLOSE}</template>')
 POPS = "\n".join(pops)
 
 picks = []

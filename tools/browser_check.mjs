@@ -184,7 +184,14 @@ try {
   await key("Escape");
   st = await js("({open:(document.querySelector('.pop:not([hidden])') || {}).id || null, active:document.activeElement.id || document.activeElement.tagName})");
   check("Escape on a card opened by pointing closes it without moving focus into the map", st.open === null && !/^st-/.test(st.active), JSON.stringify(st));
-  const [tx0, ty0] = await statePoint("KS");
+  // Coming-soon examples come from the page: the first coming-soon state with a coming-soon neighbour (Kansas and
+  // Oklahoma until they launched). Once every state is live there are none, and the coming-soon checks are skipped.
+  const soonPair = await js(`(function(){var s={};[].forEach.call(document.querySelectorAll('path.st:not(.live)'),function(p){s[p.dataset.abbr]=p;});
+    for(var a in s){var n=(s[a].dataset.adj||'').split(' ').filter(function(b){return s[b];});if(n.length)return [a,s[a].dataset.name,n[0],s[n[0]].dataset.name];}
+    var k=Object.keys(s);return k.length?[k[0],s[k[0]].dataset.name,null,null]:null;})()`);
+  const [SOON, SOON_NAME, SOON2, SOON2_NAME] = soonPair || [];
+  if (!SOON) console.log("SKIP coming-soon hover and tap checks: every state on the map is live");
+  const [tx0, ty0] = await statePoint(SOON || "WI");
   await mouse(tx0, ty0); await mouse(5, 5);
   st = await js("document.querySelector('.map .tip').classList.contains('show')");
   check("the hover label goes when the pointer leaves the map", st === false);
@@ -193,17 +200,23 @@ try {
   st = await js("({il:!document.getElementById('pop-il').hidden, wi:!document.getElementById('pop-wi').hidden})");
   check("hovering Wisconsin swaps to its card", st.wi && !st.il, JSON.stringify(st));
   if (SHOTS) await shot("desktop-1440-wisconsin", await rectOf("#atlas", 24));
-  const [tx, ty] = await statePoint("KS");
-  await mouse(tx, ty);
-  st = await js("({tip:document.querySelector('.map .tip').textContent, show:document.querySelector('.map .tip').classList.contains('show')})");
-  check("hovering Kansas shows 'Coming soon'", st.show && st.tip === "Kansas · Coming soon", JSON.stringify(st));
-  await key("Escape"); await mouse(tx + 4, ty + 2);
-  st = await js("document.querySelector('.map .tip').classList.contains('show')");
-  check("Escape hides the hover label, and it stays hidden while the pointer stays on Kansas", st === false);
-  const [okx, oky] = await statePoint("OK");
-  await mouse(okx, oky);
-  st = await js("document.querySelector('.map .tip').textContent");
-  check("...until the pointer moves to another state", st === "Oklahoma · Coming soon", st);
+  // leave the map first so Wisconsin's card (opened by pointing) closes and can't cover a neighbouring tile
+  await mouse(5, 5); await sleep(600);
+  const [tx, ty] = await statePoint(SOON || "TX");
+  if (SOON) {
+    await mouse(tx, ty);
+    st = await js("({tip:document.querySelector('.map .tip').textContent, show:document.querySelector('.map .tip').classList.contains('show')})");
+    check(`hovering ${SOON_NAME} shows 'Coming soon'`, st.show && st.tip === `${SOON_NAME} · Coming soon`, JSON.stringify(st));
+    await key("Escape"); await mouse(tx + 4, ty + 2);
+    st = await js("document.querySelector('.map .tip').classList.contains('show')");
+    check(`Escape hides the hover label, and it stays hidden while the pointer stays on ${SOON_NAME}`, st === false);
+    if (SOON2) {
+      const [okx, oky] = await statePoint(SOON2);
+      await mouse(okx, oky);
+      st = await js("document.querySelector('.map .tip').textContent");
+      check("...until the pointer moves to another state", st === `${SOON2_NAME} · Coming soon`, st);
+    }
+  }
   // a clicked card stays open after the pointer leaves; a click outside closes it
   const [isx, isy] = await shapePoint("IL");
   await mouse(isx, isy);
@@ -219,7 +232,7 @@ try {
   st = await js("!document.getElementById('pop-il').hidden");
   check("a click outside the card closes it", st === false);
   await mouse(tx, ty);
-  if (SHOTS) await shot("desktop-1440-texas-hover", await rectOf("#atlas", 24));
+  if (SHOTS) await shot("desktop-1440-state-hover", await rectOf("#atlas", 24));
   await mouse(5, 5);
 
   // every live state comes before the first coming-soon one (how many are live depends on site-data.json)
@@ -253,8 +266,10 @@ try {
   const s1 = await js("document.activeElement.id");
   const [p0, p1] = [await pos(w1), await pos(s1)];
   check("ArrowDown moves south", s1 !== w1 && p1[1] > p0[1], `${w1} -> ${s1}`);
-  st = await js("({tip:document.querySelector('.map .tip').textContent, show:document.querySelector('.map .tip').classList.contains('show')})");
-  check("a focused coming-soon state says so", st.show && / · Coming soon$/.test(st.tip), st.tip);
+  st = await js(`({tip:document.querySelector('.map .tip').textContent, show:document.querySelector('.map .tip').classList.contains('show'),
+    live:document.getElementById('${s1}').classList.contains('live')})`);
+  check("a focused state's label says whether it is live or coming soon",
+    st.show && (st.live ? st.tip.endsWith(` · ${liveWord}`) : / · Coming soon$/.test(st.tip)), JSON.stringify(st));
   if (SHOTS) await shot("desktop-1440-keyboard-arrow", await rectOf("#atlas", 56));
   await key("Escape");
   st = await js("({show:document.querySelector('.map .tip').classList.contains('show'), id:document.activeElement.id})");
@@ -387,16 +402,18 @@ try {
     if(getComputedStyle(el).display==='none')return;var r=el.getBoundingClientRect();if(r.width<44||r.height<44)out.push((el.textContent||el.getAttribute('aria-label')||'').trim().slice(0,24)+' '+Math.round(r.width)+'x'+Math.round(r.height));});return out;})()`);
   check("phone: header, table toggle, footer links and card close button are at least 44x44", small.length === 0, small.join(", "));
   await js("document.getElementById('pop-il').querySelector('.x').click()");
-  const [ptx, pty] = await statePoint("KS");
-  await tap(ptx, pty);
-  st = await js("({tip:document.querySelector('.map .tip').textContent, show:document.querySelector('.map .tip').classList.contains('show')})");
-  check("tapping Kansas on a phone shows 'Coming soon'", st.show && st.tip === "Kansas · Coming soon", JSON.stringify(st));
-  if (SHOTS) await shot("phone-390-kansas-tap", await rectOf("#atlas", 0));
-  await sleep(1900);
-  await js("document.querySelector('#states .lede a').focus()");
-  await key("Tab");
-  st = await js("({id:document.activeElement.id, tip:document.querySelector('.map .tip').textContent})");
-  check("phone: Tab lands on the map (the state last touched)", st.id === "st-KS" && st.tip === "Kansas · Coming soon", JSON.stringify(st));
+  if (SOON) {
+    const [ptx, pty] = await statePoint(SOON);
+    await tap(ptx, pty);
+    st = await js("({tip:document.querySelector('.map .tip').textContent, show:document.querySelector('.map .tip').classList.contains('show')})");
+    check(`tapping ${SOON_NAME} on a phone shows 'Coming soon'`, st.show && st.tip === `${SOON_NAME} · Coming soon`, JSON.stringify(st));
+    if (SHOTS) await shot("phone-390-coming-soon-tap", await rectOf("#atlas", 0));
+    await sleep(1900);
+    await js("document.querySelector('#states .lede a').focus()");
+    await key("Tab");
+    st = await js("({id:document.activeElement.id, tip:document.querySelector('.map .tip').textContent})");
+    check("phone: Tab lands on the map (the state last touched)", st.id === `st-${SOON}` && st.tip === `${SOON_NAME} · Coming soon`, JSON.stringify(st));
+  }
   await key("ArrowRight");
   if (SHOTS) await shot("phone-390-keyboard", await rectOf("#atlas", 0));
   await js("document.activeElement.blur()");

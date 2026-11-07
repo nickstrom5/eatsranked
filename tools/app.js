@@ -19,6 +19,42 @@
     var liveWord = map.getAttribute("data-live") || "Live now";
     var states = Array.prototype.slice.call(svg.querySelectorAll(".st"));
     var pops = {}, pins = {}, byAbbr = {};
+    // Each pop-up arrives as an empty shell (build.py): fill it from the state's card, with the short tagline the
+    // shell carries in data-tg. The Website and App Store buttons and guide links are the card's own, cloned.
+    var closeIcon = doc.getElementById("pop-close");
+    function mk(tag, cls, text) {
+      var e = doc.createElement(tag);
+      if (cls) e.className = cls;
+      if (text != null) e.textContent = text;
+      return e;
+    }
+    each(atlas.querySelectorAll(".pop"), function (p) {
+      var a = p.id.slice(4), card = doc.getElementById("app-" + a);
+      if (!card || p.firstElementChild) return;
+      var name = card.querySelector("h3").textContent, icon = card.querySelector("img.icon");
+      var x = mk("button", "x");
+      x.type = "button";
+      x.setAttribute("aria-label", "Close " + name);
+      if (closeIcon) x.appendChild(closeIcon.content.cloneNode(true));
+      var img = mk("img");
+      img.setAttribute("src", icon.getAttribute("src"));
+      img.width = 56; img.height = 56; img.alt = "";
+      img.setAttribute("loading", "lazy"); img.setAttribute("decoding", "async");
+      var who = mk("div"), n = mk("p", "n", name);
+      n.id = "pop-" + a + "-h";
+      who.appendChild(mk("p", "w", card.querySelector(".where").textContent));
+      who.appendChild(n);
+      var row = mk("div", "row");
+      row.appendChild(img); row.appendChild(who);
+      p.appendChild(x); p.appendChild(row);
+      p.appendChild(mk("p", "tg", p.getAttribute("data-tg")));
+      p.appendChild(mk("p", "pl", card.querySelector(".plat").textContent));
+      each(card.querySelectorAll(".actions, .links"), function (part) {
+        var copy = part.cloneNode(true);
+        each(copy.querySelectorAll("[id]"), function (e) { e.removeAttribute("id"); });
+        p.appendChild(copy);
+      });
+    });
     each(atlas.querySelectorAll(".pop"), function (p) { pops[p.getAttribute("data-abbr")] = p; });
     each(map.querySelectorAll(".pin"), function (p) { pins[p.getAttribute("data-abbr")] = p; });
     var picks = doc.querySelectorAll(".pick[data-abbr]");

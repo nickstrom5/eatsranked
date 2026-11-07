@@ -1094,6 +1094,390 @@
      "url": "https://nickstrom5.github.io/wyoming-eats/wyoming-steakhouses.html"
     }
    ]
+  },
+  {
+   "abbr": "AL",
+   "status": "live",
+   "app": "Alabama Eats: Restaurant Guide",
+   "home_name": "Alabama Eats",
+   "tagline": "White-sauce barbecue, meat-and-threes, Gulf oysters, catfish houses and Greek diners we checked by hand, MICHELIN and James Beard honors, plus 10,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/alabama-eats/",
+   "how": "https://nickstrom5.github.io/alabama-eats/alabama-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1F5F6B",
+    "accent": "#E8B04A",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/alabama.png",
+   "tagline_short": "White sauce & meat-and-three guide to 10,000+ Alabama restaurants.",
+   "web_app": "https://nickstrom5.github.io/alabama-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "White sauce barbecue",
+     "url": "https://nickstrom5.github.io/alabama-eats/alabama-white-sauce-barbecue.html"
+    },
+    {
+     "label": "Meat-and-threes",
+     "url": "https://nickstrom5.github.io/alabama-eats/alabama-meat-and-three-restaurants.html"
+    }
+   ]
+  },
+  {
+   "abbr": "MS",
+   "status": "live",
+   "app": "Mississippi Eats: Restaurants",
+   "home_name": "Mississippi Eats",
+   "tagline": "Delta hot tamales, catfish houses, po'boys, plate lunches and comeback sauce we checked by hand, MICHELIN and James Beard honors, plus 7,300+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/mississippi-eats/",
+   "how": "https://nickstrom5.github.io/mississippi-eats/mississippi-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#00205B",
+    "accent": "#C9A84C",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/mississippi.png",
+   "tagline_short": "Hot tamale & catfish guide to 7,300+ Mississippi restaurants.",
+   "web_app": "https://nickstrom5.github.io/mississippi-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Delta hot tamales",
+     "url": "https://nickstrom5.github.io/mississippi-eats/mississippi-hot-tamales.html"
+    },
+    {
+     "label": "Catfish houses",
+     "url": "https://nickstrom5.github.io/mississippi-eats/mississippi-catfish-restaurants.html"
+    }
+   ]
+  },
+  {
+   "abbr": "OK",
+   "status": "live",
+   "app": "Oklahoma Eats: Restaurants",
+   "home_name": "Oklahoma Eats",
+   "tagline": "Onion burgers, barbecue, chicken-fried steak and Route 66 stops we checked by hand, James Beard honors, plus 9,800+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/oklahoma-eats/",
+   "how": "https://nickstrom5.github.io/oklahoma-eats/",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#00559B",
+    "accent": "#B9975B",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/oklahoma.png",
+   "tagline_short": "Onion burger & Route 66 guide to 9,800+ Oklahoma restaurants.",
+   "web_app": "https://nickstrom5.github.io/oklahoma-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Onion burgers",
+     "url": "https://nickstrom5.github.io/oklahoma-eats/oklahoma-onion-burgers.html"
+    },
+    {
+     "label": "Route 66 stops",
+     "url": "https://nickstrom5.github.io/oklahoma-eats/oklahoma-route-66-diners.html"
+    }
+   ]
+  },
+  {
+   "abbr": "KY",
+   "status": "live",
+   "app": "Kentucky Eats: Restaurants",
+   "home_name": "Kentucky Eats",
+   "tagline": "Hot Browns, bourbon country tables, historic inns and Kentucky classics we checked by hand, James Beard honors, plus 8,600+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/kentucky-eats/",
+   "how": "https://nickstrom5.github.io/kentucky-eats/kentucky-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1B365D",
+    "accent": "#E6A817",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/kentucky.png",
+   "tagline_short": "Hot Brown & bourbon country guide to 8,600+ Kentucky restaurants.",
+   "web_app": "https://nickstrom5.github.io/kentucky-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Hot Browns",
+     "url": "https://nickstrom5.github.io/kentucky-eats/kentucky-hot-browns.html"
+    },
+    {
+     "label": "Bardstown & bourbon country",
+     "url": "https://nickstrom5.github.io/kentucky-eats/kentucky-bourbon-country-restaurants.html"
+    }
+   ]
+  },
+  {
+   "abbr": "IN",
+   "status": "live",
+   "app": "Indiana Eats: Restaurants",
+   "home_name": "Indiana Eats",
+   "tagline": "Breaded tenderloins, sugar cream pie, drive-ins and Amish country cooking we checked by hand, James Beard honors, plus 13,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/indiana-eats/",
+   "how": "https://nickstrom5.github.io/indiana-eats/indiana-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#000F5D",
+    "accent": "#D59F0F",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/indiana.png",
+   "tagline_short": "Tenderloin & sugar cream pie guide to 13,000+ Indiana restaurants.",
+   "web_app": "https://nickstrom5.github.io/indiana-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Breaded tenderloins",
+     "url": "https://nickstrom5.github.io/indiana-eats/indiana-breaded-tenderloins.html"
+    },
+    {
+     "label": "Hoosier pie",
+     "url": "https://nickstrom5.github.io/indiana-eats/indiana-sugar-cream-pie.html"
+    }
+   ]
+  },
+  {
+   "abbr": "KS",
+   "status": "live",
+   "app": "Kansas Eats: Restaurants",
+   "home_name": "Kansas Eats",
+   "tagline": "Crawford County fried chicken, barbecue, sliders, drive-ins and heritage tables we checked by hand, James Beard honors, plus 5,700+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/kansas-eats/",
+   "how": "https://nickstrom5.github.io/kansas-eats/kansas-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1B3A6B",
+    "accent": "#F2B705",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/kansas.png",
+   "tagline_short": "Fried chicken & barbecue guide to 5,700+ Kansas restaurants.",
+   "web_app": "https://nickstrom5.github.io/kansas-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Crawford County fried chicken",
+     "url": "https://nickstrom5.github.io/kansas-eats/crawford-county-fried-chicken.html"
+    },
+    {
+     "label": "Kansas barbecue",
+     "url": "https://nickstrom5.github.io/kansas-eats/kansas-barbecue.html"
+    }
+   ]
+  },
+  {
+   "abbr": "ND",
+   "status": "live",
+   "app": "North Dakota Eats: Restaurants",
+   "home_name": "ND Eats",
+   "tagline": "Knoephla, kuchen, steaks and walleye we checked by hand, a James Beard honor, plus 1,700+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/north-dakota-eats/",
+   "how": "https://nickstrom5.github.io/north-dakota-eats/north-dakota-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1E4F8C",
+    "accent": "#E8B83A",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/northdakota.png",
+   "tagline_short": "Knoephla & walleye guide to 1,700+ North Dakota restaurants.",
+   "web_app": "https://nickstrom5.github.io/north-dakota-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Knoephla & kuchen",
+     "url": "https://nickstrom5.github.io/north-dakota-eats/north-dakota-knoephla.html"
+    },
+    {
+     "label": "Steaks & walleye",
+     "url": "https://nickstrom5.github.io/north-dakota-eats/north-dakota-steakhouses.html"
+    }
+   ]
+  },
+  {
+   "abbr": "SD",
+   "status": "live",
+   "app": "South Dakota Eats: Restaurants",
+   "home_name": "SD Eats",
+   "tagline": "Chislic, bison and walleye we checked by hand, James Beard honors, plus 2,100+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/south-dakota-eats/",
+   "how": "https://nickstrom5.github.io/south-dakota-eats/south-dakota-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1E4D3B",
+    "accent": "#F2B51C",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/southdakota.png",
+   "tagline_short": "Chislic & bison guide to 2,100+ South Dakota restaurants.",
+   "web_app": "https://nickstrom5.github.io/south-dakota-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Chislic",
+     "url": "https://nickstrom5.github.io/south-dakota-eats/south-dakota-chislic.html"
+    },
+    {
+     "label": "Bison & walleye",
+     "url": "https://nickstrom5.github.io/south-dakota-eats/south-dakota-bison-walleye.html"
+    }
+   ]
+  },
+  {
+   "abbr": "MA",
+   "status": "live",
+   "app": "Bay State Eats: Massachusetts",
+   "home_name": "Bay State Eats",
+   "tagline": "Clam shacks and lobster rolls, North Shore roast beef, North End Italian, Chinatown dim sum and classic diners we checked by hand, MICHELIN and James Beard honors, plus 15,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/massachusetts-eats/",
+   "how": "https://nickstrom5.github.io/massachusetts-eats/massachusetts-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#13294B",
+    "accent": "#E2B25A",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/massachusetts.png",
+   "tagline_short": "Clam shack & roast beef guide to 15,000+ Massachusetts restaurants.",
+   "web_app": "https://nickstrom5.github.io/massachusetts-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Clam shacks & lobster rolls",
+     "url": "https://nickstrom5.github.io/massachusetts-eats/massachusetts-clam-shacks-lobster-rolls.html"
+    },
+    {
+     "label": "North Shore roast beef",
+     "url": "https://nickstrom5.github.io/massachusetts-eats/massachusetts-north-shore-roast-beef.html"
+    }
+   ]
+  },
+  {
+   "abbr": "NH",
+   "status": "live",
+   "app": "Granite State Eats: NH",
+   "home_name": "Granite State Eats",
+   "tagline": "Ice cream stands, pancake houses, diners and Seacoast seafood we checked by hand, James Beard honors, plus 3,200+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/new-hampshire-eats/",
+   "how": "https://nickstrom5.github.io/new-hampshire-eats/new-hampshire-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#3E4A52",
+    "accent": "#E3A93B",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/newhampshire.png",
+   "tagline_short": "Ice cream stand & pancake house guide to 3,200+ New Hampshire restaurants.",
+   "web_app": "https://nickstrom5.github.io/new-hampshire-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Ice cream stands",
+     "url": "https://nickstrom5.github.io/new-hampshire-eats/new-hampshire-ice-cream-stands.html"
+    },
+    {
+     "label": "Pancake houses & diners",
+     "url": "https://nickstrom5.github.io/new-hampshire-eats/new-hampshire-pancake-houses-diners.html"
+    }
+   ]
+  },
+  {
+   "abbr": "NM",
+   "status": "live",
+   "app": "New Mexico Eats: Red or Green",
+   "home_name": "New Mexico Eats",
+   "tagline": "Green chile cheeseburgers, breakfast burritos and the state's Culinary Treasures we checked by hand, MICHELIN and James Beard honors, plus 4,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/new-mexico-eats/",
+   "how": "https://nickstrom5.github.io/new-mexico-eats/new-mexico-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#8C1D18",
+    "accent": "#FFD700",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/newmexico.png",
+   "tagline_short": "Green chile & burrito guide to 4,000+ New Mexico restaurants.",
+   "web_app": "https://nickstrom5.github.io/new-mexico-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Green chile cheeseburgers",
+     "url": "https://nickstrom5.github.io/new-mexico-eats/new-mexico-green-chile-cheeseburgers.html"
+    },
+    {
+     "label": "Breakfast burritos",
+     "url": "https://nickstrom5.github.io/new-mexico-eats/new-mexico-breakfast-burritos.html"
+    }
+   ]
+  },
+  {
+   "abbr": "MT",
+   "status": "live",
+   "app": "Treasure State Eats: Montana",
+   "home_name": "Treasure State Eats",
+   "tagline": "Steakhouses, supper clubs and drive-ins we checked by hand, James Beard honors, plus 2,700+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/montana-eats/",
+   "how": "https://nickstrom5.github.io/montana-eats/montana-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#23408E",
+    "accent": "#E8A3B5",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/montana.png",
+   "tagline_short": "Steakhouse & drive-in guide to 2,700+ Montana restaurants.",
+   "web_app": "https://nickstrom5.github.io/montana-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Steakhouses & supper clubs",
+     "url": "https://nickstrom5.github.io/montana-eats/montana-steakhouses-supper-clubs.html"
+    },
+    {
+     "label": "Drive-ins",
+     "url": "https://nickstrom5.github.io/montana-eats/montana-drive-ins.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
