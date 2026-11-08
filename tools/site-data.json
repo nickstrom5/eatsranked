@@ -1478,6 +1478,38 @@
      "url": "https://nickstrom5.github.io/montana-eats/montana-drive-ins.html"
     }
    ]
+  },
+  {
+   "abbr": "AR",
+   "status": "live",
+   "app": "Arkansas Eats: Restaurants",
+   "home_name": "Arkansas Eats",
+   "tagline": "Cheese dip, barbecue, catfish houses, dairy bars and homemade pie we checked by hand, James Beard honors, plus 7,200+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/arkansas-eats/",
+   "how": "https://nickstrom5.github.io/arkansas-eats/",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#2E5E3E",
+    "accent": "#E9C46A",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/arkansas.png",
+   "tagline_short": "Cheese dip & barbecue guide to 7,200+ Arkansas restaurants.",
+   "web_app": "https://nickstrom5.github.io/arkansas-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "The Cheese Dip Trail",
+     "url": "https://nickstrom5.github.io/arkansas-eats/arkansas-cheese-dip.html"
+    },
+    {
+     "label": "Arkansas barbecue",
+     "url": "https://nickstrom5.github.io/arkansas-eats/arkansas-barbecue.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
