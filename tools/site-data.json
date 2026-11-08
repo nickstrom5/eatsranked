@@ -1510,6 +1510,38 @@
      "url": "https://nickstrom5.github.io/arkansas-eats/arkansas-barbecue.html"
     }
    ]
+  },
+  {
+   "abbr": "MO",
+   "status": "live",
+   "app": "Missouri Eats: Restaurants",
+   "home_name": "Missouri Eats",
+   "tagline": "Kansas City barbecue, toasted ravioli, St. Louis classics and Springfield cashew chicken we checked by hand, James Beard honors, plus 12,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/missouri-eats/",
+   "how": "https://nickstrom5.github.io/missouri-eats/missouri-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#0A3161",
+    "accent": "#8DB8DE",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/missouri.png",
+   "tagline_short": "Barbecue & toasted ravioli guide to 12,000+ Missouri restaurants.",
+   "web_app": "https://nickstrom5.github.io/missouri-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Kansas City barbecue",
+     "url": "https://nickstrom5.github.io/missouri-eats/kansas-city-barbecue.html"
+    },
+    {
+     "label": "Toasted ravioli",
+     "url": "https://nickstrom5.github.io/missouri-eats/st-louis-toasted-ravioli.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
