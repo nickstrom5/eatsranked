@@ -283,16 +283,16 @@ ICON = {s["abbr"]: icon_src(s) for s in live}
 USED = {}
 for s in live:
     a = s["abbr"].lower()
-    # The icon shows four times in the page as served (hero row, map pin, phone list, card; app.js copies the card's into the
-    # map pop-up), always as the same file: make_images.py's
+    # The icon shows three times in the page as served (map pin, its row in the A-to-Z list, card; app.js copies the card's
+    # into the map pop-up and the hero's picker), always as the same file: make_images.py's
     # WebP of this exact PNG (a fifth of the bytes) or the PNG itself. Never another WebP: one named after an earlier
     # PNG would show the old icon. The PNG still passes (a state added before make_images.py ran), with a warning.
     stem = pathlib.PurePosixPath(s["icon"]).stem
     uses = re.findall(rf'<img\b[^>]*\ssrc="(icons/{re.escape(stem)}(?:\.[0-9a-f]{{10}})?\.(?:png|webp))"', PAGE)
     used = USED[s["abbr"]] = uses[0] if uses else s["icon"]
-    check(f"{s['abbr']} icon loads as one file in the hero row, map pin, phone list and card: "
+    check(f"{s['abbr']} icon loads as one file in the map pin, list row and card: "
           f"{ICON[s['abbr']]}" + (f" or {s['icon']}" if ICON[s["abbr"]] != s["icon"] else ""),
-          len(uses) == 4 and len(set(uses)) == 1 and used in (ICON[s["abbr"]], s["icon"]), str(uses))
+          len(uses) == 3 and len(set(uses)) == 1 and used in (ICON[s["abbr"]], s["icon"]), str(uses))
     if used.endswith(".webp"):
         size = png_size(DOCS / s["icon"])
         got = webp_size(DOCS / used) if (DOCS / used).is_file() else "missing"   # a page naming a WebP that isn't there
@@ -337,7 +337,7 @@ for s in live:
 on_store = all(s.get("app_store") for s in live)
 label = "Live now" if on_store else "On the web now"
 check(f"live wording follows App Store status ({label!r})",
-      PAGE.count(f">{label}<") >= 3 and f'data-live="{label}"' in PAGE
+      PAGE.count(f">{label}<") >= 2 and f'data-live="{label}"' in PAGE   # the map legend and the guides eyebrow
       and (on_store or ("Live now" not in text_of(PAGE[PAGE.index("<body"):]) and "Live in" not in PAGE
                         and "live now" not in PAGE)))
 desc_text = html.unescape(section(r'<meta name="description" content="([^"]*)"'))

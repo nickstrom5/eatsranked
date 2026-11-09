@@ -6,6 +6,47 @@
   var fine = window.matchMedia("(hover: hover) and (pointer: fine)");
   function each(list, fn) { Array.prototype.forEach.call(list, fn); }
   function kbdFocus(el) { try { return el.matches(":focus-visible"); } catch (e) { return true; } }
+  function mk(tag, cls, text) {
+    var e = doc.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  // A compact copy of a state's card (the map pop-ups and the hero's picker): icon, region, app name, the short
+  // tagline the map's shell carries in data-tg, platforms, and the card's own Website, App Store and guide links.
+  function fillCard(p, a, opts) {
+    var card = doc.getElementById("app-" + a), shell = doc.getElementById("pop-" + a);
+    if (!card) return false;
+    var name = card.querySelector("h3").textContent, icon = card.querySelector("img.icon");
+    if (opts.close) {
+      var x = mk("button", "x");
+      x.type = "button";
+      x.setAttribute("aria-label", "Close " + name);
+      var closeIcon = doc.getElementById("pop-close");
+      if (closeIcon) x.appendChild(closeIcon.content.cloneNode(true));
+      p.appendChild(x);
+    }
+    var img = mk("img");
+    img.setAttribute("src", icon.getAttribute("src"));
+    img.width = 56; img.height = 56; img.alt = "";
+    img.setAttribute("decoding", "async");
+    if (opts.lazy) img.setAttribute("loading", "lazy");
+    var who = mk("div"), n = mk("p", "n", name);
+    if (opts.headId) n.id = opts.headId;
+    who.appendChild(mk("p", "w", card.querySelector(".where").textContent));
+    who.appendChild(n);
+    var row = mk("div", "row");
+    row.appendChild(img); row.appendChild(who);
+    p.appendChild(row);
+    p.appendChild(mk("p", "tg", (shell && shell.getAttribute("data-tg")) || card.querySelector(".tag").textContent));
+    p.appendChild(mk("p", "pl", card.querySelector(".plat").textContent));
+    each(card.querySelectorAll(".actions, .links"), function (part) {
+      var copy = part.cloneNode(true);
+      each(copy.querySelectorAll("[id]"), function (e) { e.removeAttribute("id"); });
+      p.appendChild(copy);
+    });
+    return true;
+  }
 
   /* ================================================================ map */
   var atlas = doc.getElementById("atlas");
@@ -19,45 +60,13 @@
     var liveWord = map.getAttribute("data-live") || "Live now";
     var states = Array.prototype.slice.call(svg.querySelectorAll(".st"));
     var pops = {}, pins = {}, byAbbr = {};
-    // Each pop-up arrives as an empty shell (build.py): fill it from the state's card, with the short tagline the
-    // shell carries in data-tg. The Website and App Store buttons and guide links are the card's own, cloned.
-    var closeIcon = doc.getElementById("pop-close");
-    function mk(tag, cls, text) {
-      var e = doc.createElement(tag);
-      if (cls) e.className = cls;
-      if (text != null) e.textContent = text;
-      return e;
-    }
+    // Each pop-up arrives as an empty shell (build.py): fill it from the state's card.
     each(atlas.querySelectorAll(".pop"), function (p) {
-      var a = p.id.slice(4), card = doc.getElementById("app-" + a);
-      if (!card || p.firstElementChild) return;
-      var name = card.querySelector("h3").textContent, icon = card.querySelector("img.icon");
-      var x = mk("button", "x");
-      x.type = "button";
-      x.setAttribute("aria-label", "Close " + name);
-      if (closeIcon) x.appendChild(closeIcon.content.cloneNode(true));
-      var img = mk("img");
-      img.setAttribute("src", icon.getAttribute("src"));
-      img.width = 56; img.height = 56; img.alt = "";
-      img.setAttribute("loading", "lazy"); img.setAttribute("decoding", "async");
-      var who = mk("div"), n = mk("p", "n", name);
-      n.id = "pop-" + a + "-h";
-      who.appendChild(mk("p", "w", card.querySelector(".where").textContent));
-      who.appendChild(n);
-      var row = mk("div", "row");
-      row.appendChild(img); row.appendChild(who);
-      p.appendChild(x); p.appendChild(row);
-      p.appendChild(mk("p", "tg", p.getAttribute("data-tg")));
-      p.appendChild(mk("p", "pl", card.querySelector(".plat").textContent));
-      each(card.querySelectorAll(".actions, .links"), function (part) {
-        var copy = part.cloneNode(true);
-        each(copy.querySelectorAll("[id]"), function (e) { e.removeAttribute("id"); });
-        p.appendChild(copy);
-      });
+      var a = p.id.slice(4);
+      if (!p.firstElementChild) fillCard(p, a, { close: true, lazy: true, headId: "pop-" + a + "-h" });
     });
     each(atlas.querySelectorAll(".pop"), function (p) { pops[p.getAttribute("data-abbr")] = p; });
     each(map.querySelectorAll(".pin"), function (p) { pins[p.getAttribute("data-abbr")] = p; });
-    var picks = doc.querySelectorAll(".pick[data-abbr]");
     // open: the state whose card is showing. sticky: opened by click, tap or keyboard (stays until closed);
     // otherwise it was opened by pointing at the state and closes when the pointer leaves.
     // opener: where focus goes back to when the card closes (never set by pointing).
@@ -174,7 +183,6 @@
         el.setAttribute("aria-expanded", on ? "true" : "false");
       });
       Object.keys(pins).forEach(function (k) { pins[k].classList.toggle("on", k === abbr); });
-      each(picks, function (p) { p.setAttribute("aria-expanded", p.getAttribute("data-abbr") === abbr ? "true" : "false"); });
       open = abbr;
       if (!abbr) return;
       place(abbr);
@@ -300,13 +308,6 @@
       pops[k].addEventListener("click", function () { if (open === k) sticky = true; });
     });
 
-    each(picks, function (p) {
-      p.addEventListener("click", function (e) {
-        e.preventDefault();
-        setOpen(p.getAttribute("data-abbr"), { sticky: true, focus: e.detail === 0, reveal: true });
-        opener = p;
-      });
-    });
     Object.keys(pops).forEach(function (k) {
       pops[k].querySelector(".x").addEventListener("click", function () { close(true); });
     });
@@ -319,11 +320,40 @@
     });
     doc.addEventListener("click", function (e) {
       if (!open || !wide.matches) return;
-      if (e.target.closest(".pop, .pin, .st.live, .pick")) return;
+      if (e.target.closest(".pops .pop, .pin, .st.live")) return;
       close(false);
     });
     window.addEventListener("resize", function () { if (open) place(open); restoreTip(); });
   })();
+
+  /* ================================================================ the hero's state picker */
+  var find = doc.getElementById("find"), picked = doc.getElementById("picked");
+  if (find && picked) (function () {
+    function show(a) {
+      var card = a && doc.getElementById("app-" + a);
+      picked.textContent = "";
+      picked.className = "pop picked";
+      if (!card || !fillCard(picked, a, {})) { picked.hidden = true; return; }
+      // the state's colours are the class build.py hoisted from the card's style (the CSP allows no style attributes)
+      each(card.classList, function (c) { if (/^zs\d+$/.test(c)) picked.classList.add(c); });
+      picked.hidden = false;
+    }
+    find.addEventListener("change", function () { show(find.value); });
+    // the page stores nothing, but coming back to it (the back button) can bring back the browser's own pick
+    if (find.value) show(find.value);
+    window.addEventListener("pageshow", function () { if (find.value && picked.hidden) show(find.value); });
+  })();
+
+  /* ================================================================ the A-to-Z list */
+  // A link to a state's card (#app-mn) opens its row, which a closed <details> would otherwise hide.
+  function openRow() {
+    var m = /^#app-([a-z]{2})$/.exec(location.hash), row = m && doc.getElementById("row-" + m[1]);
+    if (!row) return;
+    row.open = true;
+    row.scrollIntoView({ block: "start" });
+  }
+  openRow();
+  window.addEventListener("hashchange", openRow);
 
   /* ================================================================ chart */
   var plot = doc.getElementById("plot");

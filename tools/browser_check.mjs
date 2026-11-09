@@ -331,12 +331,13 @@ try {
       function L(c){c=c.map(function(v){v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);});return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2];}
       function cr(a,b){var x=L(rgb(a)),y=L(rgb(b));return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);}
       var out=[];
-      document.querySelectorAll('.app, .pop').forEach(function(card){
+      document.querySelectorAll('.app, .pops .pop').forEach(function(card){
         var hid=card.hidden; card.hidden=false;
+        var row=card.closest('details'), shut=row&&!row.open; if(shut) row.open=true;   // a card in the A-to-Z list sits in a closed row
         var bg=getComputedStyle(card).backgroundColor, lab=card.querySelector('.where, .w'), btn=card.querySelector('.btn');
         btn.focus();
         var r={id:card.id, label:cr(getComputedStyle(lab).color,bg), button:cr(getComputedStyle(btn).color,getComputedStyle(btn).backgroundColor), ring:cr(getComputedStyle(btn).outlineColor,bg), fv:btn.matches(':focus-visible')};
-        btn.blur(); card.hidden=hid;
+        btn.blur(); card.hidden=hid; if(shut) row.open=false;
         if(r.label<4.5||r.button<4.5||r.ring<3||!r.fv) out.push(JSON.stringify(r));
       });
       return out;})()`);
@@ -351,10 +352,10 @@ try {
       var soon=cs('.badge.soon');
       return {forced:matchMedia('(forced-colors: active)').matches, app:cs('.app').borderTopWidth, pop:cs('.pop').borderTopWidth,
         btn:cs('.app .btn').borderTopWidth, soon:soon?soon.borderTopStyle:'no badge', keyLive:cs('.key-live').backgroundColor,
-        keySoon:cs('.key-soon').borderTopWidth};})()`);
+        keySoon:cs('.key-soon')?cs('.key-soon').borderTopWidth:'no key'};})()`);   // no key once every state is live
     check(`forced colors (${dark ? "dark" : "light"}): card and pop-up edges, Website button outline, dashed coming-soon badge, legend keys`,
       fc.forced && parseFloat(fc.app) >= 1 && parseFloat(fc.pop) >= 1 && parseFloat(fc.btn) >= 1 && ["dashed", "no badge"].includes(fc.soon)
-      && !/^transparent$|^rgba\([^)]*,\s*0\)$/.test(fc.keyLive) && parseFloat(fc.keySoon) >= 1, JSON.stringify(fc));
+      && !/^transparent$|^rgba\([^)]*,\s*0\)$/.test(fc.keyLive) && (fc.keySoon === "no key" || parseFloat(fc.keySoon) >= 1), JSON.stringify(fc));
     if (SHOTS) { await fullHeight(1440); await shot(`forced-1440-${dark ? "dark" : "light"}-full`); }
   }
 
@@ -385,8 +386,21 @@ try {
   await open(390, 844);
   await fullHeight(390);
   if (SHOTS) await shot("phone-390-full");
-  const vis = await js("({plist:getComputedStyle(document.querySelector('.plist')).display, legend:getComputedStyle(document.querySelector('.legend')).position})");
-  check("phone: no compact list under the map (the state cards follow it)", vis.plist === "none", JSON.stringify(vis));
+  // the hero's state picker: a native select big enough to tap, with text iOS won't zoom into, shows the state's card
+  let fd = await js(`(function(){var s=document.getElementById('find'),r=s.getBoundingClientRect(),cs=getComputedStyle(s);
+    var before=document.getElementById('picked').hidden;s.value='mn';s.dispatchEvent(new Event('change'));var p=document.getElementById('picked'),pr=p.getBoundingClientRect();
+    return {w:Math.round(r.width),h:Math.round(r.height),fs:parseFloat(cs.fontSize),before:before,shown:!p.hidden,name:(p.querySelector('.n')||{}).textContent,
+      site:(p.querySelector('a.btn')||{}).href,bg:getComputedStyle(p).backgroundColor,right:Math.round(pr.right),iw:innerWidth,opts:s.options.length,live:document.querySelectorAll('.st.live').length};})()`);
+  check("phone: the hero's state picker is a full-width select of every live state, 44px+ tall, 16px+ text, and shows the chosen state's card",
+    fd.w >= 300 && fd.h >= 44 && fd.fs >= 16 && fd.before && fd.shown && /Minnesota/.test(fd.name) && /minnesota-eats/.test(fd.site)
+    && fd.bg !== "rgba(0, 0, 0, 0)" && fd.right <= fd.iw && fd.opts === fd.live + 1, JSON.stringify(fd));
+  if (SHOTS) await shot("phone-390-picker", await rectOf(".hero", 0));
+  fd = await js(`(function(){var rows=document.querySelectorAll('.dir details'),a=document.getElementById('row-al'),b=document.getElementById('row-ak');
+    var closedH=Math.round(a.querySelector('summary').getBoundingClientRect().height);a.querySelector('summary').click();var first=a.open;b.querySelector('summary').click();
+    var r={rows:rows.length,live:document.querySelectorAll('.st.live').length,closedH:closedH,first:first,exclusive:b.open&&!a.open,cardShown:getComputedStyle(b.querySelector('.app')).display!=='none',
+      head:getComputedStyle(b.querySelector('.app .head')).display};b.open=false;return r;})()`);
+  check("phone: the guides are an A-to-Z list of rows 44px+ tall; a row opens to its card and closes the one before",
+    fd.rows === fd.live && fd.closedH >= 44 && fd.first && fd.exclusive && fd.cardShown && fd.head === "none", JSON.stringify(fd));
   st = await js("[].filter.call(document.querySelectorAll('.hint span'),function(c){return getComputedStyle(c).display!=='none'}).map(function(c){return c.textContent}).join('|')");
   check("phone: the map caption says a state's icon opens its site, and points to the list", /^Tap a state.s icon to open its site/.test(st), st);
   st = await js(`['IL','WI'].map(function(ab){var el=document.getElementById('st-'+ab),svg=el.ownerSVGElement,p=svg.createSVGPoint();p.x=+el.dataset.x;p.y=+el.dataset.y;var q=p.matrixTransform(svg.getScreenCTM()),

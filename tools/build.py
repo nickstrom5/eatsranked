@@ -490,23 +490,37 @@ def website(s):
     return (f'<a class="btn" {ext(s["site"])}>Website<span class="sr-only"> for {esc(s["app"])}</span> {ARROW_OUT}</a>')
 
 
-cards = []
-for s in LIVE:
+def card(s):
     a = s["abbr"].lower()
-    cards.append(f"""      <article class="app" id="app-{a}" style="{colors(s)}" aria-labelledby="app-{a}-h">
-        <div class="head">
-          <img class="icon" src="{esc(ICON[s['abbr']])}" width="88" height="88" alt="{esc(s['app'])} app icon" decoding="async">
-          <div><p class="where">{esc(where(s))}</p><p class="plat">{platforms(s)}</p></div>
-        </div>
-        <h3 id="app-{a}-h">{esc(s['app'])}</h3>
-        <p class="tag">{esc(s['tagline'])}</p>
-        <div class="actions">
-          {website(s)}
-          {store(s)}
-        </div>
-        {more_links(s)}
-      </article>""")
-CARDS = "\n".join(cards)
+    return f"""<article class="app" id="app-{a}" style="{colors(s)}" aria-labelledby="app-{a}-h">
+          <div class="head">
+            <img class="icon" src="{esc(ICON[s['abbr']])}" width="88" height="88" alt="{esc(s['app'])} app icon" loading="lazy" decoding="async">
+            <div><p class="where">{esc(where(s))}</p><p class="plat">{platforms(s)}</p></div>
+          </div>
+          <h3 id="app-{a}-h">{esc(s['app'])}</h3>
+          <p class="tag">{esc(s['tagline'])}</p>
+          <div class="actions">
+            {website(s)}
+            {store(s)}
+          </div>
+          {more_links(s)}
+        </article>"""
+
+
+# The guides by state: every state A to Z as one quiet row (icon and name) that opens to its card, so the section is
+# a list rather than 51 big boxes (Nick, 2026-11-09). Opening one closes the others (details name="dir"), the cards
+# stay in the page for the map pop-ups and the hero's state picker to copy from, and it all works without JavaScript.
+# Three columns on wide screens, each its own list, so a row opening only pushes down its own column.
+BY_NAME = sorted(LIVE, key=lambda s: NAMES[s["abbr"]])
+cols = [BY_NAME[len(BY_NAME) * k // 3:len(BY_NAME) * (k + 1) // 3] for k in range(3)]
+DIRECTORY = "\n".join(
+    '      <ul class="dir">\n' + "\n".join(
+        f'        <li><details name="dir" id="row-{s["abbr"].lower()}"><summary>'
+        f'<img src="{esc(ICON[s["abbr"]])}" width="36" height="36" alt="" loading="lazy" decoding="async">'
+        f'<span class="rn">{esc(NAMES[s["abbr"]])}</span>{CHEVRON}</summary>\n        {card(s)}\n        </details></li>'
+        for s in col) + "\n      </ul>" for col in cols if col)
+# the hero's picker: a native select, so phones get their own wheel or list; app.js shows the chosen state's card
+FINDER = "\n".join(f'          <option value="{s["abbr"].lower()}">{esc(NAMES[s["abbr"]])}</option>' for s in BY_NAME)
 
 
 # ---------------------------------------------------------------- map shapes
@@ -677,17 +691,7 @@ for s in LIVE:
 pops.append(f'          <template id="pop-close">{CLOSE}</template>')
 POPS = "\n".join(pops)
 
-picks = []
-for s in LIVE:
-    a = s["abbr"].lower()
-    picks.append(f'          <li><a class="pick" href="#app-{a}" data-abbr="{s["abbr"]}" aria-controls="pop-{a}" aria-expanded="false">'
-                 f'<img src="{esc(ICON[s["abbr"]])}" width="44" height="44" alt="" loading="lazy" decoding="async">'
-                 f'<span class="pk"><span class="ps">{esc(where(s))}</span><span class="pa">{esc(s["app"])}</span></span>{CHEVRON}</a></li>')
-PICKS = "\n".join(picks)
-
-HERO_ICONS = "\n".join(
-    f'      <li><a href="#app-{s["abbr"].lower()}"><img src="{esc(ICON[s["abbr"]])}" width="44" height="44" '
-    f'alt="{esc(where(s))}" decoding="async"></a></li>' for s in LIVE)
+LEGEND_SOON = '<li><i class="key-soon"></i>Coming soon</li>' if SOON else ""
 
 MAILTO_NEXT = f"mailto:{EMAIL}?subject=" + "Next%20state%20for%20Eats%20Ranked"
 
@@ -721,11 +725,9 @@ LEDE_LIVE = f"Live now in {LIVE_NAMES}." if ON_STORE else f"Now in {LIVE_NAMES}.
 MAILTO_FIX = f"mailto:{EMAIL}?subject=" + "Eats%20Ranked%20correction"
 if SOON:
     LEDE_MORE = f'We add one state at a time. Want yours next? <a href="{esc(MAILTO_NEXT)}">Tell us which state</a>.'
-    ELSE = f'<p class="else">Every other state: coming soon. <a href="{esc(MAILTO_NEXT)}">Tell us which state</a>.</p>'
 else:   # every state is live: listing all of them in the lede says less than the map does
     LEDE_LIVE = "Pick a state on the map for its website and app."
     LEDE_MORE = f'Missed a restaurant or spotted a mistake? <a href="{esc(MAILTO_FIX)}">Tell us</a>.'
-    ELSE = ""
 
 footer_apps = "".join(f'<li><a {ext(s["site"])}>{esc(s["app"])}</a></li>' for s in LIVE)
 
@@ -774,10 +776,11 @@ def slim_js(js):
 
 SUBS = {
     "TITLE": esc(TITLE), "DESC": esc(DESC), "URL": esc(URL), "OG_ALT": esc(OG_ALT), "JSONLD": JSONLD,
-    "CARDS": CARDS, "COMING_SOON": esc(SITE["coming_soon_message"] if SOON else SITE["all_live_message"]),
-    "LIVE_LABEL": esc(LIVE_LABEL), "LEDE_LIVE": esc(LEDE_LIVE), "LEDE_MORE": LEDE_MORE, "ELSE": ELSE,
+    "DIRECTORY": DIRECTORY, "FINDER": FINDER,
+    "COMING_SOON": esc(SITE["coming_soon_message"] if SOON else SITE["all_live_message"]),
+    "LIVE_LABEL": esc(LIVE_LABEL), "LEDE_LIVE": esc(LEDE_LIVE), "LEDE_MORE": LEDE_MORE, "LEGEND_SOON": LEGEND_SOON,
     "MAILTO_NEXT": esc(MAILTO_NEXT), "VIEWBOX": esc(GEO["viewBox"]), "MAP_TITLE": esc(MAP_TITLE), "MAP": MAP,
-    "PINS": PINS, "POPS": POPS, "PICKS": PICKS, "HERO_ICONS": HERO_ICONS, "LEGEND_STYLE": LEGEND_STYLE,
+    "PINS": PINS, "POPS": POPS, "LEGEND_STYLE": LEGEND_STYLE,
     "HOW_NOTE": esc(SITE.get("how_it_works_note", "")), "FAQ": FAQ_HTML, "BILL": BILL_HTML, "FACTS": FACTS,
     "CHART_TITLE": esc(CHART_TITLE), "CHART_SUB": esc(CHART_SUB), "CHART_ALT": esc(CHART_ALT),
     "YTICKS": YTICKS, "XTICKS": XTICKS, "CHART_SVG": CHART_SVG, "CHART_HTML": CHART_HTML, "ENDS": ENDS,
