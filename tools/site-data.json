@@ -172,8 +172,8 @@
    "app": "Florida Eats: Restaurants",
    "home_name": "FL Eats",
    "tagline": "Cuban sandwiches and cafecito windows, stone crabs, grouper shacks, oyster bars and fish camps we checked by hand, MICHELIN and James Beard honorees, and 52,000+ Florida restaurants, most with the state's own inspection results.",
-   "site": "https://nickstrom5.github.io/florida-eats/",
-   "how": "https://nickstrom5.github.io/florida-eats/",
+   "site": "https://florida.eatsranked.com/",
+   "how": "https://florida.eatsranked.com/",
    "app_store": null,
    "app_store_id": null,
    "app_store_note": "Coming soon to the App Store",
@@ -185,16 +185,16 @@
    },
    "icon": "icons/florida.png",
    "tagline_short": "Cuban, stone crab & oyster bar guide to 52,000+ Florida restaurants.",
-   "web_app": "https://nickstrom5.github.io/florida-eats/explore/",
+   "web_app": "https://florida.eatsranked.com/explore/",
    "web_app_label": "Search on the web",
    "guides": [
     {
      "label": "Inspections, explained",
-     "url": "https://nickstrom5.github.io/florida-eats/florida-restaurant-inspections.html"
+     "url": "https://florida.eatsranked.com/florida-restaurant-inspections.html"
     },
     {
      "label": "Stone crab guide",
-     "url": "https://nickstrom5.github.io/florida-eats/florida-stone-crab.html"
+     "url": "https://florida.eatsranked.com/florida-stone-crab.html"
     }
    ]
   },
@@ -236,8 +236,8 @@
    "app": "Maine Eats: Restaurants",
    "home_name": "Maine Eats",
    "tagline": "Lobster shacks and pounds, clam shacks, red snappers and Maine Italians, whoopie pies, diners, oyster bars and dairy bars we checked by hand, plus 4,200+ restaurants statewide.",
-   "site": "https://nickstrom5.github.io/maine-eats/",
-   "how": "https://nickstrom5.github.io/maine-eats/",
+   "site": "https://maine.eatsranked.com/",
+   "how": "https://maine.eatsranked.com/",
    "app_store": null,
    "app_store_id": null,
    "app_store_note": "Coming soon to the App Store",
@@ -249,16 +249,16 @@
    },
    "icon": "icons/maine.png",
    "tagline_short": "Lobster shack & clam guide to 4,200+ Maine restaurants.",
-   "web_app": "https://nickstrom5.github.io/maine-eats/explore/",
+   "web_app": "https://maine.eatsranked.com/explore/",
    "web_app_label": "Search on the web",
    "guides": [
     {
      "label": "Lobster shacks & rolls",
-     "url": "https://nickstrom5.github.io/maine-eats/maine-lobster-shacks.html"
+     "url": "https://maine.eatsranked.com/maine-lobster-shacks.html"
     },
     {
      "label": "Clam shacks",
-     "url": "https://nickstrom5.github.io/maine-eats/maine-clam-shacks.html"
+     "url": "https://maine.eatsranked.com/maine-clam-shacks.html"
     }
    ]
   },
@@ -268,8 +268,8 @@
    "app": "Idaho Eats: Restaurants",
    "home_name": "Idaho Eats",
    "tagline": "Basque kitchens, finger steaks and drive-ins, spud plates, huckleberry and Idaho trout we checked by hand, plus 4,000+ restaurants statewide.",
-   "site": "https://nickstrom5.github.io/idaho-eats/",
-   "how": "https://nickstrom5.github.io/idaho-eats/idaho-restaurant-inspections.html",
+   "site": "https://idaho.eatsranked.com/",
+   "how": "https://idaho.eatsranked.com/idaho-restaurant-inspections.html",
    "app_store": null,
    "app_store_id": null,
    "app_store_note": "Coming soon to the App Store",
@@ -281,16 +281,16 @@
    },
    "icon": "icons/idaho.png",
    "tagline_short": "Finger steak & Basque guide to 4,000+ Idaho restaurants.",
-   "web_app": "https://nickstrom5.github.io/idaho-eats/explore/",
+   "web_app": "https://idaho.eatsranked.com/explore/",
    "web_app_label": "Search on the web",
    "guides": [
     {
      "label": "Basque on the Basque Block",
-     "url": "https://nickstrom5.github.io/idaho-eats/idaho-basque-restaurants.html"
+     "url": "https://idaho.eatsranked.com/idaho-basque-restaurants.html"
     },
     {
      "label": "Finger steaks & drive-ins",
-     "url": "https://nickstrom5.github.io/idaho-eats/idaho-finger-steaks-drive-ins.html"
+     "url": "https://idaho.eatsranked.com/idaho-finger-steaks-drive-ins.html"
     }
    ]
   },
