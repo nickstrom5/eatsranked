@@ -346,6 +346,8 @@ CHART_DATA = {
 NAMES = {s["abbr"]: s["name"] for s in GEO["states"]}
 LIVE = [s for s in SITE["states"] if s.get("status") == "live"]
 LIVE_BY = {s["abbr"]: s for s in LIVE}
+# map shapes with no live state yet; once there are none, the page stops saying "coming soon" and "which state is next"
+SOON = [st["abbr"] for st in GEO["states"] if st["abbr"] not in LIVE_BY]
 for s in LIVE:
     if s["abbr"] not in NAMES:
         sys.exit(f"build: {s['abbr']} is not in us-states-paths.json")
@@ -706,15 +708,24 @@ FAQ = [
     ("Are the grades official?",
      "Only where we say so. Where a city, county or state publishes an official inspection result, the app shows it as "
      "published. Where an app shows a grade of its own, it&rsquo;s labeled as ours, never as official."),
-    ("Which state is next?", f'More states are on the way. <a href="{esc(MAILTO_NEXT)}">Tell us which one you want next</a>.'),
+    *([("Which state is next?", f'More states are on the way. <a href="{esc(MAILTO_NEXT)}">Tell us which one you want next</a>.')]
+      if SOON else []),
     ("Who makes Eats Ranked?",
      f'Eats Ranked is an independent project by <a href="{esc(AUTHOR_URL)}" rel="author noopener">Nicholas Soderstrom</a>, '
      f'not affiliated with any restaurant or government agency. Questions or corrections: '
      f'<a href="mailto:{esc(EMAIL)}">{esc(EMAIL)}</a>.'),
 ]
 FAQ_HTML = "\n".join(f"      <li><h3>{q}</h3><p>{a}</p></li>" for q, a in FAQ)
-MAP_TITLE = f"Map of the United States. {LIVE_LABEL}: {LIVE_NAMES}. Every other state is coming soon."
+MAP_TITLE = f"Map of the United States. {LIVE_LABEL}: {LIVE_NAMES}." + (" Every other state is coming soon." if SOON else "")
 LEDE_LIVE = f"Live now in {LIVE_NAMES}." if ON_STORE else f"Now in {LIVE_NAMES}."
+MAILTO_FIX = f"mailto:{EMAIL}?subject=" + "Eats%20Ranked%20correction"
+if SOON:
+    LEDE_MORE = f'We add one state at a time. Want yours next? <a href="{esc(MAILTO_NEXT)}">Tell us which state</a>.'
+    ELSE = f'<p class="else">Every other state: coming soon. <a href="{esc(MAILTO_NEXT)}">Tell us which state</a>.</p>'
+else:   # every state is live: listing all of them in the lede says less than the map does
+    LEDE_LIVE = "Pick a state on the map for its website and app."
+    LEDE_MORE = f'Missed a restaurant or spotted a mistake? <a href="{esc(MAILTO_FIX)}">Tell us</a>.'
+    ELSE = ""
 
 footer_apps = "".join(f'<li><a {ext(s["site"])}>{esc(s["app"])}</a></li>' for s in LIVE)
 
@@ -727,10 +738,11 @@ TITLE = "Eats Ranked: Free Restaurant Guides, State by State"
 # no grades at all (Colorado), hence "where available". No "free iPhone apps" claim: none may be on the App Store yet.
 DESC_BODY = ("Restaurant apps from public records and open data: official inspection results or our own grades "
              "where available, hand-checked local picks.")
-DESC = f"{DESC_BODY} Now in {LIVE_NAMES}."
+DESC = f"{DESC_BODY} Now in {LIVE_NAMES}." if SOON else f"{DESC_BODY} Now in every state."
 if len(DESC) > 160:
     DESC = f"{DESC_BODY} Now in {len(LIVE)} states."
-OG_ALT = f"Eats Ranked: restaurants, ranked state by state, with the app icons for {LIVE_NAMES}."
+OG_ALT = (f"Eats Ranked: restaurants, ranked state by state, with the app icons for {LIVE_NAMES}." if SOON else
+          "Eats Ranked: restaurants, ranked state by state, with the app icons for all 50 states and DC.")
 JSONLD = jsonscript({
     "@context": "https://schema.org",
     "@graph": [
@@ -762,8 +774,8 @@ def slim_js(js):
 
 SUBS = {
     "TITLE": esc(TITLE), "DESC": esc(DESC), "URL": esc(URL), "OG_ALT": esc(OG_ALT), "JSONLD": JSONLD,
-    "CARDS": CARDS, "COMING_SOON": esc(SITE["coming_soon_message"]), "LIVE_LABEL": esc(LIVE_LABEL),
-    "LEDE_LIVE": esc(LEDE_LIVE),
+    "CARDS": CARDS, "COMING_SOON": esc(SITE["coming_soon_message"] if SOON else SITE["all_live_message"]),
+    "LIVE_LABEL": esc(LIVE_LABEL), "LEDE_LIVE": esc(LEDE_LIVE), "LEDE_MORE": LEDE_MORE, "ELSE": ELSE,
     "MAILTO_NEXT": esc(MAILTO_NEXT), "VIEWBOX": esc(GEO["viewBox"]), "MAP_TITLE": esc(MAP_TITLE), "MAP": MAP,
     "PINS": PINS, "POPS": POPS, "PICKS": PICKS, "HERO_ICONS": HERO_ICONS, "LEGEND_STYLE": LEGEND_STYLE,
     "HOW_NOTE": esc(SITE.get("how_it_works_note", "")), "FAQ": FAQ_HTML, "BILL": BILL_HTML, "FACTS": FACTS,

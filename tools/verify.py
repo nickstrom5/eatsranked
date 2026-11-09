@@ -356,9 +356,9 @@ check(f"App Store links only where site-data has one: {n_store} on the page (one
       len(re.findall(r'href="[^"]*apps\.apple\.com', PAGE)) == n_store)   # links only: the JSON-LD names it too
 
 must = [
-    D["coming_soon_message"], "This site uses no cookies and no analytics.",
+    D["coming_soon_message"] if soon else D["all_live_message"], "This site uses no cookies and no analytics.",
     "Not affiliated with any government agency. Official inspection results are shown as published; grades of our own are labeled as ours.",
-    f'href="mailto:{D["brand"]["email"]}">{D["brand"]["email"]}</a>', "Tell us which state", html.escape(D["how_it_works_note"]),
+    f'href="mailto:{D["brand"]["email"]}">{D["brand"]["email"]}</a>', "Tell us which state" if soon else "spotted a mistake",html.escape(D["how_it_works_note"]),
     html.escape(D["prices"]["source"]), D["prices"]["source_url"], "Restaurants, ranked", "state by state.",
     "Eating out, by the numbers", "How it works", "Show the numbers",
 ]
@@ -380,8 +380,9 @@ if named:
           tm_line == " ".join(MARKS[o][1] for o in named) + f" Eats Ranked is not affiliated with or endorsed by {who}.", tm_line)
 else:
     check("no trademark line, as the page names no MICHELIN or James Beard mark", tm is None, tm.group(0) if tm else "")
-check("'Tell us which state' is a mailto link",
-      re.search(rf'<a href="mailto:{re.escape(D["brand"]["email"])}\?subject=[^"]+">Tell us which state</a>', PAGE) is not None)
+tell = "Tell us which state" if soon else "Tell us"   # once every state is live, the map's lede asks for corrections
+check(f"'{tell}' is a mailto link",
+      re.search(rf'<a href="mailto:{re.escape(D["brand"]["email"])}\?subject=[^"]+">{tell}</a>', PAGE) is not None)
 
 # ============================================================ card colours: contrast on every live state
 def lum(hexc):

@@ -1196,7 +1196,7 @@
    "status": "live",
    "app": "Kentucky Eats: Restaurants",
    "home_name": "Kentucky Eats",
-   "tagline": "Hot Browns, bourbon country tables, historic inns and Kentucky classics we checked by hand, James Beard honors, plus 8,600+ restaurants statewide.",
+   "tagline": "Hot Browns, bourbon country tables, historic inns and Kentucky classics we checked by hand, James Beard honors, plus 9,800+ restaurants statewide.",
    "site": "https://nickstrom5.github.io/kentucky-eats/",
    "how": "https://nickstrom5.github.io/kentucky-eats/kentucky-restaurant-inspections.html",
    "app_store": null,
@@ -1209,7 +1209,7 @@
     "text": "#FFFFFF"
    },
    "icon": "icons/kentucky.png",
-   "tagline_short": "Hot Brown & bourbon country guide to 8,600+ Kentucky restaurants.",
+   "tagline_short": "Hot Brown & bourbon country guide to 9,800+ Kentucky restaurants.",
    "web_app": "https://nickstrom5.github.io/kentucky-eats/explore/",
    "web_app_label": "Search on the web",
    "guides": [
@@ -1542,9 +1542,106 @@
      "url": "https://nickstrom5.github.io/missouri-eats/st-louis-toasted-ravioli.html"
     }
    ]
+  },
+  {
+   "abbr": "MN",
+   "status": "live",
+   "app": "Minnesota Eats: Restaurants",
+   "home_name": "Minnesota Eats",
+   "tagline": "Juicy Lucys, walleye and supper clubs, Hmong and Somali kitchens and classic counters we checked by hand, James Beard honors, plus 10,000+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/minnesota-eats/",
+   "how": "https://nickstrom5.github.io/minnesota-eats/minnesota-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#002D5D",
+    "accent": "#52C9E8",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/minnesota.png",
+   "tagline_short": "Juicy Lucy & supper club guide to 10,000+ Minnesota restaurants.",
+   "web_app": "https://nickstrom5.github.io/minnesota-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Juicy Lucys",
+     "url": "https://nickstrom5.github.io/minnesota-eats/minnesota-juicy-lucy-burgers.html"
+    },
+    {
+     "label": "Walleye & supper clubs",
+     "url": "https://nickstrom5.github.io/minnesota-eats/minnesota-walleye-supper-clubs.html"
+    }
+   ]
+  },
+  {
+   "abbr": "IA",
+   "status": "live",
+   "app": "Iowa Plates: Restaurants",
+   "home_name": "Iowa Plates",
+   "tagline": "Pork tenderloins, Iowa pizza and heritage tables we checked by hand, James Beard honors, plus 6,700+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/iowa-eats/",
+   "how": "https://nickstrom5.github.io/iowa-eats/iowa-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#2F5D34",
+    "accent": "#F2B705",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/iowa.png",
+   "tagline_short": "Tenderloin & pizza guide to 6,700+ Iowa restaurants.",
+   "web_app": "https://nickstrom5.github.io/iowa-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Pork tenderloins",
+     "url": "https://nickstrom5.github.io/iowa-eats/iowa-pork-tenderloins.html"
+    },
+    {
+     "label": "Iowa pizza",
+     "url": "https://nickstrom5.github.io/iowa-eats/iowa-pizza.html"
+    }
+   ]
+  },
+  {
+   "abbr": "NE",
+   "status": "live",
+   "app": "Nebraska Eats: Restaurants",
+   "home_name": "Nebraska Eats",
+   "tagline": "Steakhouses, Reubens, frenchees and South Omaha taquerías we checked by hand, James Beard honors, plus 4,800+ restaurants statewide.",
+   "site": "https://nickstrom5.github.io/nebraska-eats/",
+   "how": "https://nickstrom5.github.io/nebraska-eats/nebraska-restaurant-inspections.html",
+   "app_store": null,
+   "app_store_id": null,
+   "app_store_note": "Coming soon to the App Store",
+   "platforms": "iPhone & iPad, free",
+   "colors": {
+    "bg": "#1D4E7A",
+    "accent": "#C9A24B",
+    "text": "#FFFFFF"
+   },
+   "icon": "icons/nebraska.png",
+   "tagline_short": "Steakhouse & Reuben guide to 4,800+ Nebraska restaurants.",
+   "web_app": "https://nickstrom5.github.io/nebraska-eats/explore/",
+   "web_app_label": "Search on the web",
+   "guides": [
+    {
+     "label": "Steakhouses",
+     "url": "https://nickstrom5.github.io/nebraska-eats/nebraska-steakhouses.html"
+    },
+    {
+     "label": "Reubens & frenchees",
+     "url": "https://nickstrom5.github.io/nebraska-eats/omaha-reubens.html"
+    }
+   ]
   }
  ],
  "coming_soon_message": "More states coming soon.",
+ "all_live_message": "All 50 states and DC.",
  "prices": {
   "source": "U.S. Bureau of Labor Statistics, Consumer Price Index for All Urban Consumers (CPI-U), not seasonally adjusted, through August 2026. BLS did not publish October 2025 data.",
   "source_url": "https://www.bls.gov/cpi/",

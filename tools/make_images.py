@@ -98,11 +98,25 @@ def og_html():
     live = [s for s in SITE["states"] if s.get("status") == "live"]
     names = {s["abbr"]: s["name"] for s in GEO["states"]}
     places = [names[s["abbr"]] for s in live]
-    where = places[0] if len(places) == 1 else ", ".join(places[:-1]) + " and " + places[-1]
+    soon = [a for a in names if a not in {s["abbr"] for s in live}]
     icons = "".join(f'<img src="{(DOCS / s["icon"]).as_uri()}" alt="">' for s in live)
-    # the icon column fits the 630 px height: 196 px icons for one or two live states, smaller as more go live
-    gap = 34 if len(live) <= 2 else 22
-    sz = min(196, (630 - 2 * 44 - gap * (len(live) - 1)) // max(1, len(live)))
+    h1_px, sub_right, shadow = 88, 388, "0 22px 44px -18px rgba(26,24,20,.45)"
+    if len(live) <= 5:
+        where = places[0] if len(places) == 1 else ", ".join(places[:-1]) + " and " + places[-1]
+        # the icon column fits the 630 px height: 196 px icons for one or two live states, smaller as more go live
+        gap = 34 if len(live) <= 2 else 22
+        sz = min(196, (630 - 2 * 44 - gap * (len(live) - 1)) // max(1, len(live)))
+        layout = f"display:flex;flex-direction:column;justify-content:center;gap:{gap}px"
+    else:
+        # past five, a list of names runs into the heading and a column of icons runs off the image:
+        # say how many, and set the icons in a grid seven wide beside a smaller heading
+        where = "all 50 states and DC" if not soon else f"{len(live)} states"
+        cols, gap = 7, 10
+        rows = -(-len(live) // cols)
+        sz = min(120, (450 - gap * (cols - 1)) // cols, (630 - 2 * 44 - gap * (rows - 1)) // rows)
+        layout = f"display:grid;grid-template-columns:repeat({cols},{sz}px);align-content:center;gap:{gap}px"
+        h1_px, sub_right, shadow = 72, 56 + cols * sz + gap * (cols - 1) + 40, "0 8px 16px -8px rgba(26,24,20,.4)"
+    more = " More states coming soon." if soon else ""
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>
 html,body{{margin:0;width:1200px;height:630px;overflow:hidden}}
 body{{background:{PAPER};color:{INK};font-family:system-ui,-apple-system,sans-serif;position:relative}}
@@ -111,17 +125,17 @@ body{{background:{PAPER};color:{INK};font-family:system-ui,-apple-system,sans-se
 .mk{{display:flex;align-items:flex-end;gap:5px;height:34px}}
 .mk i{{display:block;width:9px;border-radius:2.5px;background:{INK}}}
 .mk i:nth-child(1){{height:34px}}.mk i:nth-child(2){{height:23px}}.mk i:nth-child(3){{height:13px;background:{ACCENT}}}
-h1{{position:absolute;left:72px;top:206px;margin:0;font-weight:500;font-size:88px;line-height:1.02;letter-spacing:-.03em;white-space:nowrap}}
+h1{{position:absolute;left:72px;top:206px;margin:0;font-weight:500;font-size:{h1_px}px;line-height:1.02;letter-spacing:-.03em;white-space:nowrap}}
 h1 span{{display:block}}
 /* the rule sits on the line's block, so a line that wraps to two (four or more states) pushes it up instead of running under the icons */
-.sub{{position:absolute;left:76px;right:388px;bottom:70px;margin:0;padding-top:26px;border-top:2px solid #E3DED3;font-size:27px;line-height:1.2;color:#57534A}}
+.sub{{position:absolute;left:76px;right:{sub_right}px;bottom:70px;margin:0;padding-top:26px;border-top:2px solid #E3DED3;font-size:27px;line-height:1.2;color:#57534A}}
 .sub b{{color:{INK};font-weight:600}}
-.icons{{position:absolute;right:92px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:{gap}px}}
-.icons img{{width:{sz}px;height:{sz}px;border-radius:{round(sz * 0.224)}px;box-shadow:0 22px 44px -18px rgba(26,24,20,.45),0 0 0 1px rgba(26,24,20,.06)}}
+.icons{{position:absolute;right:{92 if len(live) <= 5 else 56}px;top:0;bottom:0;{layout}}}
+.icons img{{width:{sz}px;height:{sz}px;border-radius:{round(sz * 0.224)}px;box-shadow:{shadow},0 0 0 1px rgba(26,24,20,.06)}}
 </style></head><body>
 <div class="wm serif"><span class="mk"><i></i><i></i><i></i></span>Eats Ranked</div>
 <h1 class="serif"><span>Restaurants, ranked</span><span>state by state.</span></h1>
-<p class="sub">Free apps for <b>{html.escape(where)}</b>. More states coming soon.</p>
+<p class="sub">Free apps for <b>{html.escape(where)}</b>.{more}</p>
 <div class="icons">{icons}</div>
 </body></html>"""
 
